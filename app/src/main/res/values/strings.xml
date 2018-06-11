@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="isHomeMaker">Are you HomeMaker?</string>
+    <string name="logo_desc">Logo</string>
+    <string name="log_in">I already have an account?</string>
+    <string name="sign_up">Sign Up</string>
+</resources>
