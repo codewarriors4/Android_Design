@@ -7,8 +7,6 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -24,44 +22,82 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codewarriors4.tiffin.services.HttpService;
+import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.RequestPackage;
+import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.Utils;
-import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.Inflater;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener
 {
-    private static View view;
-    private static EditText emailid, password;
-    private static Button loginButton;
-    private static TextView forgotPassword, signUp;
-    private static CheckBox show_hide_password;
-    private static Animation shakeAnimation;
-    private static LinearLayout loginLayout;
+    private  View view;
+    private  EditText emailid, password;
+    private  Button loginButton;
+    private  TextView forgotPassword, signUp;
+    private  CheckBox show_hide_password;
+    private  Animation shakeAnimation;
+    private  LinearLayout loginLayout;
+    private ProgressBar progressBar;
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
-        public void onReceive(Context context, Intent intent) {
-            String str = (String) intent
-                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-            Log.d("JsonResponseData", "onReceive: " + str);
-            Toast.makeText(context, str, Toast.LENGTH_SHORT)
+    public void onReceive(Context context, Intent intent) {
+//        String str = (String) intent
+//                .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
+//        Log.d("JsonResponseData", "onReceive: " + str);
+//        Toast.makeText(context, str, Toast.LENGTH_SHORT)
+//                .show();
+//
+//
+//        Intent demoIntent = new Intent(context, DemoActivity.class);
+//        demoIntent.putExtra("response", str);
+//        startActivity(demoIntent);
+
+        RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
+
+        if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
+            String access_token ="";
+            try {
+                access_token = new JSONObject(respondPackage.getParams().get(RespondPackage.SUCCESS)).getString("access_token");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("JsonResponseData", "onReceive: "
+                    + respondPackage.getParams().get(RespondPackage.SUCCESS));
+            progressBar.setVisibility(View.GONE);
+//            Toast.makeText(context,
+//                    access_token, Toast.LENGTH_LONG)
+//                    .show();
+            Intent demoIntent = new Intent(context, DemoActivity.class);
+            demoIntent.putExtra("access_token", access_token);
+            context.startActivity(demoIntent);
+//
+        }else{
+            progressBar.setVisibility(View.GONE);
+            loginButton.setEnabled(true);
+
+            Log.d("JsonResponseData", "onReceive: "
+                    + respondPackage.getParams().get(RespondPackage.FAILED));
+            Toast.makeText(context,
+                    respondPackage.getParams().get(RespondPackage.FAILED), Toast.LENGTH_SHORT)
                     .show();
 
-
-            Intent demoIntent = new Intent(context, DemoActivity.class);
-            demoIntent.putExtra("response", str);
-            startActivity(demoIntent);
-
         }
-    };
+
+    }
+};
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +107,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
         initViews();
         setListeners();
+
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        doGreeting();
+
+    }
+
+    private void doGreeting() {
+
+//
+//        String greetingString = getIntent().getStringExtra("REGISTRATION_GREETING");
+//        if(!(greetingString == null)){
+//           Toast.makeText(this, greetingString, Toast.LENGTH_LONG).show();
+//
+//        }else{
+//            Toast.makeText(this, "No Intent", Toast.LENGTH_LONG).show();
+//        }
     }
 
     private void initViews() {
@@ -86,6 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signUp = (TextView) findViewById(R.id.createAccount);
         show_hide_password = (CheckBox) findViewById(R.id.show_hide_password);
         loginLayout = (LinearLayout) view.findViewById(R.id.login_layout);
+        progressBar = (ProgressBar) findViewById(R.id.login_progress);
 
 
         // Load ShakeAnimation
@@ -161,6 +218,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //					.replace(R.id.frameContainer,
 //							new ForgotPassword_Fragment(),
 //							Utils.ForgotPassword_Fragment).commit();
+                startActivity(new Intent(this, ForgotPassword.class));
                 break;
             case R.id.createAccount:
                 startActivity(new Intent(this, SignupActivity.class));
@@ -201,8 +259,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     "Your Email Id is Invalid.");
             // Else do login and do your stuff
         else {
-            Toast.makeText(this, "Do Login.", Toast.LENGTH_SHORT)
-            .show();
             loginHandler();
         }
 
@@ -210,8 +266,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void loginHandler()
     {
+        progressBar.setVisibility(View.VISIBLE);
+        loginButton.setEnabled(false);
+
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint("http://10.192.88.87/tiffin_service/web/public/api/login");
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.LOGIN);
         requestPackage.setParam("email", emailid.getText().toString());
         requestPackage.setParam("password", password.getText().toString());
         requestPackage.setMethod("POST");
@@ -229,4 +288,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .unregisterReceiver(mBroadcastReceiver);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .unregisterReceiver(mBroadcastReceiver);
+    }
 }

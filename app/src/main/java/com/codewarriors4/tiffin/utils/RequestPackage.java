@@ -13,6 +13,17 @@ public class RequestPackage implements Parcelable {
     private String endPoint;
     private String method = "GET";
     private Map<String, String> params = new HashMap<>();
+    private Map<String, String> headers = new HashMap<>();
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+
 
     public String getEndpoint() {
         return endPoint;
@@ -42,6 +53,10 @@ public class RequestPackage implements Parcelable {
         params.put(key, value);
     }
 
+    public void setHeader(String key, String value) {
+        headers.put(key, value);
+    }
+
     public String getEncodedParams() {
         StringBuilder sb = new StringBuilder();
         for (String key : params.keySet()) {
@@ -60,6 +75,17 @@ public class RequestPackage implements Parcelable {
         return sb.toString();
     }
 
+    public boolean isHeaderSet()
+    {
+        return headers.isEmpty();
+    }
+
+
+
+    public RequestPackage() {
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -74,9 +100,11 @@ public class RequestPackage implements Parcelable {
             dest.writeString(entry.getKey());
             dest.writeString(entry.getValue());
         }
-    }
-
-    public RequestPackage() {
+        dest.writeInt(this.headers.size());
+        for (Map.Entry<String, String> entry : this.headers.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
     }
 
     protected RequestPackage(Parcel in) {
@@ -89,9 +117,16 @@ public class RequestPackage implements Parcelable {
             String value = in.readString();
             this.params.put(key, value);
         }
+        int headersSize = in.readInt();
+        this.headers = new HashMap<String, String>(headersSize);
+        for (int i = 0; i < headersSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.headers.put(key, value);
+        }
     }
 
-    public static final Creator<RequestPackage> CREATOR = new Creator<RequestPackage>() {
+    public static final Parcelable.Creator<RequestPackage> CREATOR = new Parcelable.Creator<RequestPackage>() {
         @Override
         public RequestPackage createFromParcel(Parcel source) {
             return new RequestPackage(source);

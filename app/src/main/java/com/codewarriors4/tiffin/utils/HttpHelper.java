@@ -1,5 +1,11 @@
 package com.codewarriors4.tiffin.utils;
 
+import android.util.JsonReader;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.Map;
 
 import okhttp3.FormBody;
@@ -54,6 +61,9 @@ public class HttpHelper {
 
             RequestBody formBody = formData.build();
             requestBuilder.post(formBody);
+            for (String key : requestPackage.getHeaders().keySet()) {
+                requestBuilder.addHeader(key, requestPackage.getHeaders().get(key));
+            }
 
 //                builder.addFormDataPart(key, params.get(key));
 //            }
@@ -72,7 +82,16 @@ public class HttpHelper {
         if (response.isSuccessful()) {
             return response.body().string();
         } else {
-            throw new IOException("Exception: response code " + response.code());
+            throw new IOException("Error \t" +
+                    getResponseBody(response.body().string()));
+        }
+    }
+
+    private static String getResponseBody(String str){
+        try {
+            return new JSONObject(str).getString("message");
+        } catch (JSONException e) {
+            return "JSON ERROR";
         }
     }
 

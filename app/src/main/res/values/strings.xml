@@ -4,4 +4,7 @@
     <string name="logo_desc">Logo</string>
     <string name="log_in">I already have an account?</string>
     <string name="sign_up">Sign Up</string>
+    <string name="logo_header">TIFFIN SERVICE</string>
+    <string name="registration_greeting"></string>
+    <string name="REGISTRATION_GREETING_KEY">registration_greeting</string>
 </resources>
