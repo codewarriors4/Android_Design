@@ -292,10 +292,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .unregisterReceiver(mBroadcastReceiver);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .unregisterReceiver(mBroadcastReceiver);
-    }
+    //@Override
+//    protected void onStop() {
+//        super.onStop();
+//        LocalBroadcastManager.getInstance(getApplicationContext())
+//                .unregisterReceiver(mBroadcastReceiver);
+//    }
 }
