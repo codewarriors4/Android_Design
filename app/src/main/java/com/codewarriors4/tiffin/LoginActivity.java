@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent demoIntent = new Intent(context, DemoActivity.class);
             demoIntent.putExtra("access_token", access_token);
             context.startActivity(demoIntent);
+            finish();
 //
         }else{
             progressBar.setVisibility(View.GONE);
@@ -281,6 +282,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //intent.setData(Uri.parse(JSON_URL));
         startService(intent);
+
     }
 
     protected void onDestroy() {

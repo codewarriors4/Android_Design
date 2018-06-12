@@ -1,6 +1,7 @@
 package com.codewarriors4.tiffin.utils;
 
 import android.util.JsonReader;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +63,13 @@ public class HttpHelper {
             RequestBody formBody = formData.build();
             requestBuilder.post(formBody);
             for (String key : requestPackage.getHeaders().keySet()) {
-                requestBuilder.addHeader(key, requestPackage.getHeaders().get(key));
+                if(key.equals("Authorization")){
+                    requestBuilder.header(key, requestPackage.getHeaders().get(key));
+                    Log.i(key, requestPackage.getHeaders().get(key));
+                }else{
+                    requestBuilder.addHeader(key, requestPackage.getHeaders().get(key));
+                    Log.i(key, requestPackage.getHeaders().get(key));
+                }
             }
 
 //                builder.addFormDataPart(key, params.get(key));
@@ -78,6 +85,7 @@ public class HttpHelper {
         }
 
         Request request = requestBuilder.build();
+
         Response response = client.newCall(request).execute();
         if (response.isSuccessful()) {
             return response.body().string();
