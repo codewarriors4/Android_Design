@@ -218,9 +218,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //					.replace(R.id.frameContainer,
 //							new ForgotPassword_Fragment(),
 //							Utils.ForgotPassword_Fragment).commit();
+                finish();
                 startActivity(new Intent(this, ForgotPassword.class));
                 break;
             case R.id.createAccount:
+                finish();
                 startActivity(new Intent(this, SignupActivity.class));
 
                 // Replace signup frgament with animation

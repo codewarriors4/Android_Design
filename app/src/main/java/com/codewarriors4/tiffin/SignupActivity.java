@@ -218,6 +218,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.already_user:
 
                 // Replace login activity
+                finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
