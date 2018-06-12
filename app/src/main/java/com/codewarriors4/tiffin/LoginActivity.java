@@ -71,19 +71,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String access_token ="";
             try {
                 access_token = new JSONObject(respondPackage.getParams().get(RespondPackage.SUCCESS)).getString("access_token");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.d("JsonResponseData", "onReceive: "
-                    + respondPackage.getParams().get(RespondPackage.SUCCESS));
-            progressBar.setVisibility(View.GONE);
+                Log.d("JsonResponseData", "onReceive: "
+                        + respondPackage.getParams().get(RespondPackage.SUCCESS));
+                progressBar.setVisibility(View.GONE);
 //            Toast.makeText(context,
 //                    access_token, Toast.LENGTH_LONG)
 //                    .show();
-            Intent demoIntent = new Intent(context, DemoActivity.class);
-            demoIntent.putExtra("access_token", access_token);
-            context.startActivity(demoIntent);
-            finish();
+                Intent demoIntent = new Intent(context, DemoActivity.class);
+                demoIntent.putExtra("access_token", access_token);
+                context.startActivity(demoIntent);
+                finish();
+            } catch (JSONException e) {
+//                new CustomToast().Show_Toast(context, view,
+//                        "Please Verify your email.");
+//                progressBar.setVisibility(View.GONE);
+//                loginButton.setEnabled(true);
+            }
+
 //
         }else{
             progressBar.setVisibility(View.GONE);

@@ -32,6 +32,7 @@ public class DemoActivity extends AppCompatActivity{
    // private ProgressBar progressBar;
     private TextView textView;
     String response = "";
+    boolean flag = false;
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
@@ -74,19 +75,26 @@ public class DemoActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.demo_layout);
 
-        response = getIntent().getStringExtra("access_token");
-        Log.d("DemoActivityResponse", ""+response);
-        textView = (TextView)findViewById(R.id.textView4);
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .registerReceiver(mBroadcastReceiver,
-                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+            setContentView(R.layout.demo_layout);
 
-        if(!response.equals("")) {
+            response = getIntent().getStringExtra("access_token");
+            textView = (TextView)findViewById(R.id.textView4);
+            //textView = (TextView)findViewById(R.id.textView4);
+            //textView.append(response);
+//        Log.d("DemoActivityResponse", ""+response);
 
-            getUserInformation(response);
-        }
+            LocalBroadcastManager.getInstance(getApplicationContext())
+                    .registerReceiver(mBroadcastReceiver,
+                            new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+
+            if(!response.equals("")) {
+                getUserInformation(response);
+            }
+
+            //Toast.makeText(this, "On Create", Toast.LENGTH_LONG).show();
+
+
     }
 
 
