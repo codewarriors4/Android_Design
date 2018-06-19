@@ -8,5 +8,7 @@ public interface Constants {
     public static final String LOGIN = "/login";
     public static final String FORGOTPASSWORD ="/password/email";
     public static final String USER ="/user";
+    public static final String HOMEMAKERPROFILE = "/homemakerprofile";
+    public static final String HOMEMAKERPROFILEVIEW = "/homemakerprofileview";
     public static final String SHAREDPREFERNCE = "com.codewarriors4.tiffin";
 }

@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -26,6 +27,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HttpHelper {
+    private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
 
     public static String downloadFromFeed(RequestPackage requestPackage)
             throws IOException {
@@ -45,6 +47,59 @@ public class HttpHelper {
                 .addHeader("Accept", "application/json");
 
         if(requestPackage.getMethod().equals("POST")){
+
+            if(!requestPackage.getFiles().isEmpty()){
+                MultipartBody.Builder mulBuilder = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM);
+                Map<String, String> requestPackageParams = requestPackage.getParams();
+                Map<String, File> requestPackageFiles = requestPackage.getFiles();
+                for (String key: requestPackageParams.keySet()) {
+                    mulBuilder.addFormDataPart(key, requestPackageParams.get(key));
+                }
+
+                for (String key : requestPackageFiles.keySet()) {
+                    mulBuilder.addFormDataPart("file",
+                            requestPackageFiles.get(key).getName(),
+                            RequestBody.create(MEDIA_TYPE_JPEG, requestPackageFiles.get(key)));
+                }
+
+                MultipartBody build = mulBuilder.build();
+                requestBuilder.post(build);
+                for (String key : requestPackage.getHeaders().keySet()) {
+                    if(key.equals("Authorization")){
+                        requestBuilder.header(key, requestPackage.getHeaders().get(key));
+                        Log.i(key, requestPackage.getHeaders().get(key));
+                    }else{
+                        requestBuilder.addHeader(key, requestPackage.getHeaders().get(key));
+                        Log.i(key, requestPackage.getHeaders().get(key));
+                    }
+                }
+
+            }else{
+                Map<String, String> params = requestPackage.getParams();
+
+                FormBody.Builder formData = new FormBody.Builder();
+                for (String key: params.keySet()) {
+                    formData.add(key, params.get(key));
+                }
+
+//            RequestBody requestBody = new MultipartBody.Builder()
+//                    .setType(MultipartBody.FORM)
+//                    .addFormDataPart("somParam", "someValue")
+//                    .build();
+
+                RequestBody formBody = formData.build();
+                requestBuilder.post(formBody);
+                for (String key : requestPackage.getHeaders().keySet()) {
+                    if(key.equals("Authorization")){
+                        requestBuilder.header(key, requestPackage.getHeaders().get(key));
+                        Log.i(key, requestPackage.getHeaders().get(key));
+                    }else{
+                        requestBuilder.addHeader(key, requestPackage.getHeaders().get(key));
+                        Log.i(key, requestPackage.getHeaders().get(key));
+                    }
+                }
+            }
 //            MultipartBody.Builder builder = new MultipartBody.Builder()
 //                    .setType(MultipartBody.FORM);
 //            Map<String, String> params = requestPackage.getParams();
@@ -54,29 +109,7 @@ public class HttpHelper {
 //
 //            RequestBody requestBody = builder.build();
 //            requestBuilder.method("POST", requestBody);
-            Map<String, String> params = requestPackage.getParams();
-            
-            FormBody.Builder formData = new FormBody.Builder();
-            for (String key: params.keySet()) {
-                formData.add(key, params.get(key));
-            }
 
-//            RequestBody requestBody = new MultipartBody.Builder()
-//                    .setType(MultipartBody.FORM)
-//                    .addFormDataPart("somParam", "someValue")
-//                    .build();
-
-            RequestBody formBody = formData.build();
-            requestBuilder.post(formBody);
-            for (String key : requestPackage.getHeaders().keySet()) {
-                if(key.equals("Authorization")){
-                    requestBuilder.header(key, requestPackage.getHeaders().get(key));
-                    Log.i(key, requestPackage.getHeaders().get(key));
-                }else{
-                    requestBuilder.addHeader(key, requestPackage.getHeaders().get(key));
-                    Log.i(key, requestPackage.getHeaders().get(key));
-                }
-            }
 
 //                builder.addFormDataPart(key, params.get(key));
 //            }
@@ -96,6 +129,7 @@ public class HttpHelper {
         if (response.isSuccessful()) {
             return response.body().string();
         } else {
+            Log.d("responseERROR", "downloadFromFeed: " + response.body().string());
             throw new IOException("Error \t" +
                     getResponseBody(response.body().string()));
         }

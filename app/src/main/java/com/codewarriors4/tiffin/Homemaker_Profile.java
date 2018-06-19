@@ -1,13 +1,19 @@
 package com.codewarriors4.tiffin;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -19,16 +25,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.codewarriors4.tiffin.services.HttpService;
+import com.codewarriors4.tiffin.utils.Constants;
+import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.RequestPackage;
+import com.codewarriors4.tiffin.utils.RespondPackage;
+import com.codewarriors4.tiffin.utils.SessionUtli;
 import com.codewarriors4.tiffin.utils.Utils;
+import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -70,14 +92,76 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     boolean imageSelected;
     ImageView mImageView;
     String mCurrentPhotoPath;
+
+    Bitmap imageBitmap;
+    File uploadLicence;
+
+    private SessionUtli sessionUtli;
+    private FrameLayout progress;
+    private LinearLayout profileBody;
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+
+        public void onReceive(Context context, Intent intent) {
+//            String str = (String) intent
+//                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
+            String action = intent.getAction();
+            Log.d("GETACTION", "onReceive: "+ action);
+            switch (action){
+                case "submit":
+                    RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
+                    if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
+                        Log.d("JsonResponseData", "onReceive: "
+                                + respondPackage.getParams().get(RespondPackage.SUCCESS));
+
+
+                    }else{
+                        Log.d("JsonResponseData", "onReceive: "
+                                + respondPackage.getParams().get(RespondPackage.FAILED));
+
+                    }
+                    break;
+                case "view":
+                    RespondPackage respondPackage1 = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
+                    if(respondPackage1.getParams().containsKey(RespondPackage.SUCCESS)){
+                        Log.d("JsonResponseData", "onReceive: "
+                                + respondPackage1.getParams().get(RespondPackage.SUCCESS));
+                        HashMap <String, String>hashMap = new Gson().fromJson(respondPackage1.getParams().get(RespondPackage.SUCCESS), HashMap.class);
+                        for (String key : hashMap.keySet()) {
+                            Log.d("JSONVALUE", ": " + hashMap.get(key));
+                        }
+
+                        profileBody.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.GONE);
+
+                    }else{
+                        Log.d("JsonResponseData", "onReceive: "
+                                + respondPackage1.getParams().get(RespondPackage.FAILED));
+
+                    }
+
+            }
+
+
+        }
+    };
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homemaker_profile);
+        sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
+        profileBody = findViewById(R.id.profileBody);
+        progress = findViewById(R.id.progress_overlay);
         mImageView = findViewById(R.id.licence_image);
         uploadLicenceButton.setOnCreateContextMenuListener(this);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .registerReceiver(mBroadcastReceiver,
+                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+        new MyAsynTask().execute("");
     }
 
 
@@ -120,7 +204,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
                     "Please Select Image");
         }
         else{
-            Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
+            submit();
         }
 
     }
@@ -144,8 +228,11 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageBitmap = (Bitmap) extras.get("data");
             mImageView.setImageBitmap(imageBitmap);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            uploadLicence = saveImageToFile(bytes);
             imageSelected = true;
         }
         else if(requestCode == REQUEST_SELECT_IMAGE && resultCode == RESULT_OK){
@@ -159,6 +246,27 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
                 e.printStackTrace();
             }
         }
+    }
+
+    public File saveImageToFile(ByteArrayOutputStream bytes)
+    {
+        File destination = new File(this.getCacheDir(),
+                System.currentTimeMillis() + ".jpg");
+        Log.d("imageURI", "saveImageToFile: " + destination.getAbsolutePath());
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return destination;
+
     }
 
     private void galleryAddPic() {
@@ -186,6 +294,83 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
             default:
                 return false;
         }
+    }
+
+    public void submit(){
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HOMEMAKERPROFILE);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("UserFname", firstNameView.getText().toString().trim());
+        requestPackage.setParam("UserLname", lastNameView.getText().toString().trim());
+        requestPackage.setParam("UserType", "0");
+        requestPackage.setParam("UserPhone", phoneView.getText().toString().trim());
+        requestPackage.setParam("UserCountry", "Canada");
+        requestPackage.setParam("UserProvince", "ON");
+        requestPackage.setParam("UserCity", city.getText().toString());
+        requestPackage.setParam("UserZipCode", zipcodeView.getText().toString());
+        requestPackage.setParam("UserCompanyName", "Tiffin Demo");
+        requestPackage.setFile("file", uploadLicence);
+        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Accept", "application/json; q=0.5");
+        requestPackage.setParam("UserStreet", streetName.getText().toString());
+        Intent intent = new Intent(this, HttpService.class);
+        intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
+
+        startService(intent);
+    }
+
+    public String getUserInfo() throws IOException {
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HOMEMAKERPROFILEVIEW);
+        requestPackage.setMethod("POST");
+        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Accept", "application/json; q=0.5");
+        return HttpHelper.downloadFromFeed(requestPackage);
+    }
+
+    private class MyAsynTask extends AsyncTask<String, String, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                return getUserInfo();
+            } catch (IOException e) {
+                return e.getMessage();
+            }
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            profileBody.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            super.onPostExecute(aVoid);
+            profileBody.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.GONE);
+            HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
+            for (String key : hashMap.keySet()) {
+                Log.d("JSONVALUE", ": " + hashMap.get(key));
+            }
+        }
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .unregisterReceiver(mBroadcastReceiver);
     }
 
 

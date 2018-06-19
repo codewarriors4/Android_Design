@@ -183,7 +183,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.legal) {
 
         } else if (id == R.id.logout) {
-
+            sessionUtli.clearAll();
+            startActivity(new Intent(this, MainActivity.class));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -220,6 +221,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
 }

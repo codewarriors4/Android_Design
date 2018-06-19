@@ -3,6 +3,7 @@ package com.codewarriors4.tiffin.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -14,6 +15,16 @@ public class RequestPackage implements Parcelable {
     private String method = "GET";
     private Map<String, String> params = new HashMap<>();
     private Map<String, String> headers = new HashMap<>();
+    private Map<String, File> files = new HashMap<>();
+
+    public Map<String, File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Map<String, File> files) {
+        this.files = files;
+    }
+
 
     public Map<String, String> getHeaders() {
         return headers;
@@ -23,7 +34,13 @@ public class RequestPackage implements Parcelable {
         this.headers = headers;
     }
 
+    public void setFile(String key, File file){
+        this.files.put(key, file);
+    }
 
+    public void getFile(String key, File file){
+        this.files.put(key, file);
+    }
 
     public String getEndpoint() {
         return endPoint;
@@ -105,6 +122,11 @@ public class RequestPackage implements Parcelable {
             dest.writeString(entry.getKey());
             dest.writeString(entry.getValue());
         }
+        dest.writeInt(this.files.size());
+        for (Map.Entry<String, File> entry : this.files.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeSerializable(entry.getValue());
+        }
     }
 
     protected RequestPackage(Parcel in) {
@@ -124,9 +146,16 @@ public class RequestPackage implements Parcelable {
             String value = in.readString();
             this.headers.put(key, value);
         }
+        int filesSize = in.readInt();
+        this.files = new HashMap<String, File>(filesSize);
+        for (int i = 0; i < filesSize; i++) {
+            String key = in.readString();
+            File value = (File) in.readSerializable();
+            this.files.put(key, value);
+        }
     }
 
-    public static final Parcelable.Creator<RequestPackage> CREATOR = new Parcelable.Creator<RequestPackage>() {
+    public static final Creator<RequestPackage> CREATOR = new Creator<RequestPackage>() {
         @Override
         public RequestPackage createFromParcel(Parcel source) {
             return new RequestPackage(source);

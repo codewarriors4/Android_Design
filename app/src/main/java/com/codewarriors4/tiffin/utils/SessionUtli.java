@@ -72,6 +72,10 @@ public class SessionUtli
         edit.apply();
     }
 
+    public void clearAll(){
+        sharedPreferences.edit().clear().apply();
+    }
+
 
 
 
