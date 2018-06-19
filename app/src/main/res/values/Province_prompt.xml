@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Province_prompt">Choose Province</string>
+
+    <string-array name="Province_arrays">
+        <item>AB</item>
+        <item>BC</item>
+        <item>MB</item>
+        <item>NB</item>
+        <item>NL</item>
+        <item>ON</item>
+        <item>PE</item>
+        <item>QC</item>
+        <item>SK</item>
+        <item>NT</item>
+        <item>YT</item>
+    </string-array>
+</resources>

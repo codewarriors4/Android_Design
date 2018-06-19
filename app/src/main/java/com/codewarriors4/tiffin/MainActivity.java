@@ -1,51 +1,38 @@
 package com.codewarriors4.tiffin;
 
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 
-import com.codewarriors4.tiffin.utils.Utils;
+import com.codewarriors4.tiffin.utils.Constants;
 
 public class MainActivity extends AppCompatActivity{
 
-    private static android.support.v4.app.FragmentManager fragmentManager;
+
     Button loginActionButton;
     Button signupActionButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        loginActionButton = findViewById(R.id.button);
-        signupActionButton = findViewById(R.id.button1);
-        setOnclickHandler();
-        //fragmentManager = getSupportFragmentManager();
+        //setContentView(R.layout.dashboard);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
 
-        // If savedinstnacestate is null then replace login fragment
-//        if (savedInstanceState == null) {
-//            fragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.frameContainer, new Login_Fragment(),
-//                            Utils.Login_Fragment).commit();
-//        }
+        //super.onCreate(savedInstanceState);
+        if(!sharedPreferences.contains("access_token")){
+            setContentView(R.layout.activity_main);
+            loginActionButton = findViewById(R.id.button);
+            signupActionButton = findViewById(R.id.button1);
+            setOnclickHandler();
+        }else{
+            Intent intent = new Intent(this, DashboardActivity.class);
 
-        // On close icon click finish activity
-//        findViewById(R.id.close_activity).setOnClickListener(
-//                new View.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View arg0) {
-//                        finish();
-//
-//                    }
-//                });
+            startActivity(intent);
+        }
+
 
     }
 

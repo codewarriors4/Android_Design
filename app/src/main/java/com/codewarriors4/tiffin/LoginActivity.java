@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
@@ -30,13 +31,9 @@ import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
+import com.codewarriors4.tiffin.utils.SessionUtli;
 import com.codewarriors4.tiffin.utils.Utils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                .show();
 //
 //
-//        Intent demoIntent = new Intent(context, DemoActivity.class);
+//        Intent demoIntent = new Intent(context, DashboardActivity.class);
 //        demoIntent.putExtra("response", str);
 //        startActivity(demoIntent);
 
@@ -70,22 +67,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
             String access_token ="";
             try {
-                access_token = new JSONObject(respondPackage.getParams().get(RespondPackage.SUCCESS)).getString("access_token");
+                access_token = respondPackage.getParams().get(RespondPackage.SUCCESS);
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
                 progressBar.setVisibility(View.GONE);
 //            Toast.makeText(context,
 //                    access_token, Toast.LENGTH_LONG)
 //                    .show();
-                Intent demoIntent = new Intent(context, DemoActivity.class);
-                demoIntent.putExtra("access_token", access_token);
+                SharedPreferences sharedPreference = getSharedPreferences(
+                        Constants.SHAREDPREFERNCE, MODE_PRIVATE
+                );
+
+                SessionUtli.getSession(sharedPreference).setValues(access_token);
+//                sharedPreference.edit().putString("Token", access_token).apply();
+                Intent demoIntent = new Intent(context, DashboardActivity.class);
+                demoIntent.putExtra("isNewLogin", true);
                 context.startActivity(demoIntent);
                 finish();
-            } catch (JSONException e) {
-//                new CustomToast().Show_Toast(context, view,
-//                        "Please Verify your email.");
-//                progressBar.setVisibility(View.GONE);
-//                loginButton.setEnabled(true);
+            } catch (Exception e) {
+                Log.d("LOGINACTIVITY:ERROR", e.getMessage());
             }
 
 //

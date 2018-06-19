@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +24,12 @@
         </activity>
         <activity android:name=".ForgotPassword">
         </activity>
-        <activity android:name=".DemoActivity">
+        <activity android:name=".DashboardActivity"
+            android:theme="@style/AppThemeActionBar.NoActionBar">
+        </activity>
+        <activity android:name=".Homemaker_Profile"
+            android:theme="@style/AppThemeActionBar">
+
         </activity>
         <activity android:name=".SignupActivity"></activity>
 

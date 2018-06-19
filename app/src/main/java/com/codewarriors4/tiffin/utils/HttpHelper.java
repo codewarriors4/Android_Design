@@ -55,10 +55,16 @@ public class HttpHelper {
 //            RequestBody requestBody = builder.build();
 //            requestBuilder.method("POST", requestBody);
             Map<String, String> params = requestPackage.getParams();
+            
             FormBody.Builder formData = new FormBody.Builder();
             for (String key: params.keySet()) {
                 formData.add(key, params.get(key));
             }
+
+//            RequestBody requestBody = new MultipartBody.Builder()
+//                    .setType(MultipartBody.FORM)
+//                    .addFormDataPart("somParam", "someValue")
+//                    .build();
 
             RequestBody formBody = formData.build();
             requestBuilder.post(formBody);

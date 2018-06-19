@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="logo_header">TIFFIN SERVICE</string>
-    <string name="registration_greeting">Account has been created \n
-        Please verfiy your email address</string>
+
 </resources>
