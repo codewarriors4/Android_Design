@@ -33,6 +33,7 @@ import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,6 +49,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     private SessionUtli sessionUtli;
     TextView textView;
+    @BindView(R.id.greeting_text)
+    TextView greetingTextView;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
@@ -90,8 +93,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         setContentView(R.layout.dashboard);
+        sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -125,6 +130,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
 
             }
+        }
+
+        if(sessionUtli.getValue("UserType").equals("0.0"))
+            greetingTextView.setText("Welcome TiffinSeeker");
+        else{
+            greetingTextView.setText("Welcome HomeMaker");
         }
 
 
@@ -175,7 +186,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         if (id == R.id.account) {
-            startActivity(new Intent(this, Homemaker_Profile.class));
+            if(sessionUtli.getValue("UserType").equals("0.0"))
+                startActivity(new Intent(this, TiffinSeeker_Profile.class));
+            else{
+                startActivity(new Intent(this, Homemaker_Profile.class));
+            }
         } else if (id == R.id.menu) {
 
         } else if (id == R.id.my_subscribers) {

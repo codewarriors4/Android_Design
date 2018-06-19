@@ -32,6 +32,8 @@
             android:theme="@style/AppThemeActionBar">
 
         </activity>
+        <activity android:name=".TiffinSeeker_Profile" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".Legal"></activity>
         <activity android:name=".SignupActivity"></activity>
 
         <service android:name=".services.HttpService" android:exported="false">

@@ -105,49 +105,26 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         public void onReceive(Context context, Intent intent) {
 //            String str = (String) intent
 //                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-            String action = intent.getAction();
-            Log.d("GETACTION", "onReceive: "+ action);
-            switch (action){
-                case "submit":
+            
+             
                     RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
                     if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                         Log.d("JsonResponseData", "onReceive: "
                                 + respondPackage.getParams().get(RespondPackage.SUCCESS));
-
+                        Toast.makeText(context, "Update Succesfully", Toast.LENGTH_SHORT).show();
 
                     }else{
                         Log.d("JsonResponseData", "onReceive: "
                                 + respondPackage.getParams().get(RespondPackage.FAILED));
-
+                        Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
                     }
-                    break;
-                case "view":
-                    RespondPackage respondPackage1 = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-                    if(respondPackage1.getParams().containsKey(RespondPackage.SUCCESS)){
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage1.getParams().get(RespondPackage.SUCCESS));
-                        HashMap <String, String>hashMap = new Gson().fromJson(respondPackage1.getParams().get(RespondPackage.SUCCESS), HashMap.class);
-                        for (String key : hashMap.keySet()) {
-                            Log.d("JSONVALUE", ": " + hashMap.get(key));
-                        }
-
-                        profileBody.setVisibility(View.VISIBLE);
-                        progress.setVisibility(View.GONE);
-
-                    }else{
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage1.getParams().get(RespondPackage.FAILED));
-
-                    }
-
-            }
-
-
+                    
         }
     };
 
 
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("HomeMaker Profile");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homemaker_profile);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
@@ -188,6 +165,8 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
        // Matcher phoneMatch = phone.matcher(getPhoneNumber.trim());
         Matcher m = p.matcher(zipCode.trim());
         //Toast.makeText(this, ""+ (getPhoneNumber.length() == PHONELENGHT) + " " +m.find() , Toast.LENGTH_SHORT).show();
+//        if(sessionUtli.getValue("isLicenceUploaded").equals("true"))
+//            imageSelected = true;
         if(getFirstName.equals("") || getLastName.equals("") || getPhoneNumber.equals("")
                 || getStreetName.equals("") || getCity.equals("") || province.equals("")
                 || getCountry.equals("") || zipCode.equals("")){
@@ -199,10 +178,11 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         }else if(!(getPhoneNumber.length() == PHONELENGHT)){
             new CustomToast().Show_Toast(this, view,
                     "Invalid Phone");
-        }else if(!imageSelected){
-            new CustomToast().Show_Toast(this, view,
-                    "Please Select Image");
         }
+//        }else if(!(imageSelected)){
+//            new CustomToast().Show_Toast(this, view,
+//                    "Please Select Image");
+//        }
         else{
             submit();
         }
@@ -234,14 +214,19 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             uploadLicence = saveImageToFile(bytes);
             imageSelected = true;
+            sessionUtli.setValue("isLicenceUploaded", "true");
         }
         else if(requestCode == REQUEST_SELECT_IMAGE && resultCode == RESULT_OK){
             Uri uri = data.getData();
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                uploadLicence = saveImageToFile(bytes);
                 mImageView.setImageBitmap(bitmap);
                 imageSelected = true;
+                sessionUtli.setValue("isLicenceUploaded", "true");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -302,14 +287,14 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         requestPackage.setMethod("POST");
         requestPackage.setParam("UserFname", firstNameView.getText().toString().trim());
         requestPackage.setParam("UserLname", lastNameView.getText().toString().trim());
-        requestPackage.setParam("UserType", "0");
         requestPackage.setParam("UserPhone", phoneView.getText().toString().trim());
         requestPackage.setParam("UserCountry", "Canada");
         requestPackage.setParam("UserProvince", "ON");
         requestPackage.setParam("UserCity", city.getText().toString());
         requestPackage.setParam("UserZipCode", zipcodeView.getText().toString());
         requestPackage.setParam("UserCompanyName", "Tiffin Demo");
-        requestPackage.setFile("file", uploadLicence);
+        if(imageSelected)
+            requestPackage.setFile("file", uploadLicence);
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         requestPackage.setParam("UserStreet", streetName.getText().toString());
@@ -319,7 +304,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         startService(intent);
     }
 
-    public String getUserInfo() throws IOException {
+    public String getUserInfo() throws Exception {
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.HOMEMAKERPROFILEVIEW);
         requestPackage.setMethod("POST");
@@ -334,7 +319,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         protected String doInBackground(String... strings) {
             try {
                 return getUserInfo();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 return e.getMessage();
             }
 
@@ -356,16 +341,49 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
 
         @Override
         protected void onPostExecute(String aVoid) {
-            super.onPostExecute(aVoid);
-            profileBody.setVisibility(View.VISIBLE);
-            progress.setVisibility(View.GONE);
-            HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
-            for (String key : hashMap.keySet()) {
-                Log.d("JSONVALUE", ": " + hashMap.get(key));
+            try {
+                super.onPostExecute(aVoid);
+                profileBody.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+                HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
+                for (String key : hashMap.keySet()) {
+                    Log.d("JSONVALUE", key + ": " + hashMap.get(key));
+                }
+                if(hashMap.get("UserZipCode") != null)
+                    initValues(hashMap);
+            }
+
+            catch(Exception e){
+                Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG);
             }
         }
+
     }
 
+
+    private void initValues(HashMap<String, Object> hashMap)
+    {
+            firstNameView.append((String)hashMap.get("UserFname"));
+            lastNameView.append((String)hashMap.get("UserLname"));
+            phoneView.append((String)hashMap.get("UserPhone"));
+            streetName.append((String)hashMap.get("UserStreet"));
+            city.append((String)hashMap.get("UserCity"));
+            countryView.append((String)hashMap.get("UserCountry"));
+            zipcodeView.append((String)hashMap.get("UserZipCode"));
+            provinceSpinner.setSelection(getIndex(provinceSpinner, (String)hashMap.get("UserProvince") ));
+    }
+
+    private int getIndex(Spinner spinner, String myString){
+
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).equals(myString)){
+                index = i;
+            }
+        }
+        return index;
+    }
     protected void onDestroy() {
         super.onDestroy();
 

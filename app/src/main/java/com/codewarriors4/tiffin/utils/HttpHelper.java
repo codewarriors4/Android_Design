@@ -30,7 +30,7 @@ public class HttpHelper {
     private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
 
     public static String downloadFromFeed(RequestPackage requestPackage)
-            throws IOException {
+            throws Exception {
 
         String address = requestPackage.getEndpoint();
         String encodedParams = requestPackage.getEncodedParams();
@@ -130,8 +130,7 @@ public class HttpHelper {
             return response.body().string();
         } else {
             Log.d("responseERROR", "downloadFromFeed: " + response.body().string());
-            throw new IOException("Error \t" +
-                    getResponseBody(response.body().string()));
+            throw new Exception(getResponseBody(response.body().string()));
         }
     }
 

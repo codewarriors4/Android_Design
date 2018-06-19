@@ -33,7 +33,7 @@ public class HttpService extends IntentService {
             response = HttpHelper.downloadFromFeed(requestPackage);
             respondPackage.setParam(RespondPackage.SUCCESS, response);
             Log.d("HttpResponse", "onHandleIntent: " + response.toString());
-        } catch (IOException e) {
+        } catch (Exception e) {
 
             Log.d("HttpResponse", "onHandleIntent_ERROR: " +  e.getMessage());
             response = e.getMessage();

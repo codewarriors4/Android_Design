@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="country_prompt">Choose Province</string>
+
+    <string-array name="countries_array">
+        <item>Canada</item>
+    </string-array>
+</resources>
