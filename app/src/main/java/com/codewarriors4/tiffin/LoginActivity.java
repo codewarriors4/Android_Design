@@ -78,12 +78,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Constants.SHAREDPREFERNCE, MODE_PRIVATE
                 );
 
-                SessionUtli.getSession(sharedPreference).setValues(access_token);
-//                sharedPreference.edit().putString("Token", access_token).apply();
-                Intent demoIntent = new Intent(context, DashboardActivity.class);
-                demoIntent.putExtra("isNewLogin", true);
-                context.startActivity(demoIntent);
-                finish();
+                SessionUtli session = SessionUtli.getSession(sharedPreference);
+                session.setValues(access_token);
+                new UserHandler().startActivity(session, getBaseContext());
+//                Intent demoIntent = new Intent(context, DashboardActivity.class);
+//                demoIntent.putExtra("isNewLogin", true);
+//                context.startActivity(demoIntent);
+//                finish();
             } catch (Exception e) {
                 Log.d("LOGINACTIVITY:ERROR", e.getMessage());
             }
@@ -113,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initViews();
         setListeners();
 
-        LocalBroadcastManager.getInstance(getApplicationContext())
+        LocalBroadcastManager.getInstance(this)
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
     }
