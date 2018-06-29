@@ -29,11 +29,8 @@ public class MainActivity extends AppCompatActivity{
             setOnclickHandler();
         }else{
             Intent intent = new Intent(this, DashboardActivity.class);
-
             startActivity(intent);
         }
-
-
     }
 
     private void setOnclickHandler() {
