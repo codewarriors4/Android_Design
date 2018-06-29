@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.codewarriors4.tiffin.utils.Constants;
+import com.codewarriors4.tiffin.utils.SessionUtli;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -28,10 +29,7 @@ public class MainActivity extends AppCompatActivity{
             signupActionButton = findViewById(R.id.button1);
             setOnclickHandler();
         }else{
-            Intent intent = new Intent(this, DashboardActivity.class);
-
-            startActivity(intent);
-            finish();
+           new UserHandler().startActivity(SessionUtli.getSession(sharedPreferences), MainActivity.this);
         }
 
 

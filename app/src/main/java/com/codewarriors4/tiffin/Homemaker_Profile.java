@@ -129,9 +129,9 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         setContentView(R.layout.homemaker_profile);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
-        profileBody = findViewById(R.id.profileBody);
+        profileBody = findViewById(R.id.profile_body);
         progress = findViewById(R.id.progress_overlay);
-        mImageView = findViewById(R.id.licence_image);
+        mImageView = findViewById(R.id.profile_body);
         uploadLicenceButton.setOnCreateContextMenuListener(this);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);

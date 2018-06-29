@@ -25,7 +25,6 @@
         android:text="email@email.com"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:id="@+id/email_holder_tiffin"/>
+        android:textStyle="bold" />
 
 </RelativeLayout>

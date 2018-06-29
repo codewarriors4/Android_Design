@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".ForgotPassword">
         </activity>
-        <activity android:name=".DashboardActivity"
+        <activity android:name=".TiffinSeekerDashboardActivity"
             android:theme="@style/AppThemeActionBar.NoActionBar">
         </activity>
         <activity android:name=".Homemaker_Profile"
