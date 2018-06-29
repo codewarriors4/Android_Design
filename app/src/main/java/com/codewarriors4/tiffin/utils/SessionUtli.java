@@ -51,6 +51,8 @@ public class SessionUtli
         }
     }
 
+
+
     public String getValue(String str)
     {
         return sharedPreferences.getString(str, "");

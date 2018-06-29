@@ -111,15 +111,36 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         textView = (TextView) header.findViewById(R.id.email_holder);
         navigationView.setNavigationItemSelectedListener(this);
 
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mBroadcastReceiver,
+                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+        if(sessionUtli.getValue("UserType").equals("0.0"))
+            greetingTextView.setText("Welcome TiffinSeeker");
+        else{
+            greetingTextView.setText("Welcome HomeMaker");
+        }
 
+    }
+
+
+
+
+    private void initFields()
+    {
+        textView.setText(sessionUtli.getValue("email"));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initFields();
+        //initData();
+    }
+
+    private void initData() {
         if(getIntent().getBooleanExtra("isNewLogin", false)){
-            //textView = (TextView)findViewById(R.id.textView4);
-
-            LocalBroadcastManager.getInstance(getApplicationContext())
-                    .registerReceiver(mBroadcastReceiver,
-                            new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
-                getUserInformation((String)sessionUtli.getValue("access_token"));
-
+            textView = (TextView)findViewById(R.id.textView4);
+            getUserInformation((String)sessionUtli.getValue("access_token"));
         }else{
             //textView = (TextView)findViewById(R.id.textView4);
 
@@ -131,26 +152,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
             }
         }
-
-        if(sessionUtli.getValue("UserType").equals("0.0"))
-            greetingTextView.setText("Welcome TiffinSeeker");
-        else{
-            greetingTextView.setText("Welcome HomeMaker");
-        }
-
-
-
-    }
-
-    private void initFields()
-    {
-        textView.setText(sessionUtli.getValue("email"));
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        initFields();
     }
 
     private void getUserInformation(String str)
@@ -165,12 +166,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         startService(intent);
     }
 
-
-    protected void onStop() {
-        super.onStop();
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .unregisterReceiver(mBroadcastReceiver);
-    }
 
     @Override
     protected void onDestroy() {
@@ -236,6 +231,33 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    //        if(getIntent().getBooleanExtra("isNewLogin", false)){
+//            //textView = (TextView)findViewById(R.id.textView4);
+//
+//            LocalBroadcastManager.getInstance(getApplicationContext())
+//                    .registerReceiver(mBroadcastReceiver,
+//                            new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+//                getUserInformation((String)sessionUtli.getValue("access_token"));
+//
+//        }else{
+//            //textView = (TextView)findViewById(R.id.textView4);
+//
+//            if(sessionUtli.getValue("UserType").equals("0")){
+//
+//
+//            }else{
+//
+//
+//            }
+//        }
+//
+//        if(sessionUtli.getValue("UserType").equals("0.0"))
+//            greetingTextView.setText("Welcome TiffinSeeker");
+//        else{
+//            greetingTextView.setText("Welcome HomeMaker");
+//        }
 
 
 
