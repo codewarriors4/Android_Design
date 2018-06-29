@@ -50,7 +50,8 @@ public class UserHandler
                 Intent demoIntent = new Intent(context, DashboardActivity.class);
                 demoIntent.putExtra("isNewLogin", true);
                 context.startActivity(demoIntent);
-                ((Activity) context).finish();
+
+                //((Activity) context).finish();
             }
 
             else if(session.getValue("UserType").equals("1.0")){
