@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                .show();
 //
 //
-//        Intent demoIntent = new Intent(context, DashboardActivity.class);
+//        Intent demoIntent = new Intent(context, TiffinSeekerDashboardActivity.class);
 //        demoIntent.putExtra("response", str);
 //        startActivity(demoIntent);
 
@@ -80,8 +80,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 SessionUtli session = SessionUtli.getSession(sharedPreference);
                 session.setValues(access_token);
-                new UserHandler().startActivity(session, getBaseContext());
-//                Intent demoIntent = new Intent(context, DashboardActivity.class);
+                new UserHandler().startActivity(session, LoginActivity.this);
+//                Intent demoIntent = new Intent(context, TiffinSeekerDashboardActivity.class);
 //                demoIntent.putExtra("isNewLogin", true);
 //                context.startActivity(demoIntent);
 //                finish();

@@ -41,7 +41,7 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class TiffinSeekerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
    // private ProgressBar progressBar;
 
     String response = "";
@@ -93,22 +93,22 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard);
+        setContentView(R.layout.activity_tiffin_seeker);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tiffin_toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.tiffin_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.tiffin_nav_view);
         View header = navigationView.getHeaderView(0);
-        textView = (TextView) header.findViewById(R.id.email_holder);
+        textView = (TextView) header.findViewById(R.id.email_holder_tiffin);
         navigationView.setNavigationItemSelectedListener(this);
 
         LocalBroadcastManager.getInstance(this)
@@ -181,11 +181,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         if (id == R.id.account) {
-            if(sessionUtli.getValue("UserType").equals("0.0"))
+
                 startActivity(new Intent(this, TiffinSeeker_Profile.class));
-            else{
-                startActivity(new Intent(this, Homemaker_Profile.class));
-            }
+
         } else if (id == R.id.menu) {
 
         } else if (id == R.id.my_subscribers) {
@@ -196,13 +194,13 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             sessionUtli.clearAll();
             startActivity(new Intent(this, MainActivity.class));
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.tiffin_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.tiffin_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

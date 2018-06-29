@@ -1,144 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/blue"
-    tools:context=".Homemaker_Profile">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    android:id="@+id/profile_body">
 
-    <include
-        layout="@layout/progress_framelayout"
-        android:visibility="visible" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="FirstName"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:id="@+id/first_name"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/white"
-        android:visibility="invisible"
-        android:id="@+id/profileBody">
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Lastname"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:id="@+id/last_name"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone"
+        android:inputType="phone"
+        android:textColor="@color/black"
+        android:id="@+id/phone"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Street Name"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:id="@+id/street_name"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="FirstName"
-            android:inputType="textPersonName"
-            android:textColor="@color/black"
-            android:id="@+id/first_name"/>
-
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="Lastname"
-            android:inputType="textPersonName"
-            android:textColor="@color/black"
-            android:id="@+id/last_name"/>
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone"
-            android:inputType="phone"
-            android:textColor="@color/black"
-            android:id="@+id/phone"
-            android:maxLength="10"/>
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="Street Name"
+            android:hint="City"
+            android:layout_weight="1"
             android:inputType="text"
             android:textColor="@color/black"
-            android:id="@+id/street_name"/>
+            android:id="@+id/city"/>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="City"
-                android:layout_weight="1"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:id="@+id/city"/>
-
-            <Spinner
-                android:id="@+id/province_spinner"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:entries="@array/Province_arrays"
-                android:prompt="@string/Province_prompt"
-                tools:layout_editor_absoluteX="182dp"
-                tools:layout_editor_absoluteY="11dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="Country"
-                android:inputType="text"
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:id="@+id/country"/>
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="Zipcode"
-                android:layout_weight="1"
-                android:textColor="@color/black"
-                android:id="@+id/zipcode"
-                android:inputType="textCapCharacters"/>
-
-        </LinearLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:background="@color/blue"
-            android:elevation="4dp"
-            android:paddingLeft="70dp"
-            android:paddingRight="70dp"
-            android:text="Licence"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:id="@+id/upload_btn"/>
-
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/blue"
-            android:elevation="4dp"
-            android:paddingLeft="70dp"
-            android:paddingRight="70dp"
-            android:text="Submit"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:id="@+id/submit_btn"/>
-
-        <ImageView
-            android:layout_marginTop="20dp"
-            android:id="@+id/licence_image"
-            android:layout_width="match_parent"
-            android:layout_height="95dp"
-            app:srcCompat="@drawable/error" />
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:entries="@array/Province_arrays"
+            android:prompt="@string/Province_prompt"
+            tools:layout_editor_absoluteX="182dp"
+            tools:layout_editor_absoluteY="11dp"
+            android:id="@+id/province_spinner"/>
 
     </LinearLayout>
-</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="Country"
+            android:inputType="text"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:id="@+id/country"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="Zipcode"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:id="@+id/zipcode"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:background="@color/blue"
+        android:elevation="4dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:text="Licence"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:id="@+id/upload_btn"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/blue"
+        android:elevation="4dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:text="Submit"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:id="@+id/submit_btn"/>
+
+</LinearLayout>

@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codewarriors4.tiffin.services.HttpService;
@@ -55,9 +56,23 @@ public class HomemakerViewProfile extends AppCompatActivity  {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
     static final int PHONELENGHT = 10;
-    private ProgressBar progressBar;
+    public ProgressBar progressBar;
 
     private  View view;
+    @BindView(R.id.hm_name)
+    TextView homemakerName;
+    @BindView(R.id.hm_street)
+    TextView homemakerStreet;
+    @BindView(R.id.hm_city)
+    TextView homemakerCity;
+    @BindView(R.id.hm_province)
+    TextView homemakerProvince;
+    @BindView(R.id.hm_postal)
+    TextView ho0memakerPostal;
+    @BindView(R.id.hm_phone)
+    TextView homemakerPhone;
+    @BindView(R.id.hm_email)
+    TextView homemakerEmail;
 
     boolean imageSelected;
     ImageView mImageView;
@@ -99,15 +114,90 @@ public class HomemakerViewProfile extends AppCompatActivity  {
         setContentView(R.layout.homemaker_view_profile);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
-        //profileBody = findViewById(R.id.profileBody);
-        //progress = findViewById(R.id.progress_overlay);
-        //mImageView = findViewById(R.id.licence_image);
+        profileBody = findViewById(R.id.profileBody);
+        progress = findViewById(R.id.progress_overlay);
+        mImageView = findViewById(R.id.licence_image);
        // uploadLicenceButton.setOnCreateContextMenuListener(this);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.homemaker_view_profile, container, false);
+        new MyAsynTask().execute("");
+        /*progressBar = (ProgressBar) findViewById(R.id.ts_view_hm_progress);
         progressBar.setVisibility(View.GONE);
+        profileBody.setVisibility(View.VISIBLE);*/
 
     }
+
+
+    private void initValues(HashMap<String, Object> hashMap)
+    {
+        homemakerName.append((String)hashMap.get("UserFname") + (String)hashMap.get("UserLname"));
+        homemakerStreet.append((String)hashMap.get("hm_street"));
+        homemakerCity.append((String)hashMap.get("hm_city"));
+        homemakerProvince.append((String)hashMap.get("hm_province"));
+        ho0memakerPostal.append((String)hashMap.get("hm_postal"));
+        homemakerPhone.append((String)hashMap.get("hm_phone"));
+        homemakerEmail.append((String)hashMap.get("hm_email"));
+    }
+
+
+    public String getHMDetails() throws Exception {
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPROFILE);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("id", "21");
+        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Accept", "application/json; q=0.5");
+        return HttpHelper.downloadFromFeed(requestPackage);
+    }
+
+
+    private class MyAsynTask extends AsyncTask<String, String, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                return getHMDetails();
+            } catch (Exception e) {
+                return e.getMessage();
+            }
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            profileBody.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            try {
+                super.onPostExecute(aVoid);
+                profileBody.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+                HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
+                for (String key : hashMap.keySet()) {
+                    Log.d("JSONVALUE", key + ": " + hashMap.get(key));
+                }
+                if(hashMap.get("UserZipCode") != null)
+                    initValues(hashMap);
+            }
+
+            catch(Exception e){
+                Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG);
+            }
+        }
+
+    }
+
 
 
 

@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.HttpHelper;
 import com.codewarriors4.tiffin.utils.RequestPackage;
@@ -47,7 +45,7 @@ public class UserHandler
             session.setValues(s);
             if(session.getValue("UserType").equals("0.0")){
 
-                Intent demoIntent = new Intent(context, DashboardActivity.class);
+                Intent demoIntent = new Intent(context, TiffinSeekerDashboardActivity.class);
                 demoIntent.putExtra("isNewLogin", true);
                 context.startActivity(demoIntent);
 

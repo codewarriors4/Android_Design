@@ -13,4 +13,6 @@ public interface Constants {
     public static final String TIFFINSEEKERPROFILE = "/tiffinseekerprofile";
     public static final String TIFFINSEEKERPROFILEVIEW = "/tiffinseekerprofileview";
     public static final String SHAREDPREFERNCE = "com.codewarriors4.tiffin";
+    public static final String TSVIEWHMPROFILE = "/tsviewhmprofile";
+
 }

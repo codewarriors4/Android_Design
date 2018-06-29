@@ -12,6 +12,7 @@
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
+        android:id="@+id/ts_view_hm_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
