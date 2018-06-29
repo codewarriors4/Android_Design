@@ -134,38 +134,8 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
     protected void onStart() {
         super.onStart();
         initFields();
-        //initData();
+
     }
-
-    private void initData() {
-        if(getIntent().getBooleanExtra("isNewLogin", false)){
-            textView = (TextView)findViewById(R.id.textView4);
-            getUserInformation((String)sessionUtli.getValue("access_token"));
-        }else{
-            //textView = (TextView)findViewById(R.id.textView4);
-
-            if(sessionUtli.getValue("UserType").equals("0")){
-
-
-            }else{
-
-
-            }
-        }
-    }
-
-    private void getUserInformation(String str)
-    {
-        RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.USER);
-        requestPackage.setHeader("Authorization", "Bearer " +str);
-        requestPackage.setHeader("Accept", "application/json; q=0.5");
-        requestPackage.setMethod("POST");
-        Intent intent = new Intent(this, HttpService.class);
-        intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
-        startService(intent);
-    }
-
 
     @Override
     protected void onDestroy() {
