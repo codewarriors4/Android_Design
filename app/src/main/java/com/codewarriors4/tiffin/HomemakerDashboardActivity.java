@@ -83,9 +83,8 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
         if (id == R.id.account) {
 
-        Intent i = new Intent(this, Homemaker_Profile.class);
-        startActivity(i);
-
+            Intent i = new Intent(this, Homemaker_Profile.class);
+            startActivity(i);
         } else if (id == R.id.menu) {
 
         } else if (id == R.id.my_subscribers) {
@@ -96,7 +95,7 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.homemaker_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

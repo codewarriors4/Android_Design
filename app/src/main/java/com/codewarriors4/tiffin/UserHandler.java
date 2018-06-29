@@ -52,7 +52,10 @@ public class UserHandler
             }
 
             else if(session.getValue("UserType").equals("1.0")){
-
+                Intent demoIntent = new Intent(context, HomemakerDashboardActivity.class);
+                demoIntent.putExtra("isNewLogin", true);
+                context.startActivity(demoIntent);
+                ((Activity) context).finish();
             }
 
             else {
