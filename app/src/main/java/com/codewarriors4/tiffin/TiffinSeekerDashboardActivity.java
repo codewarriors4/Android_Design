@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TiffinSeekerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
    // private ProgressBar progressBar;
@@ -49,8 +51,8 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     private SessionUtli sessionUtli;
     TextView textView;
-    @BindView(R.id.greeting_text)
-    TextView greetingTextView;
+    @BindView(R.id.vew_homemaker_details)
+    Button vew_homemaker_details;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
@@ -114,11 +116,22 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
-        if(sessionUtli.getValue("UserType").equals("0.0"))
-            greetingTextView.setText("Welcome TiffinSeeker");
-        else{
-            greetingTextView.setText("Welcome HomeMaker");
+        if(sessionUtli.getValue("UserType").equals("0.0")){
+
         }
+            //greetingTextView.setText("Welcome TiffinSeeker");
+        else{
+           // greetingTextView.setText("Welcome HomeMaker");
+        }
+
+    }
+
+
+    @OnClick(R.id.vew_homemaker_details)
+    public void viewDetails(View view){
+
+        Intent intent = new Intent(this, HomemakerViewProfile.class);
+        startActivity(intent);
 
     }
 

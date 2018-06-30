@@ -45,7 +45,7 @@ public class UserHandler
             session.setValues(s);
             if(session.getValue("UserType").equals("0.0")){
 
-                Intent demoIntent = new Intent(context, HomemakerDashboardActivity.class);
+                Intent demoIntent = new Intent(context, TiffinSeekerDashboardActivity.class);
                 demoIntent.putExtra("isNewLogin", true);
                 context.startActivity(demoIntent);
 

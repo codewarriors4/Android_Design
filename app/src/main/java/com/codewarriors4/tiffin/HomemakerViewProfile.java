@@ -121,6 +121,7 @@ public class HomemakerViewProfile extends AppCompatActivity  {
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.homemaker_view_profile, container, false);
         new MyAsynTask().execute("");
+        Log.d("JSONVALUE2", "test");
         /*progressBar = (ProgressBar) findViewById(R.id.ts_view_hm_progress);
         progressBar.setVisibility(View.GONE);
         profileBody.setVisibility(View.VISIBLE);*/
@@ -130,13 +131,18 @@ public class HomemakerViewProfile extends AppCompatActivity  {
 
     private void initValues(HashMap<String, Object> hashMap)
     {
-        homemakerName.append((String)hashMap.get("UserFname") + (String)hashMap.get("UserLname"));
-        homemakerStreet.append((String)hashMap.get("hm_street"));
-        homemakerCity.append((String)hashMap.get("hm_city"));
-        homemakerProvince.append((String)hashMap.get("hm_province"));
-        ho0memakerPostal.append((String)hashMap.get("hm_postal"));
-        homemakerPhone.append((String)hashMap.get("hm_phone"));
-        homemakerEmail.append((String)hashMap.get("hm_email"));
+
+        HashMap hash = hashMap;
+
+        Log.d("JSONVALUE", "test2");
+
+        homemakerName.setText((String)hashMap.get("UserFname") + (String)hashMap.get("UserLname"));
+        homemakerStreet.setText((String)hashMap.get("hm_street"));
+        homemakerCity.setText((String)hashMap.get("hm_city"));
+        homemakerProvince.setText((String)hashMap.get("hm_province"));
+        ho0memakerPostal.setText((String)hashMap.get("hm_postal"));
+        homemakerPhone.setText((String)hashMap.get("hm_phone"));
+        homemakerEmail.setText((String)hashMap.get("hm_email"));
     }
 
 
@@ -180,14 +186,19 @@ public class HomemakerViewProfile extends AppCompatActivity  {
         @Override
         protected void onPostExecute(String aVoid) {
             try {
+
                 super.onPostExecute(aVoid);
                 profileBody.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
+                android.os.Debug.waitForDebugger();
                 HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
                 for (String key : hashMap.keySet()) {
                     Log.d("JSONVALUE", key + ": " + hashMap.get(key));
                 }
-                if(hashMap.get("UserZipCode") != null)
+
+                Log.d("JSONVALUE", "test");
+
+                //if(hashMap.get("UserZipCode") != null)
                     initValues(hashMap);
             }
 

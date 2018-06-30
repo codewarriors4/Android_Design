@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.codewarriors4.tiffin.utils.Constants;
+import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 
 public class MainActivity extends AppCompatActivity{
@@ -25,12 +27,14 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);*/
         //super.onCreate(savedInstanceState);
         if(!sharedPreferences.contains("access_token")){
+            Log.d("outsidesideelse", "outsidesideelse: ");
+
             setContentView(R.layout.activity_main);
             loginActionButton = findViewById(R.id.button);
             signupActionButton = findViewById(R.id.button1);
             setOnclickHandler();
         }else{
-
+            Log.d("insideelse", "insideelse: ");
            new UserHandler().startActivity(SessionUtli.getSession(sharedPreferences), MainActivity.this);
 
         }
