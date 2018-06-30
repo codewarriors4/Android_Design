@@ -131,7 +131,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         ButterKnife.bind(this);
         profileBody = findViewById(R.id.profile_body);
         progress = findViewById(R.id.progress_overlay);
-        mImageView = findViewById(R.id.profile_body);
+        mImageView = findViewById(R.id.license_preview);
         uploadLicenceButton.setOnCreateContextMenuListener(this);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
@@ -334,14 +334,15 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
 
         @Override
         protected void onPreExecute() {
-            profileBody.setVisibility(View.GONE);
-            progress.setVisibility(View.VISIBLE);
+            //  profileBody.setVisibility(View.GONE);
+            //progress.setVisibility(View.VISIBLE);
 
         }
 
         @Override
         protected void onPostExecute(String aVoid) {
             try {
+                Log.d("Testing data", "onPostExecute: " + aVoid);
                 super.onPostExecute(aVoid);
                 profileBody.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
@@ -363,6 +364,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
 
     private void initValues(HashMap<String, Object> hashMap)
     {
+
             firstNameView.append((String)hashMap.get("UserFname"));
             lastNameView.append((String)hashMap.get("UserLname"));
             phoneView.append((String)hashMap.get("UserPhone"));
