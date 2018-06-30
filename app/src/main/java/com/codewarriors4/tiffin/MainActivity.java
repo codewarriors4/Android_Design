@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.dashboard);
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
-        Intent intent = new Intent(this, HomemakerViewProfile.class);
-        startActivity(intent);
+       /* Intent intent = new Intent(this, HomemakerViewProfile.class);
+        startActivity(intent);*/
         //super.onCreate(savedInstanceState);
         if(!sharedPreferences.contains("access_token")){
             setContentView(R.layout.activity_main);

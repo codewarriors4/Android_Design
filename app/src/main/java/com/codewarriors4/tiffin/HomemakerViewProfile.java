@@ -116,7 +116,7 @@ public class HomemakerViewProfile extends AppCompatActivity  {
         ButterKnife.bind(this);
         profileBody = findViewById(R.id.profileBody);
         progress = findViewById(R.id.progress_overlay);
-        mImageView = findViewById(R.id.licence_image);
+       // mImageView = findViewById(R.id.licence_image);
        // uploadLicenceButton.setOnCreateContextMenuListener(this);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.homemaker_view_profile, container, false);
@@ -142,9 +142,9 @@ public class HomemakerViewProfile extends AppCompatActivity  {
 
     public String getHMDetails() throws Exception {
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPROFILE);
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPROFILE + "/81");
         requestPackage.setMethod("POST");
-        requestPackage.setParam("id", "21");
+        //requestPackage.setParam("id", "21");
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         return HttpHelper.downloadFromFeed(requestPackage);
