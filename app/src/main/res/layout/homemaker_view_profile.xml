@@ -30,18 +30,19 @@
 
             <TextView
                 android:id="@+id/view_profle_name"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Name"
                 tools:text="Name" />
 
             <TextView
                 android:id="@+id/hm_name"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:layout_weight="1.5"
+                android:text="TextView"
+                android:textAlignment="textStart" />
 
         </LinearLayout>
 
@@ -53,18 +54,19 @@
 
             <TextView
                 android:id="@+id/view_profile_street"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Street"
                 tools:text="Street" />
 
             <TextView
                 android:id="@+id/hm_street"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:layout_weight="1.5"
+                android:text="TextView"
+                android:textAlignment="textStart" />
         </LinearLayout>
 
 
@@ -76,18 +78,19 @@
 
             <TextView
                 android:id="@+id/view_profile_city"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="City"
                 tools:text="City" />
 
             <TextView
                 android:id="@+id/hm_city"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:layout_weight="1.5"
+                android:text="TextView"
+                android:textAlignment="textStart" />
 
         </LinearLayout>
 
@@ -95,22 +98,24 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="0"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:textAlignment="textStart">
 
             <TextView
                 android:id="@+id/view_profile_province"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Province"
                 tools:text="Province" />
 
             <TextView
                 android:id="@+id/hm_province"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:layout_weight="1.5"
+                android:text="TextView"
+                android:textAlignment="textStart" />
         </LinearLayout>
 
         <LinearLayout
@@ -121,18 +126,19 @@
 
             <TextView
                 android:id="@+id/view_profile_postal"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Postal Code"
                 tools:text="Postal Code" />
 
             <TextView
                 android:id="@+id/hm_postal"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:layout_weight="1.5"
+                android:text="TextView"
+                android:textAlignment="textStart" />
         </LinearLayout>
 
         <LinearLayout
@@ -143,18 +149,19 @@
 
             <TextView
                 android:id="@+id/view_profile_phone"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Phone"
                 tools:text="Phone" />
 
             <TextView
                 android:id="@+id/hm_phone"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:layout_weight="1.5"
+                android:text="TextView"
+                android:textAlignment="textStart" />
         </LinearLayout>
 
         <LinearLayout
@@ -165,18 +172,19 @@
 
             <TextView
                 android:id="@+id/view_profile_email"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Email"
                 tools:text="Email" />
 
             <TextView
                 android:id="@+id/hm_email"
-                android:layout_width="wrap_content"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:layout_weight="1.5"
+                android:text="TextView"
+                android:textAlignment="textStart" />
         </LinearLayout>
 
         <Button

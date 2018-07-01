@@ -36,6 +36,10 @@ import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 import com.codewarriors4.tiffin.utils.Utils;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -84,7 +88,7 @@ public class HomemakerViewProfile extends AppCompatActivity  {
     private SessionUtli sessionUtli;
     private FrameLayout progress;
     private LinearLayout profileBody;
-
+    JsonObject hmDetailsJSONObj;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
@@ -129,20 +133,19 @@ public class HomemakerViewProfile extends AppCompatActivity  {
     }
 
 
-    private void initValues(HashMap<String, Object> hashMap)
-    {
+    private void initValues(JsonObject hmdetails) throws JSONException {
 
-        HashMap hash = hashMap;
+
 
         Log.d("JSONVALUE", "test2");
 
-        homemakerName.setText((String)hashMap.get("UserFname") + (String)hashMap.get("UserLname"));
-        homemakerStreet.setText((String)hashMap.get("hm_street"));
-        homemakerCity.setText((String)hashMap.get("hm_city"));
-        homemakerProvince.setText((String)hashMap.get("hm_province"));
-        ho0memakerPostal.setText((String)hashMap.get("hm_postal"));
-        homemakerPhone.setText((String)hashMap.get("hm_phone"));
-        homemakerEmail.setText((String)hashMap.get("hm_email"));
+        homemakerName.setText(hmdetails.get("UserFname").getAsString() + hmdetails.get("UserLname").getAsString());
+        homemakerStreet.setText(hmdetails.get("UserStreet").getAsString());
+        homemakerCity.setText(hmdetails.get("UserCity").getAsString());
+        homemakerProvince.setText(hmdetails.get("UserProvince").getAsString());
+        ho0memakerPostal.setText(hmdetails.get("UserZipCode").getAsString());
+        homemakerPhone.setText(hmdetails.get("UserPhone").getAsString());
+        homemakerEmail.setText(hmdetails.get("email").getAsString());
     }
 
 
@@ -190,16 +193,23 @@ public class HomemakerViewProfile extends AppCompatActivity  {
                 super.onPostExecute(aVoid);
                 profileBody.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
-                android.os.Debug.waitForDebugger();
-                HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
-                for (String key : hashMap.keySet()) {
+               // android.os.Debug.waitForDebugger();
+
+                JsonObject jsonObject = new Gson().fromJson(aVoid, JsonObject.class);
+                hmDetailsJSONObj = jsonObject.get("hmdetails")       // get the 'user' JsonElement
+                        .getAsJsonObject(); // get it as a JsonObject
+
+                //System.out.println(name);
+
+               // HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
+           /*     for (String key : hashMap.keySet()) {
                     Log.d("JSONVALUE", key + ": " + hashMap.get(key));
-                }
+                }*/
 
                 Log.d("JSONVALUE", "test");
 
                 //if(hashMap.get("UserZipCode") != null)
-                    initValues(hashMap);
+                    initValues(hmDetailsJSONObj);
             }
 
             catch(Exception e){
