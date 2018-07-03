@@ -1,6 +1,7 @@
 package com.codewarriors4.tiffin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 
 public class HomemakerDashboardActivity extends AppCompatActivity
@@ -45,6 +47,7 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.homemaker_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
     }
 
 
