@@ -12,11 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 public class Legal extends AppCompatActivity {
+
+    private  View view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.legal);
+        ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
+        view = getLayoutInflater().inflate(R.layout.homemaker_view_profile, container, false);
     }
 }

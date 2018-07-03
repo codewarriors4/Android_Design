@@ -40,6 +40,8 @@
         <activity android:name=".Homemaker_Packages" android:theme="@style/AppThemeActionBar"></activity>
 
         <activity android:name=".Legal"></activity>
+        <activity android:name=".Privacy"></activity>
+
         <activity android:name=".SignupActivity"></activity>
 
         <service android:name=".services.HttpService" android:exported="false">
