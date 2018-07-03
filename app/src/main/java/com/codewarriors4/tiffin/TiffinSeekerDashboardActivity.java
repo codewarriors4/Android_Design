@@ -51,8 +51,8 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     private SessionUtli sessionUtli;
     TextView textView;
-    @BindView(R.id.vew_homemaker_details)
-    Button vew_homemaker_details;
+//    @BindView(R.id.vew_homemaker_details)
+//    Button vew_homemaker_details;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
@@ -127,13 +127,13 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
     }
 
 
-    @OnClick(R.id.vew_homemaker_details)
-    public void viewDetails(View view){
-
-        Intent intent = new Intent(this, HomemakerViewProfile.class);
-        startActivity(intent);
-
-    }
+//    @OnClick(R.id.vew_homemaker_details)
+////    public void viewDetails(View view){
+////
+////        Intent intent = new Intent(this, HomemakerViewProfile.class);
+////        startActivity(intent);
+////
+////    }
 
 
 

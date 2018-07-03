@@ -6,9 +6,9 @@
     android:background="@color/blue"
     tools:context=".Homemaker_Profile">
 
-    <include
-        layout="@layout/progress_framelayout"
-        android:visibility="visible" />
+    <!--<include-->
+        <!--layout="@layout/progress_framelayout"-->
+        <!--android:visibility="visible" />-->
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
