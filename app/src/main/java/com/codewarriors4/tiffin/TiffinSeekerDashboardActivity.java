@@ -14,6 +14,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codewarriors4.tiffin.R;
+import com.codewarriors4.tiffin.adapters.HomeMakerListAdapter;
+import com.codewarriors4.tiffin.models.HomeMakerListItem;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.RequestPackage;
@@ -36,6 +40,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,8 +57,17 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     private SessionUtli sessionUtli;
     TextView textView;
-//    @BindView(R.id.vew_homemaker_details)
-//    Button vew_homemaker_details;
+    @BindView(R.id.vew_homemaker_details)
+    Button vew_homemaker_details;
+
+    @BindView(R.id.home_maker_list)
+    RecyclerView homeMakerListView;
+
+    static String param_info[][] = {
+            {"Titile",    "Titile 2",    "Titile 3"},
+            {"Description",    "Description 2",    "Description 3"}};
+
+    private HomeMakerListAdapter listViewAdapter;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
@@ -124,16 +139,27 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
            // greetingTextView.setText("Welcome HomeMaker");
         }
 
+        listViewAdapter = new HomeMakerListAdapter(this);
+        homeMakerListView.setAdapter(listViewAdapter);
+        homeMakerListView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
+//    public static List<HomeMakerListItem> loadData()
+//    {
+//        List<HomeMakerListItem> items = Collections.emptyList();
+//
+//        return items;
+//    }
 
-//    @OnClick(R.id.vew_homemaker_details)
-////    public void viewDetails(View view){
-////
-////        Intent intent = new Intent(this, HomemakerViewProfile.class);
-////        startActivity(intent);
-////
-////    }
+
+    @OnClick(R.id.vew_homemaker_details)
+    public void viewDetails(View view){
+
+        Intent intent = new Intent(this, HomemakerViewProfile.class);
+        startActivity(intent);
+
+    }
 
 
 
