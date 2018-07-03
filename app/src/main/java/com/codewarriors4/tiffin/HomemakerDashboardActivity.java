@@ -14,8 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.codewarriors4.tiffin.utils.SessionUtli;
+
 public class HomemakerDashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private SessionUtli sessionUtli;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +93,18 @@ public class HomemakerDashboardActivity extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.menu) {
 
-        } else if (id == R.id.my_subscribers) {
+        } else if (id == R.id.create_new) {
+
+            Intent i = new Intent(this, Homemaker_Packages.class);
+            startActivity(i);
+
+        }else if (id == R.id.my_subscribers) {
 
         } else if (id == R.id.legal) {
 
         } else if (id == R.id.logout) {
+            sessionUtli.clearAll();
+            startActivity(new Intent(this, MainActivity.class));
 
         }
 
