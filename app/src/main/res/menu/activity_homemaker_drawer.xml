@@ -28,6 +28,9 @@
             android:id="@+id/legal"
             android:title="Legal" />
         <item
+            android:id="@+id/privacy"
+            android:title="Privacy" />
+        <item
             android:id="@+id/logout"
             android:title="Logout" />
     </group>

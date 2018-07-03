@@ -198,8 +198,14 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         } else if (id == R.id.my_subscribers) {
 
         } else if (id == R.id.legal) {
+            startActivity(new Intent(this, Legal.class));
 
-        } else if (id == R.id.logout) {
+
+
+        } else if (id == R.id.privacy) {
+            startActivity(new Intent(this, Privacy.class));
+
+        }else if (id == R.id.logout) {
             sessionUtli.clearAll();
             startActivity(new Intent(this, MainActivity.class));
         }
