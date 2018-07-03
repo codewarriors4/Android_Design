@@ -9,15 +9,15 @@
             android:title="Account" />
         <item
             android:id="@+id/menu"
-            android:title="Menu">
-
-        <menu>
-            <item
-                android:id="@+id/create_new"
-                android:title="Add menu" />
-            <item android:id="@+id/view_menu"
-                android:title="View menu" />
-        </menu>
+            android:title="Menu"
+            android:menuCategory="container">
+            <menu>
+                <item
+                    android:id="@+id/create_new"
+                    android:title="Add menu" />
+                <item android:id="@+id/view_menu"
+                    android:title="View menu" />
+            </menu>
 
         </item>
 
@@ -27,6 +27,9 @@
         <item
             android:id="@+id/legal"
             android:title="Legal" />
+        <item
+            android:id="@+id/privacy"
+            android:title="Privacy" />
         <item
             android:id="@+id/logout"
             android:title="Logout" />

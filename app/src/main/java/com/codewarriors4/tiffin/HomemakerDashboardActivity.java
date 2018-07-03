@@ -1,6 +1,7 @@
 package com.codewarriors4.tiffin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 
 public class HomemakerDashboardActivity extends AppCompatActivity
@@ -45,6 +47,7 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.homemaker_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
     }
 
 
@@ -98,9 +101,13 @@ public class HomemakerDashboardActivity extends AppCompatActivity
             Intent i = new Intent(this, Homemaker_Packages.class);
             startActivity(i);
 
-        }else if (id == R.id.my_subscribers) {
+            } else if (id == R.id.my_subscribers) {
 
         } else if (id == R.id.legal) {
+            startActivity(new Intent(this, Legal.class));
+
+        }else if (id == R.id.privacy) {
+            startActivity(new Intent(this, Privacy.class));
 
         } else if (id == R.id.logout) {
             sessionUtli.clearAll();

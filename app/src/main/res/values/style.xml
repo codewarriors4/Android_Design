@@ -13,6 +13,7 @@
         -->
 
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="android:listViewStyle">@android:style/Widget.Holo.ListView</item>
     </style>
 
     <!-- Application theme. -->
