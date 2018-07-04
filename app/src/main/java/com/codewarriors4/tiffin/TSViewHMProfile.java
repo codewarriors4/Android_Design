@@ -471,6 +471,12 @@ public class TSViewHMProfile extends AppCompatActivity  {
     }
 
 */
+   protected void onDestroy() {
+       super.onDestroy();
+
+       LocalBroadcastManager.getInstance(getApplicationContext())
+               .unregisterReceiver(mBroadcastReceiver);
+   }
 
 
 

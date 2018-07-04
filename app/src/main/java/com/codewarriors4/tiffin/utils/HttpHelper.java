@@ -35,16 +35,33 @@ public class HttpHelper {
         String address = requestPackage.getEndpoint();
         String encodedParams = requestPackage.getEncodedParams();
 
-        if (requestPackage.getMethod().equals("GET") &&
-                encodedParams.length() > 0) {
-            address = String.format("%s?%s", address, encodedParams);
-        }
-
         OkHttpClient client = new OkHttpClient();
 
         Request.Builder requestBuilder = new Request.Builder()
                 .url(address)
                 .addHeader("Accept", "application/json");
+
+
+        if (requestPackage.getMethod().equals("GET")
+                ) {
+            if(encodedParams.length() > 0){
+                address = String.format("%s?%s", address, encodedParams);
+            }
+
+
+            for (String key : requestPackage.getHeaders().keySet()) {
+                if(key.equals("Authorization")){
+                    requestBuilder.header(key, requestPackage.getHeaders().get(key));
+                    Log.i(key, requestPackage.getHeaders().get(key));
+                }else{
+                    requestBuilder.addHeader(key, requestPackage.getHeaders().get(key));
+                    Log.i(key, requestPackage.getHeaders().get(key));
+                }
+            }
+
+
+        }
+
 
         if(requestPackage.getMethod().equals("POST")){
 

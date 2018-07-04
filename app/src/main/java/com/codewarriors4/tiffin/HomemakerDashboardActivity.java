@@ -1,7 +1,6 @@
 package com.codewarriors4.tiffin;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -98,13 +97,13 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
         } else if (id == R.id.create_new) {
 
-            Intent i = new Intent(this, Homemaker_Packages.class);
+            Intent i = new Intent(this, HomemakerCreatePackages.class);
             startActivity(i);
 
 
         } else if (id == R.id.view_menu) {
 
-            Intent i = new Intent(this, Homemaker_Packages.class);
+            Intent i = new Intent(this, HomemakerViewPackages.class);
             startActivity(i);
 
         }else if (id == R.id.my_subscribers) {

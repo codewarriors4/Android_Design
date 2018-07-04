@@ -16,5 +16,9 @@ public interface Constants {
     public static final String TSVIEWHMPROFILE = "/tsviewhmprofile";
     public static final String HMCREATEMENU = "/createmenu";
     public static final String HMMENUVIEWLISTINGS = "/mypackages";
+    public static final String HMUPDATEMENU = "/updatemenu";
+    public static final String HMGETPACKAGEDETAIL = "/mypackage";
+
+
 
 }

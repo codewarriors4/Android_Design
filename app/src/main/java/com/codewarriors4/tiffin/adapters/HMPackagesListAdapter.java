@@ -6,19 +6,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.codewarriors4.tiffin.R;
-import com.codewarriors4.tiffin.models.HMPackages;
+import com.codewarriors4.tiffin.models.HMPackagesModel;
 
 import java.util.List;
 
 public class HMPackagesListAdapter extends RecyclerView.Adapter<HMPackagesListAdapter.HMPackagesViewHolder>{
 
     private Context HMPackCtxt;
-    private List<HMPackages> HMPackageList;
+    private List<HMPackagesModel> HMPackageList;
 
-    public HMPackagesListAdapter(Context HMPackCtxt, List<HMPackages> MPackageList) {
+    public HMPackagesListAdapter(Context HMPackCtxt, List<HMPackagesModel> MPackageList) {
         this.HMPackCtxt = HMPackCtxt;
         this.HMPackageList = MPackageList;
     }
@@ -37,10 +38,17 @@ public class HMPackagesListAdapter extends RecyclerView.Adapter<HMPackagesListAd
 
     @Override
     public void onBindViewHolder(@NonNull HMPackagesViewHolder holder, int position) {
-        HMPackages hmPackage = HMPackageList.get(position);
+        HMPackagesModel hmPackage = HMPackageList.get(position);
+
         holder.HMPackTitle.setText(hmPackage.getPackTitle());
         holder.HMPackDesc.setText(hmPackage.getPackDesc());
         holder.HMPackCost.setText(String.valueOf(hmPackage.getPackCost()));
+        holder.HMEditPackage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -50,8 +58,8 @@ public class HMPackagesListAdapter extends RecyclerView.Adapter<HMPackagesListAd
 
     class HMPackagesViewHolder extends RecyclerView.ViewHolder {
 
-        TextView HMPackTitle, HMPackDesc, HMPackCost, HMPackLabel;
-
+        public TextView HMPackTitle, HMPackDesc, HMPackCost, HMPackLabel;
+        public Button HMEditPackage;
         public HMPackagesViewHolder(View itemView) {
             super(itemView);
 
@@ -59,6 +67,7 @@ public class HMPackagesListAdapter extends RecyclerView.Adapter<HMPackagesListAd
             HMPackDesc = itemView.findViewById(R.id.hm_pack_desc_listview);
             HMPackCost = itemView.findViewById(R.id.hm_pack_cost);
             HMPackLabel = itemView.findViewById(R.id.hm_pack_cost_label);
+            HMEditPackage = itemView.findViewById(R.id.hm_edit_pack);
 
 
         }

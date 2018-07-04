@@ -8,8 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,44 +17,34 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.codewarriors4.tiffin.adapters.HMPackagesListAdapter;
-import com.codewarriors4.tiffin.models.HMPackagesModel;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.HttpHelper;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class HomemakerViewPackages extends AppCompatActivity {
+public class HomemakerUpdatePackages extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
     static final int PHONELENGHT = 10;
 
-    RecyclerView recyclerView;
-    HMPackagesListAdapter adapter;
-    private JsonObject hmPackagesListJSONResponse;
-
-    List<HMPackagesModel> packageList;
 
     private  View view;
+    @BindView(R.id.package_name)
+    EditText packageName;
+    @BindView(R.id.pack_desc)
+    EditText packDesc;
+    @BindView(R.id.pack_cost)
+    EditText packCost;
 
+    @BindView(R.id.menu_submit_btn)
+    Button submitPackagesBtn;
 
     private SessionUtli sessionUtli;
     private FrameLayout progress;
@@ -67,8 +55,8 @@ public class HomemakerViewPackages extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 //            String str = (String) intent
 //                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-
-
+            
+             
                     RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
                     if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                         Log.d("JsonResponseData", "onReceive: "
@@ -80,23 +68,15 @@ public class HomemakerViewPackages extends AppCompatActivity {
                                 + respondPackage.getParams().get(RespondPackage.FAILED));
                         Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
                     }
-
+                    
         }
     };
 
 
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("My Packages");
+        setTitle("Manage Package Details");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homemaker_view_packages);
-
-        packageList = new ArrayList<>();
-
-        recyclerView = (RecyclerView) findViewById(R.id.home_maker_packageslist_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
+        setContentView(R.layout.homemaker_create_update_package);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
         profileBody = findViewById(R.id.profile_body);
@@ -111,12 +91,12 @@ public class HomemakerViewPackages extends AppCompatActivity {
 
 
 
-  /*  @OnClick(R.id.menu_submit_btn)
+    @OnClick(R.id.menu_submit_btn)
     public void submit(View view){
         checkValidation();
-    }*/
+    }
 
-/*    private void checkValidation()
+    private void checkValidation()
     {
         String getPackName = packageName.getText().toString();
         String getPackDesc = packDesc.getText().toString();
@@ -130,7 +110,7 @@ public class HomemakerViewPackages extends AppCompatActivity {
             submit();
         }
 
-    }*/
+    }
 
 
 
@@ -211,10 +191,10 @@ public class HomemakerViewPackages extends AppCompatActivity {
                 return false;
         }
     }*/
-/*
+
     public void submit(){
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMCREATEMENU);
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMUPDATEMENU);
         requestPackage.setMethod("POST");
         requestPackage.setParam("HMPName", packageName.getText().toString().trim());
         requestPackage.setParam("HMPDesc", packDesc.getText().toString().trim());
@@ -225,16 +205,13 @@ public class HomemakerViewPackages extends AppCompatActivity {
         intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
 
         startService(intent);
-    }*/
+    }
 
-        public String getHMPackagesList() throws Exception {
-
-            //Log.d("Testing data1", sessionUtli.getValue("access_token"));
-
-
+    public String getPackageInfo() throws Exception {
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMMENUVIEWLISTINGS);
-        requestPackage.setMethod("GET");
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMGETPACKAGEDETAIL);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("HMPId", "6");
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         return HttpHelper.downloadFromFeed(requestPackage);
@@ -245,7 +222,7 @@ public class HomemakerViewPackages extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                return getHMPackagesList();
+                return getPackageInfo();
             } catch (Exception e) {
                 return e.getMessage();
             }
@@ -261,8 +238,8 @@ public class HomemakerViewPackages extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            //  profileBody.setVisibility(View.GONE);
-            //progress.setVisibility(View.VISIBLE);
+            profileBody.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
 
         }
 
@@ -271,16 +248,14 @@ public class HomemakerViewPackages extends AppCompatActivity {
             try {
                 Log.d("Testing data", "onPostExecute: " + aVoid);
                 super.onPostExecute(aVoid);
-               // profileBody.setVisibility(View.VISIBLE);
-               // progress.setVisibility(View.GONE);
-
-                JSONObject mainObject = new JSONObject(aVoid);
-                JSONArray uniObject = mainObject.getJSONArray("home_maker_packages");
-
-                Log.d("JSONVALUE", "test");
-
-                //if(hashMap.get("UserZipCode") != null)
-                initValues(uniObject);
+                profileBody.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
+                HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
+                for (String key : hashMap.keySet()) {
+                    Log.d("JSONVALUE", key + ": " + hashMap.get(key));
+                }
+                if(hashMap.get("UserZipCode") != null)
+                    initValues(hashMap);
             }
 
             catch(Exception e){
@@ -291,39 +266,18 @@ public class HomemakerViewPackages extends AppCompatActivity {
     }
 
 
-    private void initValues(JSONArray uniObject) throws JSONException
+   /* private void initValues(HashMap<String, Object> hashMap)
     {
-        Log.d("jsondump", "hmPackagesList");
 
-
-
-
-        JSONArray jsonarray = new JSONArray(uniObject.toString());
-        for (int i = 0; i < jsonarray.length(); i++) {
-            JSONObject jsonobject = jsonarray.getJSONObject(i);
-            String id = String.valueOf(i+1);
-            int packID = jsonobject.getInt("HMPId");
-            String packTitle = jsonobject.getString("HMPName");
-            String packDesc = jsonobject.getString("HMPDesc");
-            Double packCost = jsonobject.getDouble("HMPCost");
-
-            HMPackagesModel model= new HMPackagesModel(
-                    id,
-                    packTitle,
-                    packDesc,
-                    packCost,
-                    packID
-            );
-
-            packageList.add(model);
-
-
-        }
-        adapter = new HMPackagesListAdapter(this, packageList);
-        recyclerView.setAdapter(adapter);
-
-
-    }
+            firstNameView.append((String)hashMap.get("UserFname"));
+            lastNameView.append((String)hashMap.get("UserLname"));
+            phoneView.append((String)hashMap.get("UserPhone"));
+            streetName.append((String)hashMap.get("UserStreet"));
+            city.append((String)hashMap.get("UserCity"));
+            countryView.append((String)hashMap.get("UserCountry"));
+            zipcodeView.append((String)hashMap.get("UserZipCode"));
+            provinceSpinner.setSelection(getIndex(provinceSpinner, (String)hashMap.get("UserProvince") ));
+    }*/
 
 /*    private int getIndex(Spinner spinner, String myString){
 
@@ -336,14 +290,12 @@ public class HomemakerViewPackages extends AppCompatActivity {
         }
         return index;
     }*/
+    protected void onDestroy() {
+        super.onDestroy();
 
-
-        protected void onDestroy(){
-            super.onDestroy();
-
-            LocalBroadcastManager.getInstance(getApplicationContext())
-                    .unregisterReceiver(mBroadcastReceiver);
-        }
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .unregisterReceiver(mBroadcastReceiver);
+    }
 
 
 
