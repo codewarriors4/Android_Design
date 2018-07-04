@@ -15,5 +15,6 @@ public interface Constants {
     public static final String SHAREDPREFERNCE = "com.codewarriors4.tiffin";
     public static final String TSVIEWHMPROFILE = "/tsviewhmprofile";
     public static final String HMCREATEMENU = "/createmenu";
+    public static final String HMMENUVIEWLISTINGS = "/mypackages";
 
 }

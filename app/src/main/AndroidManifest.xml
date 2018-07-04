@@ -36,7 +36,7 @@
 
         </activity>
         <activity android:name=".TiffinSeeker_Profile" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".HomemakerViewProfile" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".TSViewHMProfile" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".Homemaker_Packages" android:theme="@style/AppThemeActionBar"></activity>
 
         <activity android:name=".Legal"></activity>

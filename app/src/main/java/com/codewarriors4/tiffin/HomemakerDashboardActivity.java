@@ -101,7 +101,13 @@ public class HomemakerDashboardActivity extends AppCompatActivity
             Intent i = new Intent(this, Homemaker_Packages.class);
             startActivity(i);
 
-            } else if (id == R.id.my_subscribers) {
+
+        } else if (id == R.id.view_menu) {
+
+            Intent i = new Intent(this, Homemaker_Packages.class);
+            startActivity(i);
+
+        }else if (id == R.id.my_subscribers) {
 
         } else if (id == R.id.legal) {
             startActivity(new Intent(this, Legal.class));

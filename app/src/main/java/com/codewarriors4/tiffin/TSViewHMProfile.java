@@ -55,7 +55,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class HomemakerViewProfile extends AppCompatActivity  {
+public class TSViewHMProfile extends AppCompatActivity  {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
