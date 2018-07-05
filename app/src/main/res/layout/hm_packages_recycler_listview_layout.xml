@@ -20,52 +20,63 @@
 
             <TextView
                 android:id="@+id/hm_pack_title_listview"
-                android:layout_width="match_parent"
+                android:layout_width="162dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/hm_pack_desc_listview"
                 android:padding="5dp"
-                android:text="TextView" />
+                android:text="TextView"
+                android:ellipsize="end"
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/hm_pack_desc_listview"
-                android:layout_width="288dp"
-                android:layout_height="56dp"
-                android:layout_alignStart="@+id/hm_pack_title_listview"
-                android:layout_alignTop="@+id/hm_edit_pack"
+                android:layout_width="280dp"
+                android:layout_height="67dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="40dp"
+                android:ellipsize="end"
+                android:maxLines="3"
                 android:padding="5dp"
                 android:text="TextView" />
 
             <Button
                 android:id="@+id/hm_edit_pack"
-                android:layout_width="46dp"
+                android:layout_width="51dp"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/hm_pack_cost"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="40dp"
+                android:layout_alignBottom="@+id/hm_pack_desc_listview"
+                android:layout_alignParentEnd="true"
                 android:drawableLeft="@android:drawable/ic_menu_edit" />
 
             <TextView
                 android:id="@+id/hm_pack_cost"
-                android:layout_width="248dp"
-                android:layout_height="29dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignTop="@+id/hm_pack_cost_label"
-                android:layout_marginBottom="5dp"
-                android:layout_marginStart="88dp"
-                android:padding="5dp" />
-
-            <TextView
-                android:id="@+id/hm_pack_cost_label"
-                android:layout_width="72dp"
-                android:layout_height="29dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/hm_pack_title_listview"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="102dp"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/hm_pack_title_listview"
+                android:layout_marginEnd="59dp"
                 android:padding="5dp"
-                android:text="Price :" />
+                android:textAlignment="textEnd" />
+
+            <Button
+                android:id="@+id/view_package_detail_btn"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:drawableLeft="@drawable/ic_view_detail" />
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

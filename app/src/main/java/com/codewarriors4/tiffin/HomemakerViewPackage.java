@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codewarriors4.tiffin.services.HttpService;
@@ -23,32 +24,34 @@ import com.codewarriors4.tiffin.utils.HttpHelper;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class HomemakerUpdatePackages extends AppCompatActivity {
+public class HomemakerViewPackage extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
     static final int PHONELENGHT = 10;
 
 
     private  View view;
-    @BindView(R.id.package_name)
-    EditText packageName;
-    @BindView(R.id.pack_desc)
-    EditText packDesc;
-    @BindView(R.id.pack_cost)
-    EditText packCost;
+    @BindView(R.id.hm_display_pack_title)
+    TextView packageName;
+    @BindView(R.id.hm_display_pack_desc)
+    TextView packDesc;
+    @BindView(R.id.hm_display_pack_cost)
+    TextView packCost;
 
-    @BindView(R.id.menu_submit_btn)
-    Button submitPackagesBtn;
 
     private SessionUtli sessionUtli;
     private FrameLayout progress;
     private LinearLayout profileBody;
+    private JsonObject hmPackageDetails;
+
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
@@ -74,9 +77,9 @@ public class HomemakerUpdatePackages extends AppCompatActivity {
 
 
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Manage Package Details");
+        setTitle("Update Package");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homemaker_create_update_package);
+        setContentView(R.layout.homemaker_view_package);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
         profileBody = findViewById(R.id.profile_body);
@@ -90,6 +93,7 @@ public class HomemakerUpdatePackages extends AppCompatActivity {
     }
 
 
+/*
 
     @OnClick(R.id.menu_submit_btn)
     public void submit(View view){
@@ -111,6 +115,7 @@ public class HomemakerUpdatePackages extends AppCompatActivity {
         }
 
     }
+*/
 
 
 
@@ -192,10 +197,13 @@ public class HomemakerUpdatePackages extends AppCompatActivity {
         }
     }*/
 
-    public void submit(){
+/*    public void submit(){
+        Intent i = getIntent();
+
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMUPDATEMENU);
         requestPackage.setMethod("POST");
+        requestPackage.setParam("HMPId", i.getStringExtra("package_id"));
         requestPackage.setParam("HMPName", packageName.getText().toString().trim());
         requestPackage.setParam("HMPDesc", packDesc.getText().toString().trim());
         requestPackage.setParam("HMPCost", packCost.getText().toString().trim());
@@ -205,13 +213,14 @@ public class HomemakerUpdatePackages extends AppCompatActivity {
         intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
 
         startService(intent);
-    }
+    }*/
 
     public String getPackageInfo() throws Exception {
+        Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMGETPACKAGEDETAIL);
         requestPackage.setMethod("POST");
-        requestPackage.setParam("HMPId", "6");
+        requestPackage.setParam("HMPId", i.getStringExtra("package_id"));
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         return HttpHelper.downloadFromFeed(requestPackage);
@@ -250,12 +259,21 @@ public class HomemakerUpdatePackages extends AppCompatActivity {
                 super.onPostExecute(aVoid);
                 profileBody.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
-                HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
-                for (String key : hashMap.keySet()) {
+                JsonObject jsonObject = new Gson().fromJson(aVoid, JsonObject.class);
+                hmPackageDetails = jsonObject.get("home_maker_packages")       // get the 'user' JsonElement
+                        .getAsJsonObject(); // get it as a JsonObject
+
+                //System.out.println(name);
+
+                // HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
+           /*     for (String key : hashMap.keySet()) {
                     Log.d("JSONVALUE", key + ": " + hashMap.get(key));
-                }
-                if(hashMap.get("UserZipCode") != null)
-                    initValues(hashMap);
+                }*/
+
+                Log.d("JSONVALUE", "test");
+
+                //if(hashMap.get("UserZipCode") != null)
+                initValues(hmPackageDetails);
             }
 
             catch(Exception e){
@@ -266,18 +284,14 @@ public class HomemakerUpdatePackages extends AppCompatActivity {
     }
 
 
-   /* private void initValues(HashMap<String, Object> hashMap)
+    private void initValues(JsonObject hmPackageDetails)
     {
 
-            firstNameView.append((String)hashMap.get("UserFname"));
-            lastNameView.append((String)hashMap.get("UserLname"));
-            phoneView.append((String)hashMap.get("UserPhone"));
-            streetName.append((String)hashMap.get("UserStreet"));
-            city.append((String)hashMap.get("UserCity"));
-            countryView.append((String)hashMap.get("UserCountry"));
-            zipcodeView.append((String)hashMap.get("UserZipCode"));
-            provinceSpinner.setSelection(getIndex(provinceSpinner, (String)hashMap.get("UserProvince") ));
-    }*/
+            packageName.setText((String)hmPackageDetails.get("HMPName").getAsString());
+            packDesc.setText((String)hmPackageDetails.get("HMPDesc").getAsString());
+            packCost.setText((String)hmPackageDetails.get("HMPCost").getAsString());
+
+    }
 
 /*    private int getIndex(Spinner spinner, String myString){
 

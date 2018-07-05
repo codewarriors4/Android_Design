@@ -41,6 +41,9 @@
 
         <activity android:name=".HomemakerCreatePackages" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".HomemakerViewPackages" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".HomemakerViewPackage" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".HomemakerUpdatePackage" android:theme="@style/AppThemeActionBar"></activity>
+
 
         <activity android:name=".Legal"></activity>
         <activity android:name=".Privacy"></activity>

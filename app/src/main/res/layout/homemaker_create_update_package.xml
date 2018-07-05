@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/blue"
+    tools:context=".Homemaker_Profile">
+
+    <include
+        layout="@layout/progress_framelayout"
+        android:visibility="visible" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,14 +30,19 @@
         android:textColor="@color/black" />
 
 
-    <EditText
-        android:id="@+id/pack_desc"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:hint="Description"
-        android:inputType="textPersonName"
-        android:textColor="@color/black" />
+        <EditText
+            android:id="@+id/pack_desc"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="top"
+            android:hint="Description"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:lines="10"
+            android:inputType="textMultiLine"
+
+            />
 
     <EditText
         android:id="@+id/pack_cost"
@@ -52,3 +68,5 @@
         android:textStyle="bold" />
 
 </LinearLayout>
+</RelativeLayout>
+
