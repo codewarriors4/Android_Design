@@ -289,7 +289,7 @@ public class HomemakerViewPackage extends AppCompatActivity {
 
             packageName.setText((String)hmPackageDetails.get("HMPName").getAsString());
             packDesc.setText((String)hmPackageDetails.get("HMPDesc").getAsString());
-            packCost.setText((String)hmPackageDetails.get("HMPCost").getAsString());
+            packCost.setText((String)hmPackageDetails.get("HMPCost").getAsString() + " CAD");
 
     }
 
