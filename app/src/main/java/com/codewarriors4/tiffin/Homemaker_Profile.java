@@ -139,6 +139,11 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
         new MyAsynTask().execute("");
+
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
 
@@ -394,7 +399,12 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     }
 
 
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -130,6 +130,11 @@ public class TSViewHMProfile extends AppCompatActivity  {
         progressBar.setVisibility(View.GONE);
         profileBody.setVisibility(View.VISIBLE);*/
 
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
     }
 
 
@@ -477,6 +482,14 @@ public class TSViewHMProfile extends AppCompatActivity  {
        LocalBroadcastManager.getInstance(getApplicationContext())
                .unregisterReceiver(mBroadcastReceiver);
    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 

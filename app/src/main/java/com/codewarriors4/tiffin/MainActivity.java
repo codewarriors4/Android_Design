@@ -1,12 +1,22 @@
 package com.codewarriors4.tiffin;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.RespondPackage;
@@ -17,26 +27,56 @@ public class MainActivity extends AppCompatActivity{
 
     Button loginActionButton;
     Button signupActionButton;
+    private static final int PERMISSION_REQUEST_GPS = 1;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.dashboard);
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
-       /* Intent intent = new Intent(this, HomemakerViewProfile.class);
-        startActivity(intent);*/
-        //super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
+        accessPermission();
+    }
+
+    private void accessPermission()
+    {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestGPSPermission();
+        }else{
+            startActivity();
+        }
+    }
+
+    private void requestGPSPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permision Needed")
+                    .setMessage("This permission is needed to start activity")
+                    .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_GPS);
+                            }
+                        }).create().show();
+        }else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_GPS);
+        }
+
+    }
+
+    private void startActivity()
+    {
+        //Toast.makeText(this, "Activity Started", Toast.LENGTH_LONG).show();
         if(!sharedPreferences.contains("access_token")){
-            Log.d("outsidesideelse", "outsidesideelse: ");
 
             setContentView(R.layout.activity_main);
             loginActionButton = findViewById(R.id.button);
             signupActionButton = findViewById(R.id.button1);
             setOnclickHandler();
-        }else{
-            Log.d("insideelse", "insideelse: ");
-           new UserHandler().startActivity(SessionUtli.getSession(sharedPreferences), MainActivity.this);
 
+        }else{
+            new UserHandler().startActivity(SessionUtli.getSession(sharedPreferences), MainActivity.this);
         }
     }
 
@@ -56,6 +96,26 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String[] permissions,
+                                            int[] grantResults) {
+
+        if (requestCode == PERMISSION_REQUEST_GPS) {
+
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivity();
+            } else {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        }
+        // END_INCLUDE(onRequestPermissionsResult)
+    }
+
 
     // Replace Login Fragment with animation
     protected void replaceLoginFragment() {
@@ -94,6 +154,7 @@ public class MainActivity extends AppCompatActivity{
 //        else
 //            super.onBackPressed();
     }
+
 
 
 

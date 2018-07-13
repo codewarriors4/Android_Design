@@ -1,11 +1,19 @@
 package com.codewarriors4.tiffin;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +26,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +36,11 @@ import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,15 +54,6 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     private SessionUtli sessionUtli;
     TextView textView;
-    @BindView(R.id.vew_homemaker_details)
-    Button vew_homemaker_details;
-
-    @BindView(R.id.home_maker_list)
-    RecyclerView homeMakerListView;
-
-    static String param_info[][] = {
-            {"Titile",    "Titile 2",    "Titile 3"},
-            {"Description",    "Description 2",    "Description 3"}};
 
     private HomeMakerListAdapter listViewAdapter;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -57,18 +63,12 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
             if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                //progressBar.setVisibility(View.GONE);
-//                Toast.makeText(context,
-//                        respondPackage.getParams().get(RespondPackage.SUCCESS), Toast.LENGTH_LONG)
-//                        .show();
                 try {
-                    //JSONObject responseJson = new JSONObject(respondPackage.getParams().get(RespondPackage.SUCCESS));
+
                     sessionUtli.setValues(respondPackage.getParams().get(RespondPackage.SUCCESS));
                     if(sessionUtli.getValue("UserType").equals("0")){
 
-
                     }else{
-
 
                     }
 
@@ -77,13 +77,12 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
                 }
 
             }else{
-                //submitButton.setEnabled(true);
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.FAILED));
                 Toast.makeText(context,
                         respondPackage.getParams().get(RespondPackage.FAILED), Toast.LENGTH_SHORT)
                         .show();
-                //progressBar.setVisibility(View.GONE);
+
             }
 
         }
@@ -96,8 +95,16 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tiffin_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_gps);
         setSupportActionBar(toolbar);
+        ImageButton getLocationBtn = toolbar.findViewById(R.id.action_bar_button);
+        getLocationBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                getLocation();
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.tiffin_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -113,49 +120,48 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
-        if(sessionUtli.getValue("UserType").equals("0.0")){
-
-        }
-            //greetingTextView.setText("Welcome TiffinSeeker");
-        else{
-           // greetingTextView.setText("Welcome HomeMaker");
-        }
-
         listViewAdapter = new HomeMakerListAdapter(this);
-        homeMakerListView.setAdapter(listViewAdapter);
-        homeMakerListView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
-//    public static List<HomeMakerListItem> loadData()
-//    {
-//        List<HomeMakerListItem> items = Collections.emptyList();
-//
-//        return items;
-//    }
+    public void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // 
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            LocationManager locationManager = (LocationManager)
+                    getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            String bestProvider = locationManager.getBestProvider(criteria, true);
+            Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
+            doLocation(lastKnownLocation);
 
-
-    @OnClick(R.id.vew_homemaker_details)
-    public void viewDetails(View view){
-
-        Intent intent = new Intent(this, TSViewHMProfile.class);
-        startActivity(intent);
-
+        }
     }
 
+    private void doLocation(Location lastKnownLocation) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        long time = lastKnownLocation.getTime();
+        Date date = new Date(time);
 
-
-
-    private void initFields()
-    {
-        textView.setText(sessionUtli.getValue("email"));
+        List<Address> fromLocation = null;
+        try {
+            fromLocation = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        EditText app_bar_editTxt = findViewById(R.id.app_bar_editTxt);
+        app_bar_editTxt.append(fromLocation.get(0).getPostalCode().trim());
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        initFields();
-
     }
 
     @Override
@@ -168,7 +174,6 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.account) {
@@ -206,55 +211,14 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
     }
 
 
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-
-    //        if(getIntent().getBooleanExtra("isNewLogin", false)){
-//            //textView = (TextView)findViewById(R.id.textView4);
-//
-//            LocalBroadcastManager.getInstance(getApplicationContext())
-//                    .registerReceiver(mBroadcastReceiver,
-//                            new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
-//                getUserInformation((String)sessionUtli.getValue("access_token"));
-//
-//        }else{
-//            //textView = (TextView)findViewById(R.id.textView4);
-//
-//            if(sessionUtli.getValue("UserType").equals("0")){
-//
-//
-//            }else{
-//
-//
-//            }
-//        }
-//
-//        if(sessionUtli.getValue("UserType").equals("0.0"))
-//            greetingTextView.setText("Welcome TiffinSeeker");
-//        else{
-//            greetingTextView.setText("Welcome HomeMaker");
-//        }
-
-
-
 
 }
