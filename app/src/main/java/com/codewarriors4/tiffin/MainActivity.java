@@ -1,7 +1,11 @@
 package com.codewarriors4.tiffin;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +27,24 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.dashboard);
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            NotificationManager mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            NotificationChannel mChannel = new NotificationChannel(Constants.CHANNEL_ID,Constants.CHANNEL_NAME,NotificationManager.IMPORTANCE_HIGH);
+
+            mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100,200,300,400,500,40,300,200,100});
+            mNotificationManager.createNotificationChannel(mChannel);
+
+
+        }
+
+
+
        /* Intent intent = new Intent(this, HomemakerViewProfile.class);
         startActivity(intent);*/
         //super.onCreate(savedInstanceState);

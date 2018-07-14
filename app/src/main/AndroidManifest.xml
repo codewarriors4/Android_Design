@@ -52,6 +52,25 @@
 
         <service android:name=".services.HttpService" android:exported="false">
         </service>
+
+        <service
+            android:name=".services.TiffinFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+
+        <service
+            android:name=".services.TiffinFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+
+
+
     </application>
 
 </manifest>

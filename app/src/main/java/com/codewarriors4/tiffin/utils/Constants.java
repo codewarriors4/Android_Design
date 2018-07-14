@@ -18,6 +18,12 @@ public interface Constants {
     public static final String HMMENUVIEWLISTINGS = "/mypackages";
     public static final String HMUPDATEMENU = "/updatemenu";
     public static final String HMGETPACKAGEDETAIL = "/mypackage";
+    public static final String CHANNEL_ID = "mychannelid";
+    public static final String CHANNEL_NAME = "mychannelname";
+    public static final String CHANNEL_DESCRIPTION = "my description";
+
+
+
 
 
 
