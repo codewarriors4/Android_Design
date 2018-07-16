@@ -58,7 +58,6 @@ public class HomemakerViewPackages extends AppCompatActivity {
 
     private  View view;
 
-
     private SessionUtli sessionUtli;
     private FrameLayout progress;
     private LinearLayout profileBody;
