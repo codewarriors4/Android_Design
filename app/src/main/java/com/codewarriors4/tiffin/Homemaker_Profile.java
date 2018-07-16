@@ -1,10 +1,12 @@
 package com.codewarriors4.tiffin;
 
+import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,12 +25,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codewarriors4.tiffin.services.HttpService;
@@ -66,9 +71,11 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
     static final int PHONELENGHT = 10;
+    int year_x, month_x, day_x;
+    static final int DIALOG_ID = 0;
 
 
-    private  View view;
+    private View view;
     @BindView(R.id.first_name)
     EditText firstNameView;
     @BindView(R.id.last_name)
@@ -85,6 +92,13 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     EditText countryView;
     @BindView(R.id.zipcode)
     EditText zipcodeView;
+
+    @BindView(R.id.hm_lic_exp_date)
+    TextView exp_date_text;
+    @BindView(R.id.hm_profile_datepicker)
+    ImageButton license_picker;
+
+
     @BindView(R.id.upload_btn)
     Button uploadLicenceButton;
     @BindView(R.id.submit_btn)
@@ -105,20 +119,20 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         public void onReceive(Context context, Intent intent) {
 //            String str = (String) intent
 //                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-            
-             
-                    RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-                    if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                        Toast.makeText(context, "Update Succesfully", Toast.LENGTH_SHORT).show();
 
-                    }else{
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage.getParams().get(RespondPackage.FAILED));
-                        Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
-                    }
-                    
+
+            RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
+            if (respondPackage.getParams().containsKey(RespondPackage.SUCCESS)) {
+                Log.d("JsonResponseData", "onReceive: "
+                        + respondPackage.getParams().get(RespondPackage.SUCCESS));
+                Toast.makeText(context, "Update Succesfully", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Log.d("JsonResponseData", "onReceive: "
+                        + respondPackage.getParams().get(RespondPackage.FAILED));
+                Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
+            }
+
         }
     };
 
@@ -133,6 +147,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         progress = findViewById(R.id.progress_overlay);
         mImageView = findViewById(R.id.license_preview);
         uploadLicenceButton.setOnCreateContextMenuListener(this);
+        showDialogOnButtonClick();
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
         LocalBroadcastManager.getInstance(getApplicationContext())
@@ -141,7 +156,43 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         new MyAsynTask().execute("");
     }
 
+    public void showDialogOnButtonClick() {
+        license_picker.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog(DIALOG_ID);
 
+                    }
+                }
+        );
+
+
+    }
+
+    protected DatePickerDialog onCreateDialog(int id) {
+        if (id == DIALOG_ID) {
+            return new DatePickerDialog(this, dpickerListener, year_x, month_x, day_x);
+        } else {
+            return null;
+        }
+    }
+
+    private DatePickerDialog.OnDateSetListener dpickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            year_x = year;
+            month_x = month;
+            day_x = dayOfMonth;
+
+            String date = String.valueOf(day_x) + "/" + String.valueOf(month_x + 1) + "/" + String.valueOf(year_x);
+
+            exp_date_text.setText(date);
+        }
+
+};
 
     @OnClick(R.id.submit_btn)
     public void submit(View view){
@@ -158,6 +209,8 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         String province = (String)provinceSpinner.getSelectedItem();
         String getCountry = countryView.getText().toString();
         String zipCode = zipcodeView.getText().toString();
+        String lic_exp_date_txt = exp_date_text.getText().toString();
+
         //Toast.makeText(this, getFirstName + getLastName + getPhoneNumber + province , Toast.LENGTH_SHORT).show();
         Pattern p = Pattern.compile(Utils.postalRegEx);
         //Pattern phone = Pattern.compile(Utils.phoneRegEx);
@@ -178,11 +231,10 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         }else if(!(getPhoneNumber.length() == PHONELENGHT)){
             new CustomToast().Show_Toast(this, view,
                     "Invalid Phone");
+        } else if(lic_exp_date_txt.equals("") || lic_exp_date_txt.equals("Pick License Expiry Date") ){
+            new CustomToast().Show_Toast(this, view,
+                    "Please enter valid expiry date");
         }
-//        }else if(!(imageSelected)){
-//            new CustomToast().Show_Toast(this, view,
-//                    "Please Select Image");
-//        }
         else{
             submit();
         }

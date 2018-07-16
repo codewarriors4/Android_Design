@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
@@ -24,6 +26,9 @@ import android.widget.Toast;
 import com.codewarriors4.tiffin.adapters.HomeMakerListAdapter;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
+import com.codewarriors4.tiffin.utils.DatabaseHelper;
+import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 
@@ -50,6 +55,8 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
             {"Description",    "Description 2",    "Description 3"}};
 
     private HomeMakerListAdapter listViewAdapter;
+    DatabaseHelper mDatabaseHelper;
+
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
@@ -113,6 +120,13 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+
+        mDatabaseHelper = new DatabaseHelper(this);
+        Cursor cfcmtoken = mDatabaseHelper.fetch();
+        String fcmtoken = cfcmtoken.getString(cfcmtoken.getColumnIndex("fcmkey"));
+        sessionUtli.setValue("fcmtoken",fcmtoken);
+        new MyAsynTask().execute("");
+
         if(sessionUtli.getValue("UserType").equals("0.0")){
 
         }
@@ -253,7 +267,50 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 //        else{
 //            greetingTextView.setText("Welcome HomeMaker");
 //        }
+    public String getUserInfo(String fcmtoken) throws Exception {
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.FCMTOKENSTORE);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("fcmToken", fcmtoken);
+        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Accept", "application/json; q=0.5");
+        return HttpHelper.downloadFromFeed(requestPackage);
+    }
 
+    private class MyAsynTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                return getUserInfo(sessionUtli.getValue("fcmtoken"));
+            } catch (Exception e) {
+                return e.getMessage();
+            }
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            super.onPostExecute(aVoid);
+            Log.d("JSONVALUE", "done");
+
+
+        }
+
+    }
 
 
 

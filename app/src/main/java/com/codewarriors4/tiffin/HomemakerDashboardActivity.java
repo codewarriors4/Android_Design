@@ -1,6 +1,8 @@
 package com.codewarriors4.tiffin;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -10,17 +12,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.codewarriors4.tiffin.utils.Constants;
+import com.codewarriors4.tiffin.utils.DatabaseHelper;
+import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 
 public class HomemakerDashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SessionUtli sessionUtli;
+    DatabaseHelper mDatabaseHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +55,13 @@ public class HomemakerDashboardActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.homemaker_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
-    }
+        mDatabaseHelper = new DatabaseHelper(this);
+        Cursor cfcmtoken = mDatabaseHelper.fetch();
+String fcmtoken = cfcmtoken.getString(cfcmtoken.getColumnIndex("fcmkey"));
+       sessionUtli.setValue("fcmtoken",fcmtoken);
+     new MyAsynTask().execute(""); // let this run first
 
+    }
 
 
     @Override
@@ -123,5 +136,51 @@ public class HomemakerDashboardActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.homemaker_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    public String getUserInfo(String fcmtoken) throws Exception {
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.FCMTOKENSTORE);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("fcmToken", fcmtoken);
+        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Accept", "application/json; q=0.5");
+        return HttpHelper.downloadFromFeed(requestPackage);
+    }
+
+    private class MyAsynTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                return getUserInfo(sessionUtli.getValue("fcmtoken"));
+            } catch (Exception e) {
+                return e.getMessage();
+            }
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            super.onPostExecute(aVoid);
+            Log.d("JSONVALUE", "done");
+
+
+        }
+
     }
 }
