@@ -36,6 +36,8 @@ import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import android.location.LocationListener;
 
 import java.io.IOException;
 import java.util.Date;
@@ -46,7 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TiffinSeekerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class TiffinSeekerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener{
    // private ProgressBar progressBar;
 
     String response = "";
@@ -55,7 +57,9 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
     private SessionUtli sessionUtli;
     TextView textView;
 
+
     private HomeMakerListAdapter listViewAdapter;
+    private  LocationManager locationManager;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
@@ -125,29 +129,28 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     public void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            // 
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            LocationManager locationManager = (LocationManager)
+            locationManager = (LocationManager)
                     getSystemService(Context.LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_FINE);
-            String bestProvider = locationManager.getBestProvider(criteria, true);
-            Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
-            doLocation(lastKnownLocation);
+            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                String bestProvider = locationManager.getBestProvider(criteria, true);
+                //Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
+                //if(lastKnownLocation == null){
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
+                //}else{
+                   //doLocation(lastKnownLocation);
+                //}
+
+            }else{
+                Toast.makeText(this, "Please Enable GPS", Toast.LENGTH_LONG).show();
+            }
 
         }
     }
 
     private void doLocation(Location lastKnownLocation) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        long time = lastKnownLocation.getTime();
-        Date date = new Date(time);
-
         List<Address> fromLocation = null;
         try {
             fromLocation = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
@@ -221,4 +224,24 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        doLocation(location);
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }
