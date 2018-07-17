@@ -7,11 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.codewarriors4.tiffin.HomemakerUpdatePackage;
-import com.codewarriors4.tiffin.HomemakerViewPackage;
 import com.codewarriors4.tiffin.R;
 import com.codewarriors4.tiffin.TSViewHMPackage;
 import com.codewarriors4.tiffin.models.HMPackagesModel;
@@ -54,6 +51,7 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(TSViewHMPackCtxt, TSViewHMPackage.class);
+                i.putExtra("HomeMakerId", "35");
                 i.putExtra("package_id", String.valueOf(hmPackage.getPackID()));
                 TSViewHMPackCtxt.startActivity(i);
             }
@@ -62,7 +60,9 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
         holder.HMPackDesc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(TSViewHMPackCtxt, TSViewHMPackage.class);
+                i.putExtra("HomeMakerId", "35");
                 i.putExtra("package_id", String.valueOf(hmPackage.getPackID()));
                 TSViewHMPackCtxt.startActivity(i);
             }
@@ -72,6 +72,7 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(TSViewHMPackCtxt, TSViewHMPackage.class);
+                i.putExtra("HomeMakerId", "35");
                 i.putExtra("package_id", String.valueOf(hmPackage.getPackID()));
                 TSViewHMPackCtxt.startActivity(i);
             }
@@ -91,8 +92,8 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
         public TSViewHMPackagesViewHolder(View itemView) {
             super(itemView);
 
-            HMPackTitle = itemView.findViewById(R.id.hm_pack_title_listview);
-            HMPackDesc = itemView.findViewById(R.id.hm_pack_desc_listview);
+            HMPackTitle = itemView.findViewById(R.id.ts_name);
+            HMPackDesc = itemView.findViewById(R.id.package_cost);
             HMPackCost = itemView.findViewById(R.id.hm_pack_cost);
 
 

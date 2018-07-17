@@ -16,11 +16,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="174dp">
 
             <TextView
                 android:id="@+id/ts_name"
-                android:layout_width="162dp"
+                android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
@@ -31,35 +31,48 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/package_cost"
-                android:padding="5dp"
-                android:text="TextView"
                 android:ellipsize="end"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="TextView" />
 
             <TextView
                 android:id="@+id/package_cost"
-                android:layout_width="332dp"
-                android:layout_height="69dp"
-                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="38dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginTop="41dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:padding="5dp"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/hm_pack_cost"
-                android:layout_width="162dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/ts_name"
-                android:layout_marginEnd="7dp"
+                android:id="@+id/package_description"
+                android:layout_width="324dp"
+                android:layout_height="67dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="-72dp"
+                android:layout_marginTop="77dp"
+                android:layout_toStartOf="@+id/package_cost"
+                android:ellipsize="end"
+                android:maxLines="3"
                 android:padding="5dp"
-                android:textAlignment="textEnd" />
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/package_title"
+                android:layout_width="247dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/package_cost"
+                android:layout_marginStart="7dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:padding="5dp"
+                android:text="TextView" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

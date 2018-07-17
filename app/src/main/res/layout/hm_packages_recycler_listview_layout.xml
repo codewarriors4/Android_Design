@@ -20,7 +20,7 @@
             android:background="@color/white_greyish">
 
             <TextView
-                android:id="@+id/hm_pack_title_listview"
+                android:id="@+id/ts_name"
                 android:layout_width="162dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -31,7 +31,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/hm_pack_desc_listview"
+                android:layout_toEndOf="@+id/package_cost"
                 android:padding="5dp"
                 android:text="TextView"
                 android:ellipsize="end"
@@ -40,7 +40,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/hm_pack_desc_listview"
+                android:id="@+id/package_cost"
                 android:layout_width="280dp"
                 android:layout_height="67dp"
                 android:layout_alignParentStart="true"
@@ -59,7 +59,7 @@
                 android:id="@+id/hm_edit_pack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignBottom="@+id/hm_pack_desc_listview"
+                android:layout_alignBottom="@+id/package_cost"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"
                 android:background="@mipmap/edit_pencil" />
@@ -69,7 +69,7 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/hm_pack_title_listview"
+                android:layout_alignTop="@+id/ts_name"
                 android:layout_marginEnd="59dp"
                 android:padding="5dp"
                 android:textAlignment="textEnd"

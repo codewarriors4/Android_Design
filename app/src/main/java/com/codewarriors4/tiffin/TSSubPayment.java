@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class TSSubPayment extends AppCompatActivity {
@@ -55,6 +56,7 @@ public class TSSubPayment extends AppCompatActivity {
     Button payment_btn;
 
     Context TSViewHMPackageCtx;
+
 
 
     private SessionUtli sessionUtli;
@@ -103,16 +105,81 @@ public class TSSubPayment extends AppCompatActivity {
     }
 
 
+    @OnClick(R.id.payment_btn)
+    public void submit(View view){
+        checkValidation();
+    }
+
+    private void checkValidation()
+    {
+        String getCardName = card_name.getText().toString();
+        String getCadNum = card_number.getText().toString();
+        String getCardExpMnth = card_exp_date_mnth.getText().toString();
+        String getCardExpYear = card_exp_date_year.getText().toString();
+        String getCardCVV = card_cvv.getText().toString();
+
+
+
+        if(getCardName.equals("") || getCadNum.equals("") || getCardExpMnth.equals("") || getCardExpYear.equals("") || getCardCVV.equals("")){
+            new CustomToast().Show_Toast(this, view,
+                    "All fields are required.");
+        }else if(!getCadNum.equals("1111222233334444")){
+            new CustomToast().Show_Toast(this, view,
+                    "Invalid card");
+
+        }
+        else{
+            submit();
+        }
+
+    }
+
+    public void submit(){
+
+        Intent i = getIntent();
+
+
+
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSMAKEPAYMENT);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("card_number", card_number.getText().toString().trim());
+        requestPackage.setParam("expiration_month", card_exp_date_mnth.getText().toString().trim());
+        requestPackage.setParam("expiration_year", card_exp_date_year.getText().toString().trim());
+        requestPackage.setParam("cvc", card_cvv.getText().toString().trim());
+
+        requestPackage.setParam("HMPid",  i.getStringExtra("package_id"));
+        requestPackage.setParam("subtotal",  i.getStringExtra("package_cost"));
+
+        requestPackage.setParam("hst",  i.getStringExtra("package_hst"));
+        requestPackage.setParam("total",  i.getStringExtra("package_total"));
+        requestPackage.setParam("HomeMakerId",  i.getStringExtra("HomeMakerId"));
+
+
+
+
+
+
+
+        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Accept", "application/json; q=0.5");
+        Intent intent = new Intent(this, HttpService.class);
+        intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
+
+        startService(intent);
+    }
+
 
     public String makePayment() throws Exception {
-        Intent i = getIntent();
+ /*       Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSMAKEPAYMENT);
         requestPackage.setMethod("POST");
         requestPackage.setParam("HMPId", i.getStringExtra("package_id"));
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
-        return HttpHelper.downloadFromFeed(requestPackage);
+        return HttpHelper.downloadFromFeed(requestPackage);*/
+ return "success";
     }
 
     private class MyAsynTask extends AsyncTask<String, String, String> {
@@ -120,7 +187,7 @@ public class TSSubPayment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                return makePayment();
+              return makePayment();
             } catch (Exception e) {
                 return e.getMessage();
             }
@@ -143,11 +210,11 @@ public class TSSubPayment extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String aVoid) {
-            try {
+ /*           try {
                 Log.d("Testing data", "onPostExecute: " + aVoid);
                 super.onPostExecute(aVoid);
-               /* profileBody.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);*/
+               *//* profileBody.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);*//*
                 JsonObject jsonObject = new Gson().fromJson(aVoid, JsonObject.class);
                 hmPackageDetails = jsonObject.get("home_maker_packages")       // get the 'user' JsonElement
                         .getAsJsonObject(); // get it as a JsonObject
@@ -155,9 +222,9 @@ public class TSSubPayment extends AppCompatActivity {
                 //System.out.println(name);
 
                 // HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
-           /*     for (String key : hashMap.keySet()) {
+           *//*     for (String key : hashMap.keySet()) {
                     Log.d("JSONVALUE", key + ": " + hashMap.get(key));
-                }*/
+                }*//*
 
                 Log.d("JSONVALUE", "test");
 
@@ -167,7 +234,7 @@ public class TSSubPayment extends AppCompatActivity {
 
             catch(Exception e){
                 Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG);
-            }
+            }*/
         }
 
     }

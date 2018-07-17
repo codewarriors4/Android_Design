@@ -195,11 +195,13 @@ public class TSViewHMPackage extends AppCompatActivity {
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent old = getIntent();
                 Intent i = new Intent(TSViewHMPackage.this, TSSubPayment.class);
                 i.putExtra("package_id", HMPId);
                 i.putExtra("package_cost", HMPCost);
                 i.putExtra("package_hst", hst);
                 i.putExtra("package_total", total);
+                i.putExtra("HomeMakerId",old.getStringExtra("HomeMakerId"));
                 startActivity(i);
             }
         });
