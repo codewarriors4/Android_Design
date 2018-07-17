@@ -7,13 +7,22 @@
     tools:context=".Homemaker_Profile">
 
     <include
-        android:id="@+id/card_cvv"
         layout="@layout/progress_framelayout"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:visibility="visible" />
 
-<LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/profile_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -28,7 +37,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/card_name"
+        android:id="@+id/card_name_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name" />
@@ -42,7 +51,7 @@
         android:text="Card Number"/>
 
     <EditText
-        android:id="@+id/card_number"
+        android:id="@+id/card_number_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Number"
@@ -70,7 +79,7 @@
             android:layout_weight="1"
             android:hint="MM"
             android:inputType="date"
-            android:maxLength="4" />
+            android:maxLength="2" />
 
         <EditText
             android:id="@+id/card_exp_date_year"
@@ -81,7 +90,7 @@
             android:layout_weight="1"
             android:hint="YY"
             android:inputType="date"
-            android:maxLength="4" />
+            android:maxLength="2" />
     </LinearLayout>
 
     <TextView
@@ -94,10 +103,11 @@
         android:text="CVV"/>
 
     <EditText
+        android:id="@+id/card_cvv_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:maxLength="3"/>
+        android:maxLength="3" />
 
 </LinearLayout>
 
@@ -109,4 +119,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="107dp"
         android:text="PAY" />
+    </LinearLayout>
+
 </RelativeLayout>

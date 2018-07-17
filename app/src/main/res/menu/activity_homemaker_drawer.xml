@@ -25,6 +25,15 @@
             android:id="@+id/my_subscribers"
             android:title="MySubscribers" />
         <item
+            android:id="@+id/my_daily_subs"
+            android:title="Daily Subscribers" />
+        <item
+            android:id="@+id/my_monthly_subs"
+            android:title="Monthly Subscribers" />
+        <item
+            android:id="@+id/my_all_subs"
+            android:title="All Subsscribers" />
+        <item
             android:id="@+id/legal"
             android:title="Legal" />
         <item

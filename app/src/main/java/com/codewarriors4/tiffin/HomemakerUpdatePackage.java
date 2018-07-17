@@ -215,7 +215,6 @@ public class HomemakerUpdatePackage extends AppCompatActivity {
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         Intent intent = new Intent(this, HttpService.class);
         intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
-
         startService(intent);
     }
 

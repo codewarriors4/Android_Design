@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class TSSubPayment extends AppCompatActivity {
@@ -39,15 +40,15 @@ public class TSSubPayment extends AppCompatActivity {
 
     private  View view;
 
-    @BindView(R.id.card_name)
+    @BindView(R.id.card_name_value)
     EditText card_name;
-    @BindView(R.id.card_number)
+    @BindView(R.id.card_number_value)
     EditText card_number;
     @BindView(R.id.card_exp_date_mnth)
     EditText card_exp_date_mnth;
     @BindView(R.id.card_exp_date_year)
     EditText card_exp_date_year;
-    @BindView(R.id.card_cvv)
+    @BindView(R.id.card_cvv_value)
     EditText card_cvv;
 
 
@@ -55,6 +56,7 @@ public class TSSubPayment extends AppCompatActivity {
     Button payment_btn;
 
     Context TSViewHMPackageCtx;
+
 
 
     private SessionUtli sessionUtli;
@@ -103,137 +105,81 @@ public class TSSubPayment extends AppCompatActivity {
     }
 
 
-/*
-
-    @OnClick(R.id.menu_submit_btn)
+    @OnClick(R.id.payment_btn)
     public void submit(View view){
         checkValidation();
     }
 
     private void checkValidation()
     {
-        String getPackName = packageName.getText().toString();
-        String getPackDesc = packDesc.getText().toString();
-        String getPackCost = packCost.getText().toString();
+        String getCardName = card_name.getText().toString();
+        String getCadNum = card_number.getText().toString();
+        String getCardExpMnth = card_exp_date_mnth.getText().toString();
+        String getCardExpYear = card_exp_date_year.getText().toString();
+        String getCardCVV = card_cvv.getText().toString();
 
-        if(getPackName.equals("") || getPackDesc.equals("") || getPackCost.equals("")){
+
+
+        if(getCardName.equals("") || getCadNum.equals("") || getCardExpMnth.equals("") || getCardExpYear.equals("") || getCardCVV.equals("")){
             new CustomToast().Show_Toast(this, view,
                     "All fields are required.");
+        }else if(!getCadNum.equals("1111222233334444")){
+            new CustomToast().Show_Toast(this, view,
+                    "Invalid card");
+
         }
         else{
             submit();
         }
 
     }
-*/
 
+    public void submit(){
 
-
-
-/*    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            imageBitmap = (Bitmap) extras.get("data");
-            mImageView.setImageBitmap(imageBitmap);
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            uploadLicence = saveImageToFile(bytes);
-            imageSelected = true;
-            sessionUtli.setValue("isLicenceUploaded", "true");
-        }
-        else if(requestCode == REQUEST_SELECT_IMAGE && resultCode == RESULT_OK){
-            Uri uri = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                uploadLicence = saveImageToFile(bytes);
-                mImageView.setImageBitmap(bitmap);
-                imageSelected = true;
-                sessionUtli.setValue("isLicenceUploaded", "true");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public File saveImageToFile(ByteArrayOutputStream bytes)
-    {
-        File destination = new File(this.getCacheDir(),
-                System.currentTimeMillis() + ".jpg");
-        Log.d("imageURI", "saveImageToFile: " + destination.getAbsolutePath());
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return destination;
-
-    }
-
-    private void galleryAddPic() {
-        Intent intent = new Intent();
-        intent.setType("image*//*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_SELECT_IMAGE);
-    }*/
-
-/*    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.upload_licence, menu);
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.photoFromCamera:
-                dispatchTakePictureIntent();
-                return true;
-            case R.id.selectFromGallery:
-                galleryAddPic();
-                return true;
-            default:
-                return false;
-        }
-    }*/
-
-/*    public void submit(){
         Intent i = getIntent();
 
+
+
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMUPDATEMENU);
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSMAKEPAYMENT);
         requestPackage.setMethod("POST");
-        requestPackage.setParam("HMPId", i.getStringExtra("package_id"));
-        requestPackage.setParam("HMPName", packageName.getText().toString().trim());
-        requestPackage.setParam("HMPDesc", packDesc.getText().toString().trim());
-        requestPackage.setParam("HMPCost", packCost.getText().toString().trim());
+        requestPackage.setParam("card_number", card_number.getText().toString().trim());
+        requestPackage.setParam("expiration_month", card_exp_date_mnth.getText().toString().trim());
+        requestPackage.setParam("expiration_year", card_exp_date_year.getText().toString().trim());
+        requestPackage.setParam("cvc", card_cvv.getText().toString().trim());
+
+        requestPackage.setParam("HMPid",  i.getStringExtra("package_id"));
+        requestPackage.setParam("subtotal",  i.getStringExtra("package_cost"));
+
+        requestPackage.setParam("hst",  i.getStringExtra("package_hst"));
+        requestPackage.setParam("total",  i.getStringExtra("package_total"));
+        requestPackage.setParam("HomeMakerId",  i.getStringExtra("HomeMakerId"));
+
+
+
+
+
+
+
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         Intent intent = new Intent(this, HttpService.class);
         intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
 
         startService(intent);
-    }*/
+    }
+
 
     public String makePayment() throws Exception {
-        Intent i = getIntent();
+ /*       Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSMAKEPAYMENT);
         requestPackage.setMethod("POST");
         requestPackage.setParam("HMPId", i.getStringExtra("package_id"));
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
-        return HttpHelper.downloadFromFeed(requestPackage);
+        return HttpHelper.downloadFromFeed(requestPackage);*/
+ return "success";
     }
 
     private class MyAsynTask extends AsyncTask<String, String, String> {
@@ -241,7 +187,7 @@ public class TSSubPayment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                return makePayment();
+              return makePayment();
             } catch (Exception e) {
                 return e.getMessage();
             }
@@ -257,18 +203,18 @@ public class TSSubPayment extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            profileBody.setVisibility(View.GONE);
-            progress.setVisibility(View.VISIBLE);
+            /*profileBody.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);*/
 
         }
 
         @Override
         protected void onPostExecute(String aVoid) {
-            try {
+ /*           try {
                 Log.d("Testing data", "onPostExecute: " + aVoid);
                 super.onPostExecute(aVoid);
-                profileBody.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
+               *//* profileBody.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);*//*
                 JsonObject jsonObject = new Gson().fromJson(aVoid, JsonObject.class);
                 hmPackageDetails = jsonObject.get("home_maker_packages")       // get the 'user' JsonElement
                         .getAsJsonObject(); // get it as a JsonObject
@@ -276,9 +222,9 @@ public class TSSubPayment extends AppCompatActivity {
                 //System.out.println(name);
 
                 // HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
-           /*     for (String key : hashMap.keySet()) {
+           *//*     for (String key : hashMap.keySet()) {
                     Log.d("JSONVALUE", key + ": " + hashMap.get(key));
-                }*/
+                }*//*
 
                 Log.d("JSONVALUE", "test");
 
@@ -288,7 +234,7 @@ public class TSSubPayment extends AppCompatActivity {
 
             catch(Exception e){
                 Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG);
-            }
+            }*/
         }
 
     }

@@ -120,6 +120,18 @@ String fcmtoken = cfcmtoken.getString(cfcmtoken.getColumnIndex("fcmkey"));
 
         }else if (id == R.id.my_subscribers) {
 
+        }else if (id == R.id.my_daily_subs) {
+            startActivity(new Intent(this, HMViewDailySubs.class));
+
+
+        }else if (id == R.id.my_monthly_subs) {
+            startActivity(new Intent(this, Legal.class));
+
+
+        }else if (id == R.id.my_all_subs) {
+            startActivity(new Intent(this, Legal.class));
+
+
         } else if (id == R.id.legal) {
             startActivity(new Intent(this, Legal.class));
 

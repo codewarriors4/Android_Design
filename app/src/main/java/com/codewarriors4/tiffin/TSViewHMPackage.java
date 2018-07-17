@@ -62,6 +62,8 @@ public class TSViewHMPackage extends AppCompatActivity {
     private JsonObject hmPackageDetails;
 
 
+
+
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
@@ -102,127 +104,7 @@ public class TSViewHMPackage extends AppCompatActivity {
     }
 
 
-/*
 
-    @OnClick(R.id.menu_submit_btn)
-    public void submit(View view){
-        checkValidation();
-    }
-
-    private void checkValidation()
-    {
-        String getPackName = packageName.getText().toString();
-        String getPackDesc = packDesc.getText().toString();
-        String getPackCost = packCost.getText().toString();
-
-        if(getPackName.equals("") || getPackDesc.equals("") || getPackCost.equals("")){
-            new CustomToast().Show_Toast(this, view,
-                    "All fields are required.");
-        }
-        else{
-            submit();
-        }
-
-    }
-*/
-
-
-
-
-/*    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            imageBitmap = (Bitmap) extras.get("data");
-            mImageView.setImageBitmap(imageBitmap);
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            uploadLicence = saveImageToFile(bytes);
-            imageSelected = true;
-            sessionUtli.setValue("isLicenceUploaded", "true");
-        }
-        else if(requestCode == REQUEST_SELECT_IMAGE && resultCode == RESULT_OK){
-            Uri uri = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                uploadLicence = saveImageToFile(bytes);
-                mImageView.setImageBitmap(bitmap);
-                imageSelected = true;
-                sessionUtli.setValue("isLicenceUploaded", "true");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public File saveImageToFile(ByteArrayOutputStream bytes)
-    {
-        File destination = new File(this.getCacheDir(),
-                System.currentTimeMillis() + ".jpg");
-        Log.d("imageURI", "saveImageToFile: " + destination.getAbsolutePath());
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return destination;
-
-    }
-
-    private void galleryAddPic() {
-        Intent intent = new Intent();
-        intent.setType("image*//*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_SELECT_IMAGE);
-    }*/
-
-/*    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.upload_licence, menu);
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.photoFromCamera:
-                dispatchTakePictureIntent();
-                return true;
-            case R.id.selectFromGallery:
-                galleryAddPic();
-                return true;
-            default:
-                return false;
-        }
-    }*/
-
-/*    public void submit(){
-        Intent i = getIntent();
-
-        RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMUPDATEMENU);
-        requestPackage.setMethod("POST");
-        requestPackage.setParam("HMPId", i.getStringExtra("package_id"));
-        requestPackage.setParam("HMPName", packageName.getText().toString().trim());
-        requestPackage.setParam("HMPDesc", packDesc.getText().toString().trim());
-        requestPackage.setParam("HMPCost", packCost.getText().toString().trim());
-        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
-        requestPackage.setHeader("Accept", "application/json; q=0.5");
-        Intent intent = new Intent(this, HttpService.class);
-        intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
-
-        startService(intent);
-    }*/
 
     public String getPackageInfo() throws Exception {
         Intent i = getIntent();
@@ -303,14 +185,31 @@ public class TSViewHMPackage extends AppCompatActivity {
             summaryPackTaxesValue.setText((String)hmPackageDetails.get("hst").getAsString() + " CAD");
         summaryTotalCostValue.setText((String)hmPackageDetails.get("total").getAsString() + " CAD");
 
+        final String HMPId = (String)hmPackageDetails.get("HMPId").getAsString();
+        final String HMPCost = (String)hmPackageDetails.get("HMPCost").getAsString();
+        final String hst = (String)hmPackageDetails.get("hst").getAsString();
+        final String total = (String)hmPackageDetails.get("total").getAsString();
+
+
+
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//<<<<<<< HEAD
+//                Intent i = new Intent(TSViewHMPackage.this, TSSubPayment.class);
+//                i.putExtra("package_id", (String)hmPackageDetails.get("HMPId").getAsString());
+//                i.putExtra("package_cost", (String)hmPackageDetails.get("HMPCost").getAsString());
+//                i.putExtra("package_hst", (String)hmPackageDetails.get("hst").getAsString());
+//                i.putExtra("package_total", (String)hmPackageDetails.get("total").getAsString());
+//=======
+                Intent old = getIntent();
                 Intent i = new Intent(TSViewHMPackage.this, TSSubPayment.class);
-                i.putExtra("package_id", (String)hmPackageDetails.get("HMPId").getAsString());
-                i.putExtra("package_cost", (String)hmPackageDetails.get("HMPCost").getAsString());
-                i.putExtra("package_hst", (String)hmPackageDetails.get("hst").getAsString());
-                i.putExtra("package_total", (String)hmPackageDetails.get("total").getAsString());
+                i.putExtra("package_id", HMPId);
+                i.putExtra("package_cost", HMPCost);
+                i.putExtra("package_hst", hst);
+                i.putExtra("package_total", total);
+                i.putExtra("HomeMakerId",old.getStringExtra("HomeMakerId"));
+//>>>>>>> jaison
                 startActivity(i);
             }
         });
