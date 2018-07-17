@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,7 +87,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     private FusedLocationProviderClient mFusedLocationClient;
     RecyclerView recyclerView;
-
+    ProgressBar homeMakerProgressList;
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
@@ -153,7 +154,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 //        LocalBroadcastManager.getInstance(this)
 //                .registerReceiver(mBroadcastReceiver,
 //                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
-
+        homeMakerProgressList = findViewById(R.id.progress_get_homemaker);
         recyclerView = (RecyclerView) findViewById(R.id.search_home_maker_list_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -187,7 +188,10 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
+                                homeMakerProgressList.setVisibility(View.VISIBLE);
                                 doLocation(location);
+                            }else{
+                                Toast.makeText(TiffinSeekerDashboardActivity.this, "GPS SETTING ERROR", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -412,7 +416,8 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
                     Toast.makeText(TiffinSeekerDashboardActivity.this, "No Homamaker around \n your location", Toast.LENGTH_LONG ).show();
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                Toast.makeText(TiffinSeekerDashboardActivity.this, "Zip code error", Toast.LENGTH_LONG).show();
+                homeMakerProgressList.setVisibility(View.GONE);
             }
 
 
@@ -447,7 +452,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         }
         HomeMakerListAdapter adapter = new HomeMakerListAdapter(this, homeListArray);
         recyclerView.setAdapter(adapter);
-
+        homeMakerProgressList.setVisibility(View.GONE);
 
     }
 
