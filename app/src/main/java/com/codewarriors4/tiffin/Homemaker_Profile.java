@@ -44,6 +44,9 @@ import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 import com.codewarriors4.tiffin.utils.Utils;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -113,6 +116,8 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     private SessionUtli sessionUtli;
     private FrameLayout progress;
     private LinearLayout profileBody;
+    JsonObject hmDetailsJSONObj;
+
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
@@ -187,7 +192,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
             month_x = month;
             day_x = dayOfMonth;
 
-            String date = String.valueOf(day_x) + "/" + String.valueOf(month_x + 1) + "/" + String.valueOf(year_x);
+            String date = String.valueOf(year_x) + "/" + String.valueOf(month_x + 1) + "/" + String.valueOf(day_x);
 
             exp_date_text.setText(date);
         }
@@ -350,6 +355,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         requestPackage.setParam("UserStreet", streetName.getText().toString());
+        requestPackage.setParam("HMLicenseExpiryDate", exp_date_text.getText().toString());
         Intent intent = new Intent(this, HttpService.class);
         intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
 
@@ -396,14 +402,18 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
             try {
                 Log.d("Testing data", "onPostExecute: " + aVoid);
                 super.onPostExecute(aVoid);
-                profileBody.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-                HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
+             //   profileBody.setVisibility(View.VISIBLE);
+              //  progress.setVisibility(View.GONE);
+
+                 hmDetailsJSONObj = new Gson().fromJson(aVoid, JsonObject.class);
+
+/*                HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
                 for (String key : hashMap.keySet()) {
                     Log.d("JSONVALUE", key + ": " + hashMap.get(key));
                 }
                 if(hashMap.get("UserZipCode") != null)
-                    initValues(hashMap);
+                    initValues(hmDetailsJSONObj);*/
+                initValues(hmDetailsJSONObj);
             }
 
             catch(Exception e){
@@ -414,17 +424,22 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     }
 
 
-    private void initValues(HashMap<String, Object> hashMap)
-    {
+    private void initValues(JsonObject hmdetails) throws JSONException {
+            firstNameView.setText(hmdetails.get("UserFname").getAsString());
+            lastNameView.setText(hmdetails.get("UserLname").getAsString());
+        phoneView.setText(hmdetails.get("UserPhone").getAsString());
+        streetName.setText(hmdetails.get("UserStreet").getAsString());
+        city.setText(hmdetails.get("UserCity").getAsString());
+        countryView.setText(hmdetails.get("UserCountry").getAsString());
+        zipcodeView.setText(hmdetails.get("UserZipCode").getAsString());
+        provinceSpinner.setSelection(getIndex(provinceSpinner, hmdetails.get("UserProvince").getAsString()));
+        exp_date_text.setText(hmdetails.get("HMLicenseExpiryDate").getAsString());
 
-            firstNameView.append((String)hashMap.get("UserFname"));
-            lastNameView.append((String)hashMap.get("UserLname"));
-            phoneView.append((String)hashMap.get("UserPhone"));
-            streetName.append((String)hashMap.get("UserStreet"));
-            city.append((String)hashMap.get("UserCity"));
-            countryView.append((String)hashMap.get("UserCountry"));
-            zipcodeView.append((String)hashMap.get("UserZipCode"));
-            provinceSpinner.setSelection(getIndex(provinceSpinner, (String)hashMap.get("UserProvince") ));
+
+
+
+
+
     }
 
     private int getIndex(Spinner spinner, String myString){

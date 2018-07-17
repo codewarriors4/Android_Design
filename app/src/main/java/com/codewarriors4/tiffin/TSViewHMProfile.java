@@ -78,6 +78,9 @@ public class TSViewHMProfile extends AppCompatActivity  {
     @BindView(R.id.hm_email)
     TextView homemakerEmail;
 
+    @BindView(R.id.view_menu)
+    Button view_packages_btn;
+
     boolean imageSelected;
     ImageView mImageView;
     String mCurrentPhotoPath;
@@ -135,10 +138,7 @@ public class TSViewHMProfile extends AppCompatActivity  {
 
     private void initValues(JsonObject hmdetails) throws JSONException {
 
-
-
         Log.d("JSONVALUE", "test2");
-
         homemakerName.setText(hmdetails.get("UserFname").getAsString() + " " + hmdetails.get("UserLname").getAsString());
         homemakerStreet.setText(hmdetails.get("UserStreet").getAsString());
         homemakerCity.setText(hmdetails.get("UserCity").getAsString());
@@ -219,7 +219,13 @@ public class TSViewHMProfile extends AppCompatActivity  {
 
     }
 
+    @OnClick(R.id.view_menu)
+    public void submit(View view){
 
+        Intent intent = new Intent(this, TSViewHMPackages.class);
+        intent.putExtra("HMId", "/35");
+        startActivity(intent);
+    }
 
 
    /* @OnClick(R.id.submit_btn)

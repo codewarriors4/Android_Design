@@ -40,6 +40,10 @@
         <activity android:name=".TiffinSeeker_Profile" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".TSViewHMProfile" android:theme="@style/AppThemeActionBar"></activity>
 
+        <activity android:name=".TSViewHMPackages" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".TSViewHMPackage" android:theme="@style/AppThemeActionBar"></activity>
+
+
 
         <activity android:name=".HomemakerCreatePackages" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".HomemakerViewPackages" android:theme="@style/AppThemeActionBar"></activity>
