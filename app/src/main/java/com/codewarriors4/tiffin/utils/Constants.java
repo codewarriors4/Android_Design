@@ -23,6 +23,8 @@ public interface Constants {
     public static final String CHANNEL_DESCRIPTION = "my description";
     public static final String FCMTOKENSTORE = "/fcmtokenstore";
     public static final String TSVIEWHMPACKAGES = "/viewpackages";
+    public static final String TSMAKEPAYMENT = "/payment";
+
 
 
 

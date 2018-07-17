@@ -43,6 +43,7 @@
 
         <activity android:name=".TSViewHMPackages" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".TSViewHMPackage" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".TSSubPayment" android:theme="@style/AppThemeActionBar"></activity>
 
 
 

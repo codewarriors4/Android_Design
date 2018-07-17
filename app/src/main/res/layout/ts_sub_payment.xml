@@ -23,9 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
+        android:text="Name as per card"
         android:textSize="15dp"
-        android:textStyle="bold"
-        android:text="Name as per card"/>
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/card_name"
@@ -58,13 +58,31 @@
         android:textSize="15dp"
         android:text="Expire_Date(MM/YY)"/>
 
-    <EditText
-        android:id="@+id/card_exp_date"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="MM/YY"
-        android:inputType="date"
-        android:maxLength="4" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/card_exp_date_mnth"
+            android:layout_width="127dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="MM"
+            android:inputType="date"
+            android:maxLength="4" />
+
+        <EditText
+            android:id="@+id/card_exp_date_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="200dp"
+            android:layout_weight="1"
+            android:hint="YY"
+            android:inputType="date"
+            android:maxLength="4" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/card_cvv"

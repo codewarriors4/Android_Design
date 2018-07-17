@@ -43,8 +43,10 @@ public class TSSubPayment extends AppCompatActivity {
     EditText card_name;
     @BindView(R.id.card_number)
     EditText card_number;
-    @BindView(R.id.card_exp_date)
-    EditText card_exp_date;
+    @BindView(R.id.card_exp_date_mnth)
+    EditText card_exp_date_mnth;
+    @BindView(R.id.card_exp_date_year)
+    EditText card_exp_date_year;
     @BindView(R.id.card_cvv)
     EditText card_cvv;
 
@@ -223,10 +225,10 @@ public class TSSubPayment extends AppCompatActivity {
         startService(intent);
     }*/
 
-    public String getPackageInfo() throws Exception {
+    public String makePayment() throws Exception {
         Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMGETPACKAGEDETAIL);
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSMAKEPAYMENT);
         requestPackage.setMethod("POST");
         requestPackage.setParam("HMPId", i.getStringExtra("package_id"));
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
@@ -239,7 +241,7 @@ public class TSSubPayment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                return getPackageInfo();
+                return makePayment();
             } catch (Exception e) {
                 return e.getMessage();
             }
