@@ -53,7 +53,7 @@ public class TSViewHMPackage extends AppCompatActivity {
     @BindView(R.id.subscribe_btn)
     Button subscribe;
 
-    Context TSViewHMPackageCtx;
+
 
 
     private SessionUtli sessionUtli;
@@ -306,7 +306,7 @@ public class TSViewHMPackage extends AppCompatActivity {
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TSViewHMPackageCtx, TSSubPayment.class);
+                Intent i = new Intent(TSViewHMPackage.this, TSSubPayment.class);
                 i.putExtra("package_id", (String)hmPackageDetails.get("HMPId").getAsString());
                 i.putExtra("package_cost", (String)hmPackageDetails.get("HMPCost").getAsString());
                 i.putExtra("package_hst", (String)hmPackageDetails.get("hst").getAsString());

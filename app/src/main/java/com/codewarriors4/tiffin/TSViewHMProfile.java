@@ -155,8 +155,9 @@ public class TSViewHMProfile extends AppCompatActivity  {
 
 
     public String getHMDetails() throws Exception {
+        Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPROFILE + "/81");
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPROFILE +"/"+i.getStringExtra("Id"));
         requestPackage.setMethod("POST");
         //requestPackage.setParam("id", "21");
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
@@ -226,9 +227,9 @@ public class TSViewHMProfile extends AppCompatActivity  {
 
     @OnClick(R.id.view_menu)
     public void submit(View view){
-
+        Intent i = getIntent();
         Intent intent = new Intent(this, TSViewHMPackages.class);
-        intent.putExtra("HMId", "/35");
+        intent.putExtra("HMId", i.getStringExtra("HMId"));
         startActivity(intent);
     }
 

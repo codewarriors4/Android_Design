@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import android.content.pm.PackageManager;
+import android.icu.text.UnicodeSetSpanner;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -29,13 +30,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codewarriors4.tiffin.adapters.HMPackagesListAdapter;
 import com.codewarriors4.tiffin.adapters.HomeMakerListAdapter;
+import com.codewarriors4.tiffin.models.HMPackagesModel;
+import com.codewarriors4.tiffin.models.HomeMakerListItems;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.DatabaseHelper;
@@ -43,20 +46,28 @@ import com.codewarriors4.tiffin.utils.HttpHelper;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import android.location.LocationListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import butterknife.OnClick;
 
-public class TiffinSeekerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener{
-   // private ProgressBar progressBar;
+public class TiffinSeekerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
+    // private ProgressBar progressBar;
 
     String response = "";
     boolean flag = false;
@@ -67,24 +78,29 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     private HomeMakerListAdapter listViewAdapter;
 
-    private  LocationManager locationManager;
+    private LocationManager locationManager;
+    private GoogleApiClient mGoogleApiClient;
 
     DatabaseHelper mDatabaseHelper;
+    List<Address> fromLocation = null;
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    RecyclerView recyclerView;
 
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
             RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-            if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
+            if (respondPackage.getParams().containsKey(RespondPackage.SUCCESS)) {
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
                 try {
 
                     sessionUtli.setValues(respondPackage.getParams().get(RespondPackage.SUCCESS));
-                    if(sessionUtli.getValue("UserType").equals("0")){
+                    if (sessionUtli.getValue("UserType").equals("0")) {
 
-                    }else{
+                    } else {
 
                     }
 
@@ -92,7 +108,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
                     Log.d("ERRORJSON", e.getMessage());
                 }
 
-            }else{
+            } else {
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.FAILED));
                 Toast.makeText(context,
@@ -103,6 +119,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
         }
     };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -133,64 +150,66 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         textView = (TextView) header.findViewById(R.id.email_holder_tiffin);
         navigationView.setNavigationItemSelectedListener(this);
 
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(mBroadcastReceiver,
-                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+//        LocalBroadcastManager.getInstance(this)
+//                .registerReceiver(mBroadcastReceiver,
+//                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
 
+        recyclerView = (RecyclerView) findViewById(R.id.search_home_maker_list_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mDatabaseHelper = new DatabaseHelper(this);
         Cursor cfcmtoken = mDatabaseHelper.fetch();
         String fcmtoken = cfcmtoken.getString(cfcmtoken.getColumnIndex("fcmkey"));
-        sessionUtli.setValue("fcmtoken",fcmtoken);
+        sessionUtli.setValue("fcmtoken", fcmtoken);
         new MyAsynTask().execute("");
 
-        if(sessionUtli.getValue("UserType").equals("0.0")){
+//        if(sessionUtli.getValue("UserType").equals("0.0")){
+//
+//        }
+//            //greetingTextView.setText("Welcome TiffinSeeker");
+//        else{
+//           // greetingTextView.setText("Welcome HomeMaker");
+//        }
 
-        }
-            //greetingTextView.setText("Welcome TiffinSeeker");
-        else{
-           // greetingTextView.setText("Welcome HomeMaker");
-        }
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-        listViewAdapter = new HomeMakerListAdapter(this);
+
+        //listViewAdapter = new HomeMakerListAdapter(this);
     }
 
     public void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager = (LocationManager)
-                    getSystemService(Context.LOCATION_SERVICE);
-            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                Criteria criteria = new Criteria();
-                criteria.setAccuracy(Criteria.ACCURACY_FINE);
-                String bestProvider = locationManager.getBestProvider(criteria, true);
-                //Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
-                //if(lastKnownLocation == null){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-                //}else{
-                   //doLocation(lastKnownLocation);
-                //}
-
-            }else{
-                Toast.makeText(this, "Please Enable GPS", Toast.LENGTH_LONG).show();
-            }
-
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                doLocation(location);
+                            }
+                        }
+                    });
         }
     }
 
     private void doLocation(Location lastKnownLocation) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> fromLocation = null;
+
         try {
             fromLocation = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
+            new LocationAsynTask().execute(fromLocation.get(0).getPostalCode());
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        EditText app_bar_editTxt = findViewById(R.id.app_bar_editTxt);
-        app_bar_editTxt.append(fromLocation.get(0).getPostalCode().trim());
+        TextView app_bar_editTxt = findViewById(R.id.app_bar_editTxt);
+        app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] +"  " + fromLocation.get(0).getPostalCode());
     }
 
-    @OnClick(R.id.view_hm_details)
+//    @OnClick(R.id.view_hm_details)
     public void viewDetails(View view){
 
         Intent intent = new Intent(this, TSViewHMProfile.class);
@@ -264,7 +283,6 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
     @Override
     public void onLocationChanged(Location location) {
         doLocation(location);
-        locationManager.removeUpdates(this);
     }
 
     @Override
@@ -311,6 +329,16 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         return HttpHelper.downloadFromFeed(requestPackage);
     }
 
+    public String getHomeMakerList(String zipcode) throws Exception {
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.GETHOMEMAKERS);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("ZipCode", zipcode);
+        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Accept", "application/json; q=0.5");
+        return HttpHelper.downloadFromFeed(requestPackage);
+    }
+
     private class MyAsynTask extends AsyncTask<String, String, String> {
 
         @Override
@@ -346,8 +374,82 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     }
 
+    private class LocationAsynTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                String homeMakerList = getHomeMakerList(strings[0]);
+                return homeMakerList;
+            } catch (Exception e) {
+                return e.getMessage();
+            }
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                JSONObject mainObject = new JSONObject(aVoid);
+                JSONArray uniObject = mainObject.getJSONArray("matched_homemakers");
+                if(uniObject != null){
+                    initValues(uniObject);
+                }else{
+                    Toast.makeText(TiffinSeekerDashboardActivity.this, "No Homamaker around \n your location", Toast.LENGTH_LONG ).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+    }
+
     @Override
     public void onProviderDisabled(String provider) {
 
     }
+
+    private void initValues(JSONArray uniObject) throws JSONException
+    {
+        ArrayList homeListArray = new ArrayList();
+
+        JSONArray jsonarray = new JSONArray(uniObject.toString());
+        for (int i = 0; i < jsonarray.length(); i++) {
+            JSONObject jsonobject = jsonarray.getJSONObject(i);
+//            String id = String.valueOf(i+1);
+            int id = jsonobject.getInt("id");
+            int hmId = jsonobject.getInt("HMId");
+            String email = jsonobject.getString("email");
+            String UserZipCode = jsonobject.getString("UserZipCode");
+            //Double packCost = jsonobject.getDouble("UserZipCode");
+
+            HomeMakerListItems homeList = new HomeMakerListItems(id , hmId, email, UserZipCode, UserZipCode);
+
+            homeListArray.add(homeList);
+
+
+        }
+        HomeMakerListAdapter adapter = new HomeMakerListAdapter(this, homeListArray);
+        recyclerView.setAdapter(adapter);
+
+
+    }
+
+
 }

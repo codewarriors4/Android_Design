@@ -232,9 +232,9 @@ public class TSViewHMPackages extends AppCompatActivity {
 
         //Log.d("Testing data1", sessionUtli.getValue("access_token"));
 
-
+        Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPACKAGES + "/35");
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPACKAGES + "/"+i.getStringExtra("HMId"));
         requestPackage.setMethod("GET");
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
@@ -246,7 +246,8 @@ public class TSViewHMPackages extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                return getHMPackagesList();
+                String hmPackagesList = getHMPackagesList();
+                return hmPackagesList;
             } catch (Exception e) {
                 return e.getMessage();
             }

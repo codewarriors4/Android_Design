@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white_greyish"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/home_maker_email"
+                android:layout_width="162dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/hm_pack_desc_listview"
+                android:padding="5dp"
+                android:text="TextView"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/blue"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/home_maker_postalcode"
+                android:layout_width="280dp"
+                android:layout_height="67dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="40dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:padding="5dp"
+                android:text="TextView"
+                android:textColor="@color/black"/>
+
+            <Button
+                android:id="@+id/view_package_detail_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:background="@mipmap/view_eye" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>
