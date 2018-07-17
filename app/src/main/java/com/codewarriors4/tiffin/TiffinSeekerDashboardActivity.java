@@ -190,6 +190,14 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         app_bar_editTxt.append(fromLocation.get(0).getPostalCode().trim());
     }
 
+    @OnClick(R.id.view_hm_details)
+    public void viewDetails(View view){
+
+        Intent intent = new Intent(this, TSViewHMProfile.class);
+        startActivity(intent);
+
+    }
+
 
     @Override
     protected void onStart() {
