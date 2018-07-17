@@ -338,9 +338,6 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
     }
 
-
-    }
-
     @Override
     public void onProviderDisabled(String provider) {
 
