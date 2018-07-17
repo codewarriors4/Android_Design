@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/blue"
+    tools:context=".Homemaker_Profile">
+
+    <include
+        android:id="@+id/card_cvv"
+        layout="@layout/progress_framelayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:visibility="visible" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/card_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:text="Name as per card"/>
+
+    <EditText
+        android:id="@+id/card_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name" />
+    <TextView
+        android:id="@+id/card_number"
+        android:paddingTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:text="Card Number"/>
+
+    <EditText
+        android:id="@+id/card_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Number"
+        android:inputType="number"
+        android:maxLength="16" />
+
+    <TextView
+        android:id="@+id/card_expire"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:paddingTop="15dp"
+        android:textSize="15dp"
+        android:text="Expire_Date(MM/YY)"/>
+
+    <EditText
+        android:id="@+id/card_exp_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="MM/YY"
+        android:inputType="date"
+        android:maxLength="4" />
+
+    <TextView
+        android:id="@+id/card_cvv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:text="CVV"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="3"/>
+
+</LinearLayout>
+
+    <Button
+        android:id="@+id/payment_btn"
+        android:layout_width="259dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="107dp"
+        android:text="PAY" />
+</RelativeLayout>

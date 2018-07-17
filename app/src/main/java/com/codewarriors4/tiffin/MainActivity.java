@@ -1,5 +1,6 @@
 package com.codewarriors4.tiffin;
 
+
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Build;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +29,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.codewarriors4.tiffin.utils.Constants;
+import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 
@@ -27,12 +39,18 @@ public class MainActivity extends AppCompatActivity{
 
     Button loginActionButton;
     Button signupActionButton;
+
     private static final int PERMISSION_REQUEST_GPS = 1;
     SharedPreferences sharedPreferences;
+
+    SessionUtli sessionUtli;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
         accessPermission();
     }
@@ -68,6 +86,29 @@ public class MainActivity extends AppCompatActivity{
     private void startActivity()
     {
         //Toast.makeText(this, "Activity Started", Toast.LENGTH_LONG).show();
+
+        //setContentView(R.layout.dashboard);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            NotificationManager mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            NotificationChannel mChannel = new NotificationChannel(Constants.CHANNEL_ID,Constants.CHANNEL_NAME,NotificationManager.IMPORTANCE_HIGH);
+
+            mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100,200,300,400,500,40,300,200,100});
+            mNotificationManager.createNotificationChannel(mChannel);
+
+
+        }
+
+
+       /* Intent intent = new Intent(this, HomemakerViewProfile.class);
+        startActivity(intent);*/
+        //super.onCreate(savedInstanceState);
+
         if(!sharedPreferences.contains("access_token")){
 
             setContentView(R.layout.activity_main);
