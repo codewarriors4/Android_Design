@@ -209,7 +209,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        TextView app_bar_editTxt = findViewById(R.id.app_bar_editTxt);
+        EditText app_bar_editTxt = findViewById(R.id.location_auto_complete);
         app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] +"  " + fromLocation.get(0).getPostalCode());
     }
 
