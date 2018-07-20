@@ -241,16 +241,16 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 
         if (id == R.id.account) {
 
-                startActivity(new Intent(this, TiffinSeeker_Profile.class));
+            startActivity(new Intent(this, TiffinSeeker_Profile.class));
 
         } else if (id == R.id.menu) {
 
-        } else if (id == R.id.my_subscribers) {
+        } else if (id == R.id.ts_view_orders) {
+
+            startActivity(new Intent(this, TSViewTSSubscription.class));
 
         } else if (id == R.id.legal) {
             startActivity(new Intent(this, Legal.class));
-
-
 
         } else if (id == R.id.privacy) {
             startActivity(new Intent(this, Privacy.class));

@@ -25,6 +25,8 @@ public interface Constants {
     public static final String TSVIEWHMPACKAGES = "/viewpackages";
     public static final String TSMAKEPAYMENT = "/payment";
     public static final String GETHOMEMAKERS = "/gethomemakers";
+    public static final String TSVIEWSUBSCRIPTIONS = "/tiffinseekersubscribtions";
+
 
 
 
