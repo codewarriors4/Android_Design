@@ -47,9 +47,9 @@ public class HomemakerDashboardActivity extends AppCompatActivity
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         mDatabaseHelper = new DatabaseHelper(this);
         Cursor cfcmtoken = mDatabaseHelper.fetch();
-String fcmtoken = cfcmtoken.getString(cfcmtoken.getColumnIndex("fcmkey"));
-       sessionUtli.setValue("fcmtoken",fcmtoken);
-     new MyAsynTask().execute(""); // let this run first
+        String fcmtoken = cfcmtoken.getString(cfcmtoken.getColumnIndex("fcmkey"));
+        sessionUtli.setValue("fcmtoken",fcmtoken);
+        new MyAsynTask().execute(""); // let this run first
 
     }
 
