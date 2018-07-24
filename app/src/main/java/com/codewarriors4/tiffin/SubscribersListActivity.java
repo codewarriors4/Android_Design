@@ -85,15 +85,15 @@ public class SubscribersListActivity extends AppCompatActivity
             Bundle bundle = new Bundle();
             switch (title){
                 case "Monthly":
-                    bundle.getString("HELLO", Constants.GETSUBSCRIBERSMONTHLY );
+                    bundle.putString(SubscribersTab_Fragment.KEY, Constants.GETSUBSCRIBERSMONTHLY );
                     fragment.setArguments(bundle);
                     break;
                 case "Daily":
-                    bundle.getString("HELLO", Constants.GETSUBSCRIBERSDAILY );
+                    bundle.putString(SubscribersTab_Fragment.KEY, Constants.GETSUBSCRIBERSDAILY );
                     fragment.setArguments(bundle);
                     break;
                 case "All":
-                    bundle.getString("HELLO", Constants.GETSUBSCRIBERS );
+                    bundle.putString(SubscribersTab_Fragment.KEY, Constants.GETSUBSCRIBERS );
                     fragment.setArguments(bundle);
                     break;
             }

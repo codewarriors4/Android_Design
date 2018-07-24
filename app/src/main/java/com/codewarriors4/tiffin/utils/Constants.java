@@ -29,7 +29,7 @@ public interface Constants {
     public static final String GETSUBSCRIBERS = "/homemakersubscribers";
     public static final String GETSUBSCRIBERSDAILY = "/homemakersubscriberdaily";
     public static final String GETSUBSCRIBERSMONTHLY = "/homemakersubscribermonthly";
-    
+
     public static final String TSVIEWSUBSCRIPTIONS = "/tiffinseekersubscribtions";
     public static final String TSCREATEUPDATERATINGS = "/createupdateratings";
     public static final String TSVIEWHMRATING = "/viewhmrating";

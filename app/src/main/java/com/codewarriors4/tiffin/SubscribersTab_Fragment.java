@@ -75,11 +75,10 @@ public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Bundle arguments = getArguments();
-        String string = arguments.getString("Hello");
+        String string = getArguments().getString(KEY);
 
             if(!isLoaded){
-                new SubscribersList().execute("");
+                new SubscribersList().execute(string);
                 isLoaded = true;
             }
 
@@ -89,9 +88,9 @@ public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
 
     }
 
-    private String getSubscribersList(){
+    private String getSubscribersList(String string){
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.GETSUBSCRIBERS);
+        requestPackage.setEndPoint(Constants.BASE_URL + string);
         requestPackage.setMethod("POST");
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
@@ -110,7 +109,7 @@ public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
         @Override
         protected String doInBackground(String... strings) {
             try {
-                String homeMakerList = getSubscribersList();
+                String homeMakerList = getSubscribersList(strings[0]);
                 return homeMakerList;
             } catch (Exception e) {
                 return e.getMessage();
