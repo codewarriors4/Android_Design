@@ -50,21 +50,9 @@ public class SubscribersListActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        Bundle bundle = new Bundle();
-        bundle.putString(SubscribersTab_Fragment.KEY, "Monthly");
-        Bundle bundle2 = new Bundle();
-        bundle.putString(SubscribersTab_Fragment.KEY, "Daily");
-        Bundle bundle3 = new Bundle();
-        bundle.putString(SubscribersTab_Fragment.KEY, "All");
-
         SubscribersTab_Fragment subscribersTab_fragment = new SubscribersTab_Fragment();
-        subscribersTab_fragment.setArguments(bundle);
-
         SubscribersTab_Fragment subscribersTab_fragment2 = new SubscribersTab_Fragment();
-        subscribersTab_fragment.setArguments(bundle2);
-
         SubscribersTab_Fragment subscribersTab_fragment3 = new SubscribersTab_Fragment();
-        subscribersTab_fragment.setArguments(bundle3);
 
         adapter.addFragment(subscribersTab_fragment, "Monthly");
         adapter.addFragment(subscribersTab_fragment2, "Daily");
@@ -94,6 +82,21 @@ public class SubscribersListActivity extends AppCompatActivity
         }
 
         public void addFragment(Fragment fragment, String title) {
+            Bundle bundle = new Bundle();
+            switch (title){
+                case "Monthly":
+                    bundle.getString("HELLO", Constants.GETSUBSCRIBERSMONTHLY );
+                    fragment.setArguments(bundle);
+                    break;
+                case "Daily":
+                    bundle.getString("HELLO", Constants.GETSUBSCRIBERSDAILY );
+                    fragment.setArguments(bundle);
+                    break;
+                case "All":
+                    bundle.getString("HELLO", Constants.GETSUBSCRIBERS );
+                    fragment.setArguments(bundle);
+                    break;
+            }
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

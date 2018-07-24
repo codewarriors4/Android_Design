@@ -110,21 +110,21 @@ public class HomemakerDashboardActivity extends AppCompatActivity
             startActivity(i);
 
         }else if (id == R.id.my_subscribers) {
-
-        }else if (id == R.id.my_daily_subs) {
             startActivity(new Intent(this, SubscribersListActivity.class));
-
-
-        }else if (id == R.id.my_monthly_subs) {
-            startActivity(new Intent(this, Legal.class));
-
-
-        }else if (id == R.id.my_all_subs) {
-            startActivity(new Intent(this, Legal.class));
-
-
-        } else if (id == R.id.legal) {
-            startActivity(new Intent(this, Legal.class));
+//        }else if (id == R.id.my_daily_subs) {
+//
+//
+//
+//        }else if (id == R.id.my_monthly_subs) {
+//            startActivity(new Intent(this, Legal.class));
+//
+//
+//        }else if (id == R.id.my_all_subs) {
+//            startActivity(new Intent(this, Legal.class));
+//
+//
+//        } else if (id == R.id.legal) {
+            //startActivity(new Intent(this, Legal.class));
 
         }else if (id == R.id.privacy) {
             startActivity(new Intent(this, Privacy.class));
