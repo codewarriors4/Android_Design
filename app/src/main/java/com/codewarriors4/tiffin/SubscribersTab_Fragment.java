@@ -70,12 +70,13 @@ public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         return inflate;
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Bundle arguments = getArguments();
+        String string = arguments.getString("Hello");
 
             if(!isLoaded){
                 new SubscribersList().execute("");
