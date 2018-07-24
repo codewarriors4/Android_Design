@@ -191,7 +191,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
                                 homeMakerProgressList.setVisibility(View.VISIBLE);
                                 doLocation(location);
                             }else{
-                                Toast.makeText(TiffinSeekerDashboardActivity.this, "GPS SETTING ERROR", Toast.LENGTH_LONG).show();
+                                Toast.makeText(TiffinSeekerDashboardActivity.this, "GPS SETTING ERROR", Toast.LENGTH_LONG).show(); // new LocationAsynTask().execute(fromLocation.get(0).getPostalCode()); paste her wit hzip
                             }
                         }
                     });
@@ -213,7 +213,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] +"  " + fromLocation.get(0).getPostalCode());
     }
 
-//    @OnClick(R.id.view_hm_details)
+    //    @OnClick(R.id.view_hm_details)
     public void viewDetails(View view){
 
         Intent intent = new Intent(this, TSViewHMProfile.class);

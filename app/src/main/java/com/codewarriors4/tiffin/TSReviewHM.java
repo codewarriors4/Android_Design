@@ -28,6 +28,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codewarriors4.tiffin.models.HMPackagesModel;
+import com.codewarriors4.tiffin.models.TSSubscriptionsModel;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.HttpHelper;
@@ -36,6 +38,10 @@ import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 import com.codewarriors4.tiffin.utils.Utils;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -104,7 +110,7 @@ public class TSReviewHM extends AppCompatActivity {
             }else{
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.FAILED));
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error11111111111111111", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -133,11 +139,13 @@ public class TSReviewHM extends AppCompatActivity {
     }
 
     public void submit(){
+        Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSCREATEUPDATERATINGS);
         requestPackage.setMethod("POST");
+        requestPackage.setParam("HomeMakerID",i.getStringExtra("HomeMakerId"));
         requestPackage.setParam("ReviewCount", String.valueOf(ratingBar.getRating()));
-        requestPackage.setParam("ReviewDesc", ratingDesc.toString());
+        requestPackage.setParam("ReviewDesc", ratingDesc.getText().toString());
 
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
@@ -178,26 +186,32 @@ public class TSReviewHM extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             try {
-                HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
-                for (String key : hashMap.keySet()) {
-                    Log.d("JSONVALUE", key + ": " + hashMap.get(key));
-                }
-                if(hashMap.get("UserZipCode") != null)
-                    initValues(hashMap);
+
+                JSONArray uniObject = new JSONArray(aVoid);
+                initValues(uniObject);
+
+
 
             }catch (Exception e){
-                Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Error222222222222222222222222222", Toast.LENGTH_SHORT).show();
             }
 
         }
 
     }
 
-    private void initValues(HashMap<String, Object> hashMap)
-    {
+    private void initValues(JSONArray uniObject) throws JSONException {
 
-      //  ratingBar.setRating((String)hashMap.get("ReviewCount"));
-        ratingDesc.append((String)hashMap.get("ReviewDesc"));
+
+
+        JSONArray jsonarray = new JSONArray(uniObject.toString());
+        for (int i = 0; i < jsonarray.length(); i++) {
+            JSONObject jsonobject = jsonarray.getJSONObject(i);
+            ratingBar.setRating(Float.parseFloat(jsonobject.getString("ReviewCount")));
+            ratingDesc.append(jsonobject.getString("ReviewDesc"));
+        }
+
+
 
     }
 
@@ -215,6 +229,7 @@ public class TSReviewHM extends AppCompatActivity {
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMRATING);
         String hmid = i.getStringExtra("HomeMakerId");
+
 
         requestPackage.setParam("HomeMakerID", hmid);
         requestPackage.setMethod("POST");

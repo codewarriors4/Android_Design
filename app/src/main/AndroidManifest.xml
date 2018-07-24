@@ -48,6 +48,7 @@
         <activity android:name=".TSViewTSSubscription" android:theme="@style/AppThemeActionBar"></activity>
 
         <activity android:name=".TSReviewHM" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".HMReviews" android:theme="@style/AppThemeActionBar"></activity>
 
 
 

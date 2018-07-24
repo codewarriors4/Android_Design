@@ -53,7 +53,7 @@
 
             <TextView
                 android:id="@+id/subscription_end_date"
-                android:layout_width="171dp"
+                android:layout_width="208dp"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/package_cost"
                 android:layout_alignTop="@+id/subscription_end_date_txt"
@@ -64,42 +64,37 @@
 
             <TextView
                 android:id="@+id/subscription_end_date_txt"
-                android:layout_width="152dp"
+                android:layout_width="111dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/hm_name"
-                android:layout_marginBottom="39dp"
-                android:layout_marginStart="-2dp"
+                android:layout_marginBottom="15dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:padding="5dp"
-                android:textStyle="bold"
-                android:text="Subscription ends:" />
+                android:text="Subscription ends:"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/subscription_start_date_txt"
-                android:layout_width="152dp"
+                android:layout_width="111dp"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/subscription_end_date"
                 android:layout_alignStart="@+id/hm_name"
-                android:layout_centerVertical="true"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginStart="-1dp"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:padding="5dp"
-                android:textStyle="bold"
-                android:text="Subscription start:" />
+                android:text="Subscription start:"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/subscription_start_date"
-                android:layout_width="170dp"
+                android:layout_width="207dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_alignStart="@+id/subscription_end_date"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="11dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:padding="5dp"
@@ -134,7 +129,7 @@
                 android:numStars="5"
                 android:padding="5dp"
                 android:rating="3.5"
-                android:stepSize="0.1" />
+                android:stepSize="0.5" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
