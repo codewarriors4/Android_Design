@@ -92,7 +92,7 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
         public TSViewHMPackagesViewHolder(View itemView) {
             super(itemView);
 
-            HMPackTitle = itemView.findViewById(R.id.ts_name);
+            HMPackTitle = itemView.findViewById(R.id.hm_name);
             HMPackDesc = itemView.findViewById(R.id.package_cost);
             HMPackCost = itemView.findViewById(R.id.hm_pack_cost);
 

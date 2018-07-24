@@ -45,6 +45,10 @@
         <activity android:name=".TSViewHMPackage" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".TSSubPayment" android:theme="@style/AppThemeActionBar"></activity>
 
+        <activity android:name=".TSViewTSSubscription" android:theme="@style/AppThemeActionBar"></activity>
+
+        <activity android:name=".TSReviewHM" android:theme="@style/AppThemeActionBar"></activity>
+
 
 
         <activity android:name=".HomemakerCreatePackages" android:theme="@style/AppThemeActionBar"></activity>

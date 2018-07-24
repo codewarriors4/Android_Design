@@ -13,6 +13,10 @@
             android:title="Search Homemakers"
             android:icon="@drawable/ic_search_black_24dp"/>
         <item
+            android:id="@+id/ts_view_orders"
+            android:title="View Orders"
+            android:icon="@drawable/ic_search_black_24dp"/>
+        <item
             android:id="@+id/legal"
             android:title="Legal"
             android:icon="@drawable/ic_priority_high_black_24dp"/>
