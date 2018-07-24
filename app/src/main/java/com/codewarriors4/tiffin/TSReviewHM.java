@@ -214,8 +214,9 @@ public class TSReviewHM extends AppCompatActivity {
 
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMRATING);
+        String hmid = i.getStringExtra("HomeMakerId");
 
-        requestPackage.setParam("HomeMakerID", i.getStringExtra("HomeMakerId"));
+        requestPackage.setParam("HomeMakerID", hmid);
         requestPackage.setMethod("POST");
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
