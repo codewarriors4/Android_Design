@@ -6,9 +6,10 @@ public class TSSubscriptionsModel {
     private int hmID,packID,subID;
     private String hmName, packTitle, subStartDate, subEndDate;
     private Double package_cost;
+    private float ratingCount;
 
 
-    public TSSubscriptionsModel(String id, int hmID, int subID, int packID, String hmName, String packTitle, String subStartDate, String subEndDate, Double package_cost) {
+    public TSSubscriptionsModel(String id, int hmID, int subID, int packID, String hmName, String packTitle, String subStartDate, String subEndDate, Double package_cost,float ratingCount) {
         this.id = id;
         this.hmID = hmID;
         this.packID = packID;
@@ -19,6 +20,16 @@ public class TSSubscriptionsModel {
         this.subStartDate = subStartDate;
         this.subEndDate = subEndDate;
         this.package_cost = package_cost;
+        this.ratingCount = ratingCount;
+
+    }
+
+    public float getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(float ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
     public Double getPackage_cost() {

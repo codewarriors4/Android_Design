@@ -197,6 +197,8 @@ public class TSViewTSSubscription extends AppCompatActivity {
             String subStartDate = jsonobject.getString("SubStartDate");
             String subEndDate = jsonobject.getString("SubEndDate");
             Double package_cost = jsonobject.getDouble("HMPCost");
+            float ratingCount = (float) jsonobject.getDouble("ReviewCount");
+
 
             TSSubscriptionsModel model= new TSSubscriptionsModel(
                     id,
@@ -207,7 +209,8 @@ public class TSViewTSSubscription extends AppCompatActivity {
                     packTitle,
                     subStartDate,
                     subEndDate,
-                    package_cost
+                    package_cost,
+                    ratingCount
 
             );
 

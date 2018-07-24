@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.codewarriors4.tiffin.R;
+import com.codewarriors4.tiffin.TSReviewHM;
 import com.codewarriors4.tiffin.TSViewTSSubscription;
 import com.codewarriors4.tiffin.models.TSSubscriptionsModel;
 
@@ -46,6 +48,8 @@ public class TSViewSubsListAdapter extends RecyclerView.Adapter<TSViewSubsListAd
         holder.hm_name.setText(TSSubscription.getHmName());
         holder.package_title.setText(TSSubscription.getPackTitle());
         holder.package_cost.setText(String.valueOf(TSSubscription.getPackage_cost())+" CAD");
+        holder.ratingBar.setRating(TSSubscription.getRatingCount());
+
 
         String subStartDate =  TSSubscription.getSubStartDate();
         String subEndDate =  TSSubscription.getSubEndDate();
@@ -62,11 +66,6 @@ public class TSViewSubsListAdapter extends RecyclerView.Adapter<TSViewSubsListAd
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
-
-
-
 
         holder.hm_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +124,16 @@ public class TSViewSubsListAdapter extends RecyclerView.Adapter<TSViewSubsListAd
             }
         });
 
+        holder.ratingBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TSSubscriptionsCtxt, TSReviewHM.class);
+                i.putExtra("HomeMakerId", TSSubscription.getHmID());
+                i.putExtra("HMName", TSSubscription.getHmName());
+                TSSubscriptionsCtxt.startActivity(i);
+            }
+        });
+
     }
 
     @Override
@@ -135,13 +144,14 @@ public class TSViewSubsListAdapter extends RecyclerView.Adapter<TSViewSubsListAd
     class TSSubscriptionsViewHolder extends RecyclerView.ViewHolder {
 
         public TextView hm_name, package_title, package_cost,subscription_start_date, subscription_end_date;
-
+        public RatingBar ratingBar;
         public TSSubscriptionsViewHolder(View itemView) {
             super(itemView);
 
             hm_name = itemView.findViewById(R.id.hm_name);
             package_title = itemView.findViewById(R.id.package_title);
             package_cost = itemView.findViewById(R.id.package_cost);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
             subscription_start_date = itemView.findViewById(R.id.subscription_start_date);
             subscription_end_date = itemView.findViewById(R.id.subscription_end_date);
 
