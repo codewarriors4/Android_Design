@@ -13,24 +13,18 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.codewarriors4.tiffin.adapters.HMPackagesListAdapter;
-import com.codewarriors4.tiffin.adapters.TSViewHMPackagesListAdapter;
-import com.codewarriors4.tiffin.models.HMPackagesModel;
+import com.codewarriors4.tiffin.adapters.HMReviewsListAdapter;
+import com.codewarriors4.tiffin.models.HMReviewsModel;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.HttpHelper;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -40,21 +34,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
-public class TSViewHMPackages extends AppCompatActivity {
+public class HMReviews extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
     static final int PHONELENGHT = 10;
 
     RecyclerView recyclerView;
-    TSViewHMPackagesListAdapter adapter;
-    private JsonObject hmPackagesListJSONResponse;
+    HMReviewsListAdapter adapter;
+    private JsonObject tsReviewsListJSONResponse;
 
-    List<HMPackagesModel> packageList;
+    List<HMReviewsModel> reviewList;
 
     private  View view;
 
@@ -87,13 +79,13 @@ public class TSViewHMPackages extends AppCompatActivity {
 
 
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Packages");
+        setTitle("Reviews");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ts_view_hm_packages);
+        setContentView(R.layout.hm_view_reviews);
 
-        packageList = new ArrayList<>();
+        reviewList = new ArrayList<>();
 
-        recyclerView = (RecyclerView) findViewById(R.id.ts_view_hm_packages_recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.hm_view_reviews_parent);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -111,14 +103,15 @@ public class TSViewHMPackages extends AppCompatActivity {
     }
 
 
-    public String getHMPackagesList() throws Exception {
+    public String getHMReviewsList() throws Exception {
 
         //Log.d("Testing data1", sessionUtli.getValue("access_token"));
 
         Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPACKAGES + "/"+i.getStringExtra("HMId"));
-        requestPackage.setMethod("GET");
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMRATINGS);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("HomeMakerID", i.getStringExtra("HomeMakerID"));
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         return HttpHelper.downloadFromFeed(requestPackage);
@@ -129,8 +122,8 @@ public class TSViewHMPackages extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                String hmPackagesList = getHMPackagesList();
-                return hmPackagesList;
+                String tsReviewsList = getHMReviewsList();
+                return tsReviewsList;
             } catch (Exception e) {
                 return e.getMessage();
             }
@@ -159,13 +152,9 @@ public class TSViewHMPackages extends AppCompatActivity {
                 // profileBody.setVisibility(View.VISIBLE);
                 // progress.setVisibility(View.GONE);
 
-                JSONObject mainObject = new JSONObject(aVoid);
-                JSONArray uniObject = mainObject.getJSONArray("home_maker_packages");
-
-                Log.d("JSONVALUE", "test");
-
-                //if(hashMap.get("UserZipCode") != null)
+                JSONArray uniObject = new JSONArray(aVoid);
                 initValues(uniObject);
+
             }
 
             catch(Exception e){
@@ -178,33 +167,37 @@ public class TSViewHMPackages extends AppCompatActivity {
 
     private void initValues(JSONArray uniObject) throws JSONException
     {
-        Log.d("jsondump", "hmPackagesList");
+        Log.d("jsondump", "tsReviewsList");
 
 
 
-
+        Intent intent = new Intent();
         JSONArray jsonarray = new JSONArray(uniObject.toString());
         for (int i = 0; i < jsonarray.length(); i++) {
             JSONObject jsonobject = jsonarray.getJSONObject(i);
             String id = String.valueOf(i+1);
-            int packID = jsonobject.getInt("HMPId");
-            String packTitle = jsonobject.getString("HMPName");
-            String packDesc = jsonobject.getString("HMPDesc");
-            Double packCost = jsonobject.getDouble("HMPCost");
+            String hmID =  intent.getStringExtra("HMId");
+            String hmName =  intent.getStringExtra("HMName");
+            String tsName =  jsonobject.getString("UserFname") + " " + jsonobject.getString("UserLname") ;
+            String ratingDesc = jsonobject.getString("ReviewDesc");
+            String reviewUpdateDate = jsonobject.getString("updated_at");
+            float ratingCount = (float) jsonobject.getDouble("ReviewCount");
 
-            HMPackagesModel model= new HMPackagesModel(
+            HMReviewsModel model= new HMReviewsModel(
                     id,
-                    packTitle,
-                    packDesc,
-                    packCost,
-                    packID
+                    hmID,
+                    hmName,
+                    tsName,
+                    ratingDesc,
+                    reviewUpdateDate,
+                    ratingCount
             );
 
-            packageList.add(model);
+            reviewList.add(model);
 
 
         }
-        adapter = new TSViewHMPackagesListAdapter(this, packageList);
+        adapter = new HMReviewsListAdapter(this, reviewList);
         recyclerView.setAdapter(adapter);
 
 

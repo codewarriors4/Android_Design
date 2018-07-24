@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,12 +82,19 @@ public class TSViewHMProfile extends AppCompatActivity  {
     @BindView(R.id.view_menu)
     Button view_packages_btn;
 
+    @BindView(R.id.reviews)
+    Button reviews;
+
+    @BindView (R.id.ratingBar2)
+    RatingBar ratingsOverall;
+
     boolean imageSelected;
     ImageView mImageView;
     String mCurrentPhotoPath;
 
     Bitmap imageBitmap;
     File uploadLicence;
+    TSViewHMProfile TSViewHMProfileCtx;
 
     private SessionUtli sessionUtli;
     private FrameLayout progress;
@@ -103,7 +111,7 @@ public class TSViewHMProfile extends AppCompatActivity  {
                     if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                         Log.d("JsonResponseData", "onReceive: "
                                 + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                        Toast.makeText(context, "Update Succesfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Update Succesfull", Toast.LENGTH_SHORT).show();
 
                     }else{
                         Log.d("JsonResponseData", "onReceive: "
@@ -125,6 +133,7 @@ public class TSViewHMProfile extends AppCompatActivity  {
         progress = findViewById(R.id.progress_overlay);
        // mImageView = findViewById(R.id.licence_image);
        // uploadLicenceButton.setOnCreateContextMenuListener(this);
+         TSViewHMProfileCtx = new TSViewHMProfile();
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.homemaker_view_profile, container, false);
         new MyAsynTask().execute("");
@@ -138,10 +147,12 @@ public class TSViewHMProfile extends AppCompatActivity  {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+
+
     }
 
 
-    private void initValues(JsonObject hmdetails) throws JSONException {
+    private void initValues(final JsonObject hmdetails) throws JSONException {
 
         Log.d("JSONVALUE", "test2");
         homemakerName.setText(hmdetails.get("UserFname").getAsString() + " " + hmdetails.get("UserLname").getAsString());
@@ -151,6 +162,17 @@ public class TSViewHMProfile extends AppCompatActivity  {
         ho0memakerPostal.setText(hmdetails.get("UserZipCode").getAsString());
         homemakerPhone.setText(hmdetails.get("UserPhone").getAsString());
         homemakerEmail.setText(hmdetails.get("email").getAsString());
+        ratingsOverall.setRating(Float.parseFloat(hmdetails.get("AverageRatings").getAsString()));
+
+        reviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TSViewHMProfile.this, HMReviews.class);
+                i.putExtra("HomeMakerID",hmdetails.get("HMId").getAsString());
+                i.putExtra("HMName", hmdetails.get("UserFname").getAsString() + " " + hmdetails.get("UserLname").getAsString());
+                startActivity(i);
+            }
+        });
     }
 
 
@@ -232,6 +254,7 @@ public class TSViewHMProfile extends AppCompatActivity  {
         intent.putExtra("HMId", i.getStringExtra("HMId"));
         startActivity(intent);
     }
+
 
 
    /* @OnClick(R.id.submit_btn)
