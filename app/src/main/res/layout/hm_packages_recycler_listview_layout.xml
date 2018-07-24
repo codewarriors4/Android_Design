@@ -20,7 +20,7 @@
             android:background="@color/white_greyish">
 
             <TextView
-                android:id="@+id/ts_name"
+                android:id="@+id/hm_name"
                 android:layout_width="162dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -69,7 +69,7 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/ts_name"
+                android:layout_alignTop="@+id/hm_name"
                 android:layout_marginEnd="59dp"
                 android:padding="5dp"
                 android:textAlignment="textEnd"
