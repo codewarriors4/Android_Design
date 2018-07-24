@@ -126,7 +126,6 @@ public class TSSubPayment extends AppCompatActivity {
         }else if(!getCadNum.equals("1111222233334444")){
             new CustomToast().Show_Toast(this, view,
                     "Invalid card");
-
         }
         else{
             submit();

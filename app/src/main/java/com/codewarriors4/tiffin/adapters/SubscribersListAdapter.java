@@ -3,6 +3,7 @@ package com.codewarriors4.tiffin.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,7 @@ import com.codewarriors4.tiffin.models.SubscribersListModel;
 import java.util.List;
 
 
-public class SubscribersListAdapter extends RecyclerView.Adapter<SubscribersListAdapter.SubScribersListViewHolder
-        >
+public class SubscribersListAdapter extends RecyclerView.Adapter<SubscribersListAdapter.SubScribersListViewHolder>
 {
     public SubscribersListAdapter(Context subscribersLayoutContext, List<SubscribersListModel> subscribersListModelArray) {
         this.subscribersLayoutContext = subscribersLayoutContext;
@@ -41,6 +41,12 @@ public class SubscribersListAdapter extends RecyclerView.Adapter<SubscribersList
         final SubscribersListModel listIteam = subscribersListModelArray.get(position);
         holder.homemakeEmail.setText(listIteam.getUserName());
         holder.homeMakerPostCode.setText(listIteam.getUserStreet());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("onclick_frag", "onClick: ");
+            }
+        });
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.codewarriors4.tiffin;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -11,6 +12,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import com.codewarriors4.tiffin.utils.Constants;
+import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.RequestPackage;
+import com.codewarriors4.tiffin.utils.SessionUtli;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +31,7 @@ public class SubscribersListActivity extends AppCompatActivity
 {
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +69,7 @@ public class SubscribersListActivity extends AppCompatActivity
         adapter.addFragment(subscribersTab_fragment, "Monthly");
         adapter.addFragment(subscribersTab_fragment2, "Daily");
         adapter.addFragment(subscribersTab_fragment3, "All");
-
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
     }
 
@@ -98,4 +111,40 @@ public class SubscribersListActivity extends AppCompatActivity
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
