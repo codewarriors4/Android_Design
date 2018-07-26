@@ -30,11 +30,12 @@ import android.widget.Toast;
 
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.LocationDialog;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
 
     Button loginActionButton;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //new LocationDialog().show(getFragmentManager(), "Location");
         sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
         accessPermission();
     }
@@ -195,9 +196,6 @@ public class MainActivity extends AppCompatActivity{
 //        else
 //            super.onBackPressed();
     }
-
-
-
 
 
 }

@@ -1,6 +1,7 @@
 package com.codewarriors4.tiffin;
 
 import android.Manifest;
+import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -44,11 +45,16 @@ import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.DatabaseHelper;
 import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.LocationDialog;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -57,6 +63,7 @@ import android.location.LocationListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,7 +74,10 @@ import butterknife.ButterKnife;
 
 import butterknife.OnClick;
 
-public class TiffinSeekerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
+public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        LocationListener,
+        LocationDialog.LocationDiglogActivityListner{
     // private ProgressBar progressBar;
 
     String response = "";
@@ -88,6 +98,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
     private FusedLocationProviderClient mFusedLocationClient;
     RecyclerView recyclerView;
     ProgressBar homeMakerProgressList;
+    public LocationCallback locationCallback;
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
@@ -174,6 +185,22 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
 //        }
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+//                super.onLocationResult(locationResult);
+//                doLocation(locationResult.getLastLocation());
+            }
+
+            @Override
+            public void onLocationAvailability(LocationAvailability locationAvailability) {
+                super.onLocationAvailability(locationAvailability);
+                if(locationAvailability.isLocationAvailable()){
+                    getLocation();
+                    mFusedLocationClient.removeLocationUpdates(this);
+                }
+            }
+        };
 
 
 
@@ -191,26 +218,44 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
                                 homeMakerProgressList.setVisibility(View.VISIBLE);
                                 doLocation(location);
                             }else{
-                                Toast.makeText(TiffinSeekerDashboardActivity.this, "GPS SETTING ERROR", Toast.LENGTH_LONG).show(); // new LocationAsynTask().execute(fromLocation.get(0).getPostalCode()); paste her wit hzip
+
+                                    LocationRequest mLocationRequest = new LocationRequest();
+                                    mLocationRequest.setInterval(0);
+                                    mLocationRequest.setFastestInterval(0);
+                                    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                                    mFusedLocationClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
+                                    //Toast.makeText(TiffinSeekerDashboardActivity.this, "GPS SETTING ERROR", Toast.LENGTH_LONG).show(); // new LocationAsynTask().execute(fromLocation.get(0).getPostalCode()); paste her wit hzip
                             }
                         }
                     });
+
         }
     }
 
     private void doLocation(Location lastKnownLocation) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            try {
+                fromLocation = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
+                if(fromLocation.get(0).getPostalCode() != null) {
+                    new LocationAsynTask().execute(fromLocation.get(0).getPostalCode());
+                }else{
+                    new LocationDialog().show(getFragmentManager(), "Invalid Location Detect");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            TextView app_bar_editTxt = findViewById(R.id.location_auto_complete);
+            app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] + "  " + fromLocation.get(0).getPostalCode());
 
-        try {
-            fromLocation = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
-            new LocationAsynTask().execute(fromLocation.get(0).getPostalCode());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        EditText app_bar_editTxt = findViewById(R.id.location_auto_complete);
-        app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] +"  " + fromLocation.get(0).getPostalCode());
+    }
+
+
+    private void doLocation(String postalCode){
+        new LocationAsynTask().execute(postalCode);
+        TextView app_bar_editTxt = findViewById(R.id.location_auto_complete);
+        app_bar_editTxt.setText(postalCode);
     }
 
     //    @OnClick(R.id.view_hm_details)
@@ -342,6 +387,20 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements 
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         return HttpHelper.downloadFromFeed(requestPackage);
     }
+
+    @Override
+    public void onDialogPostiveClick(String postalCode) {
+
+        if(!postalCode.trim().equals("")){
+            doLocation(postalCode.trim());
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick() {
+        Toast.makeText(this, "Can't procced", Toast.LENGTH_LONG);
+    }
+
 
     private class MyAsynTask extends AsyncTask<String, String, String> {
 
