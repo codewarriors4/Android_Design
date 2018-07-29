@@ -234,20 +234,20 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
 
     private void doLocation(Location lastKnownLocation) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-           // try {
-               // fromLocation = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
-               // if(fromLocation.get(0).getPostalCode() != null) {
-                  // new LocationAsynTask().execute(fromLocation.get(0).getPostalCode());
-              // }else{
+            try {
+                fromLocation = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
+                if(fromLocation.get(0).getPostalCode() != null) {
+                   new LocationAsynTask().execute(fromLocation.get(0).getPostalCode());
+               }else{
                     new LocationDialog().show(getFragmentManager(), "Invalid Location Detect");
-               // }
-            //} catch (IOException e) {
-            //    e.printStackTrace();
-            //} catch (Exception e) {
-            //    e.printStackTrace();
-          //  }
-          // TextView app_bar_editTxt = findViewById(R.id.location_auto_complete);
-           // app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] + "  " + fromLocation.get(0).getPostalCode());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+          TextView app_bar_editTxt = findViewById(R.id.location_auto_complete);
+            app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] + "  " + fromLocation.get(0).getPostalCode());
 
     }
 
