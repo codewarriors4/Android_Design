@@ -3,6 +3,7 @@ package com.codewarriors4.tiffin;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -41,6 +42,7 @@ public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
     private Context context;
     private String listString;
     private boolean isLoaded = false;
+    ArrayList<SubscribersListModel> lists;
 
 
     public SubscribersTab_Fragment(){
@@ -143,19 +145,34 @@ public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
         try {
 
             JSONArray subscribersList =  new JSONArray(subscribersListStr);
-            ArrayList<SubscribersListModel> lists = new ArrayList<>();
+            lists = new ArrayList<>();
             try {
                 for(int i = 0; i < subscribersList.length() ; i++){
 
                     JSONObject subscriber = subscribersList.getJSONObject(i);
+                    String firstName = subscriber.getString("UserFname");
+                    String lastName = subscriber.getString("UserLname");
                     String email = subscriber.getString("email");
                     String street = subscriber.getString("UserStreet");
                     String phoneNumber = subscriber.getString("UserPhone");
-                    lists.add(new SubscribersListModel(email, street, phoneNumber));
+                    String cost = subscriber.getString("SubCost");
+                    String packageName = subscriber.getString("HMPName");
+                    String packageDesc = subscriber.getString("HMPDesc");
+                    lists.add(new SubscribersListModel(firstName + " " +lastName,
+                            email + "\n" + street, phoneNumber, cost, packageName, packageDesc));
                 }
 
                 SubscribersListAdapter subscribersListAdapter = new SubscribersListAdapter(context, lists);
                 recyclerView.setAdapter(subscribersListAdapter);
+                subscribersListAdapter.setOnItemClickListener(new SubscribersListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Intent intent = new Intent(context, SubscriptionFullView.class);
+                        intent.putExtra("Example Item", lists.get(position));
+
+                        startActivity(intent);
+                    }
+                });
 
         } catch (JSONException e) {
 

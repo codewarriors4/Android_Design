@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.DatabaseHelper;
@@ -100,17 +101,32 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
         } else if (id == R.id.create_new) {
 
-            Intent i = new Intent(this, HomemakerCreatePackages.class);
-            startActivity(i);
+            if(sessionUtli.getValue("isActive").equals("1.0")) {
+                Intent i = new Intent(this, HomemakerCreatePackages.class);
+                startActivity(i);
+            }else{
+                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG);
+            }
 
 
         } else if (id == R.id.view_menu) {
+            if(sessionUtli.getValue("isActive").equals("1.0")) {
+                Intent i = new Intent(this, HomemakerViewPackages.class);
+                startActivity(i);
+            }else{
+                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG);
+            }
 
-            Intent i = new Intent(this, HomemakerViewPackages.class);
-            startActivity(i);
+
 
         }else if (id == R.id.my_subscribers) {
-            startActivity(new Intent(this, SubscribersListActivity.class));
+
+            if(sessionUtli.getValue("isActive").equals("1.0")) {
+                startActivity(new Intent(this, SubscribersListActivity.class));
+            }else{
+                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG);
+            }
+
 //        }else if (id == R.id.my_daily_subs) {
 //
 //

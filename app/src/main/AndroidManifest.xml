@@ -10,11 +10,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/edit_pencil"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" >
@@ -57,6 +57,7 @@
         <activity android:name=".HomemakerViewPackage" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".HomemakerUpdatePackage" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".SubscribersListActivity" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".SubscriptionFullView" android:theme="@style/AppThemeActionBar"></activity>
 
 
         <activity android:name=".Legal"></activity>
@@ -81,7 +82,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
 
 
 

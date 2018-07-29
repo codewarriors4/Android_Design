@@ -29,6 +29,8 @@ public class TiffinFirebaseMessagingService extends FirebaseMessagingService {
 
             mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
             mChannel.enableLights(true);
+            mChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            mChannel.setShowBadge(true);
             mChannel.setLightColor(Color.RED);
             mChannel.enableVibration(true);
             mChannel.setVibrationPattern(new long[]{100,200,300,400,500,40,300,200,100});
@@ -38,11 +40,13 @@ public class TiffinFirebaseMessagingService extends FirebaseMessagingService {
         }
         PendingIntent pi = PendingIntent.getActivity(this,0,new Intent(this, MainActivity.class),0);
         Notification notification = new NotificationCompat.Builder(this,"my_channel_id_01")
-                 .setSmallIcon(R.drawable.ic_app_notifn_icon)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setTicker(remoteMessage.getNotification().getBody())
+                .setWhen(System.currentTimeMillis())
                 .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(remoteMessage.getNotification().getBody())
-                 .setLights(Color.RED, 3000, 3000)
-                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setLights(Color.RED, 3000, 3000)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI).build();
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

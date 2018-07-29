@@ -146,18 +146,19 @@ public class HttpHelper {
         if (response.isSuccessful()) {
             return response.body().string();
         } else {
-            Log.d("responseERROR", "downloadFromFeed: " + response.body().string());
-            throw new Exception(getResponseBody(response.body().string()));
+            String string = response.body().string();
+            throw new Exception(string);
         }
     }
 
-    private static String getResponseBody(String str){
-        try {
-            return new JSONObject(str).getString("message");
-        } catch (JSONException e) {
-            return "JSON ERROR";
-        }
-    }
+//    private static String getResponseBody(String str){
+//        try {
+//            String message = new JSONObject(str).getString("message");
+//            return message;
+//        } catch (JSONException e) {
+//            return "JSON ERROR";
+//        }
+//    }
 
 
 }

@@ -68,6 +68,8 @@ public class TSViewSubsListAdapter extends RecyclerView.Adapter<TSViewSubsListAd
             e.printStackTrace();
         }
 
+
+
         holder.hm_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,17 +153,12 @@ public class TSViewSubsListAdapter extends RecyclerView.Adapter<TSViewSubsListAd
         public RatingBar ratingBar;
         public TSSubscriptionsViewHolder(View itemView) {
             super(itemView);
-
             hm_name = itemView.findViewById(R.id.hm_name);
             package_title = itemView.findViewById(R.id.package_title);
             package_cost = itemView.findViewById(R.id.package_cost);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             subscription_start_date = itemView.findViewById(R.id.subscription_start_date);
             subscription_end_date = itemView.findViewById(R.id.subscription_end_date);
-
-
-
-
 
         }
     }

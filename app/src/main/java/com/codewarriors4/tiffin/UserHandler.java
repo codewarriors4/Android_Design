@@ -1,6 +1,5 @@
 package com.codewarriors4.tiffin;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,12 +17,13 @@ public class UserHandler
     public void startActivity(SessionUtli session, Context context){
         this.session = session;
         this.context = context;
-        new getInformationTask().execute(this.session.getValue("access_token"));
+        new UserInformationTask().execute(this.session.getValue("access_token"));
 
 
     }
 
-    private class getInformationTask extends AsyncTask<String, Void, String>{
+    private class UserInformationTask extends AsyncTask<String, Void, String>{
+
 
         @Override
         protected String doInBackground(String... strings) {

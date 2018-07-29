@@ -1,16 +1,25 @@
 package com.codewarriors4.tiffin.models;
 
-public class SubscribersListModel
-{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class SubscribersListModel implements Parcelable {
     private String userName;
     private String userStreet;
     private String phoneNumber;
+    private String packageCost;
+    private String packageName;
+    private String packageDesc;
 
-    public SubscribersListModel(String userName, String userStreet, String phoneNumber) {
+    public SubscribersListModel(String userName, String userStreet, String phoneNumber, String packageCost, String packageName, String packageDesc) {
         this.userName = userName;
         this.userStreet = userStreet;
         this.phoneNumber = phoneNumber;
+        this.packageCost = packageCost;
+        this.packageName = packageName;
+        this.packageDesc = packageDesc;
     }
+
 
     public String getUserName() {
         return userName;
@@ -35,4 +44,64 @@ public class SubscribersListModel
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String getPackageCost() {
+        return packageCost;
+    }
+
+    public void setPackageCost(String packageCost) {
+        this.packageCost = packageCost;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getPackageDesc() {
+        return packageDesc;
+    }
+
+    public void setPackageDesc(String packageDesc) {
+        this.packageDesc = packageDesc;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.userName);
+        dest.writeString(this.userStreet);
+        dest.writeString(this.phoneNumber);
+        dest.writeString(this.packageCost);
+        dest.writeString(this.packageName);
+        dest.writeString(this.packageDesc);
+    }
+
+    protected SubscribersListModel(Parcel in) {
+        this.userName = in.readString();
+        this.userStreet = in.readString();
+        this.phoneNumber = in.readString();
+        this.packageCost = in.readString();
+        this.packageName = in.readString();
+        this.packageDesc = in.readString();
+    }
+
+    public static final Parcelable.Creator<SubscribersListModel> CREATOR = new Parcelable.Creator<SubscribersListModel>() {
+        @Override
+        public SubscribersListModel createFromParcel(Parcel source) {
+            return new SubscribersListModel(source);
+        }
+
+        @Override
+        public SubscribersListModel[] newArray(int size) {
+            return new SubscribersListModel[size];
+        }
+    };
 }
