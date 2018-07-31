@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/first_section"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/blue"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@mipmap/baseline_check_circle_outline_white_18dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="81dp"
+            android:gravity="center"
+            android:id="@+id/success_message_top"
+            android:padding="10dp"
+            android:text="@string/sucess_payment_text"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#0B6623"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/sucess_payment_text"
+            android:layout_height="81dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/success_message_top"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/sucess_payment_note"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/finish_payment_btn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/sucess_payment_text"
+            android:layout_marginBottom="63dp"
+            android:background="#0B6623"
+            android:padding="3dp"
+            android:text="@string/sucess_payment_btn"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</LinearLayout>

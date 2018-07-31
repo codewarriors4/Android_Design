@@ -34,6 +34,7 @@ public interface Constants {
     public static final String TSCREATEUPDATERATINGS = "/createupdateratings";
     public static final String TSVIEWHMRATING = "/viewhmrating";
     public static final String TSVIEWHMRATINGS = "/viewhmratings";
+    public static final String POSTALCODEREGEX ="^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$";
 
 
 

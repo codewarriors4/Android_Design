@@ -77,10 +77,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 SharedPreferences sharedPreference = getSharedPreferences(
                         Constants.SHAREDPREFERNCE, MODE_PRIVATE
                 );
-
-                SessionUtli session = SessionUtli.getSession(sharedPreference);
-                session.setValues(access_token);
-                new UserHandler().startActivity(session, LoginActivity.this);
+                if(!access_token.contains("Email not verified")) {
+                    SessionUtli session = SessionUtli.getSession(sharedPreference);
+                    session.setValues(access_token);
+                    new UserHandler().startActivity(session, LoginActivity.this);
+                }else{
+                    new CustomToast().Show_Toast(LoginActivity.this, findViewById(android.R.id.content), "Please Contact with Admin");
+                    loginButton.setEnabled(true);
+                }
 //                Intent demoIntent = new Intent(context, TiffinSeekerDashboardActivity.class);
 //                demoIntent.putExtra("isNewLogin", true);
 //                context.startActivity(demoIntent);

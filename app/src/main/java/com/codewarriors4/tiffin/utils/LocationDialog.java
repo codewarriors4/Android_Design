@@ -13,16 +13,18 @@ import android.widget.TextView;
 
 import com.codewarriors4.tiffin.R;
 
-public class LocationDialog extends DialogFragment
-{
+import java.util.regex.Pattern;
 
-    public interface LocationDiglogActivityListner
-    {
+public class LocationDialog extends DialogFragment {
+
+    public interface LocationDiglogActivityListner {
         public void onDialogPostiveClick(String postalCode);
+
         public void onDialogNegativeClick();
     }
 
     LocationDiglogActivityListner mListener;
+
     @Override
     public void onAttach(Activity context) {
         super.onAttach(context);
@@ -47,8 +49,7 @@ public class LocationDialog extends DialogFragment
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        mListener.onDialogPostiveClick(postalUserInput.getEditableText().toString());
-
+                        mListener.onDialogPostiveClick(stringValidation(postalUserInput.getEditableText().toString()));
                     }
                 })
                 .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
@@ -59,4 +60,25 @@ public class LocationDialog extends DialogFragment
                 });
         return builder.create();
     }
+
+    private String stringValidation(String str) {
+        String strAllCaps = str.toUpperCase();
+        Pattern pattern = Pattern.compile(Constants.POSTALCODEREGEX);
+        if (pattern.matcher(strAllCaps).matches()) {
+            return strAllCaps;
+        } else {
+            if (str.length() == 6) {
+                String finalStr = strAllCaps.substring(0, 3) + " " + strAllCaps.substring(3, 6);
+                if (pattern.matcher(finalStr).matches()) {
+                    return finalStr;
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        }
+    }
+
+
 }

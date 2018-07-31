@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,7 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
     private SessionUtli sessionUtli;
     DatabaseHelper mDatabaseHelper;
+    boolean doubleBackToExitPressedOnce = false;
 
 
     @Override
@@ -57,12 +59,24 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.homemaker_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(doubleBackToExitPressedOnce) {
             super.onBackPressed();
+            return;
         }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     @Override
@@ -105,7 +119,7 @@ public class HomemakerDashboardActivity extends AppCompatActivity
                 Intent i = new Intent(this, HomemakerCreatePackages.class);
                 startActivity(i);
             }else{
-                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG);
+                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
             }
 
 
@@ -114,7 +128,7 @@ public class HomemakerDashboardActivity extends AppCompatActivity
                 Intent i = new Intent(this, HomemakerViewPackages.class);
                 startActivity(i);
             }else{
-                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG);
+                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
             }
 
 
@@ -124,7 +138,7 @@ public class HomemakerDashboardActivity extends AppCompatActivity
             if(sessionUtli.getValue("isActive").equals("1.0")) {
                 startActivity(new Intent(this, SubscribersListActivity.class));
             }else{
-                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG);
+                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
             }
 
 //        }else if (id == R.id.my_daily_subs) {
@@ -139,8 +153,8 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 //            startActivity(new Intent(this, Legal.class));
 //
 //
-//        } else if (id == R.id.legal) {
-            //startActivity(new Intent(this, Legal.class));
+        } else if (id == R.id.legal) {
+            startActivity(new Intent(this, Legal.class));
 
         }else if (id == R.id.privacy) {
             startActivity(new Intent(this, Privacy.class));

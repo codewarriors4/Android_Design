@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="sucess_payment_text">Awesome</string>
+    <string name="sucess_payment_note">Payment Sucessfully Completed \n and We Sent Recipet at your Email Address</string>
 </resources>

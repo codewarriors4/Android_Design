@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 
 import android.app.NotificationChannel;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     SessionUtli sessionUtli;
+    boolean doubleBackToExitPressedOnce = false;
 
 
 
@@ -89,21 +93,21 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(this, "Activity Started", Toast.LENGTH_LONG).show();
 
         //setContentView(R.layout.dashboard);
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-
-            NotificationManager mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-            NotificationChannel mChannel = new NotificationChannel(Constants.CHANNEL_ID,Constants.CHANNEL_NAME,NotificationManager.IMPORTANCE_HIGH);
-
-            mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
-            mChannel.enableLights(true);
-            mChannel.setLightColor(Color.RED);
-            mChannel.enableVibration(true);
-            mChannel.setVibrationPattern(new long[]{100,200,300,400,500,40,300,200,100});
-            mNotificationManager.createNotificationChannel(mChannel);
-
-
-        }
+//        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//
+//            NotificationManager mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//            NotificationChannel mChannel = new NotificationChannel(Constants.CHANNEL_ID,Constants.CHANNEL_NAME,NotificationManager.IMPORTANCE_HIGH);
+//
+//            mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+//            mChannel.enableLights(true);
+//            mChannel.setLightColor(Color.RED);
+//            mChannel.enableVibration(true);
+//            mChannel.setVibrationPattern(new long[]{100,200,300,400,500,40,300,200,100});
+//            mNotificationManager.createNotificationChannel(mChannel);
+//
+//
+//        }
 
 
        /* Intent intent = new Intent(this, HomemakerViewProfile.class);
@@ -128,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent loginIntent = new Intent(v.getContext(), LoginActivity.class);
                 startActivity(loginIntent);
+
             }
         });
         signupActionButton.setOnClickListener(new View.OnClickListener() {
@@ -176,26 +181,26 @@ public class MainActivity extends AppCompatActivity {
 //                        Utils.Login_Fragment).commit();
 //    }
 
-    @Override
     public void onBackPressed() {
 
-        // Find the tag of signup and forgot password fragment
-//        Fragment SignUp_Fragment = fragmentManager
-//                .findFragmentByTag(Utils.SignUp_Fragment);
-//        Fragment ForgotPassword_Fragment = fragmentManager
-//                .findFragmentByTag(Utils.ForgotPassword_Fragment);
-//
-//        // Check if both are null or not
-//        // If both are not null then replace login fragment else do backpressed
-//        // task
-//
-//        if (SignUp_Fragment != null)
-//            replaceLoginFragment();
-//        else if (ForgotPassword_Fragment != null)
-//            replaceLoginFragment();
-//        else
-//            super.onBackPressed();
+
+        if(doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
+
 
 
 }

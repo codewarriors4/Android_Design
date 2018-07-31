@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -82,6 +83,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
 
     String response = "";
     boolean flag = false;
+    boolean doubleBackToExitPressedOnce = false;
 
     private SessionUtli sessionUtli;
     TextView textView;
@@ -313,9 +315,21 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.tiffin_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(doubleBackToExitPressedOnce) {
             super.onBackPressed();
+            return;
         }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
 
@@ -393,12 +407,17 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
 
         if(!postalCode.trim().equals("")){
             doLocation(postalCode.trim());
+        }else{
+            homeMakerProgressList.setVisibility(View.GONE);
+            new CustomToast().Show_Toast(this, findViewById(android.R.id.content), "Invalid Postal Code");
+
         }
     }
 
     @Override
     public void onDialogNegativeClick() {
-        Toast.makeText(this, "Can't procced", Toast.LENGTH_LONG);
+        homeMakerProgressList.setVisibility(View.GONE);
+        new CustomToast().Show_Toast(this, findViewById(android.R.id.content), "Please Provide Postal Code \n Change GPS Setting");
     }
 
 

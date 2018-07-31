@@ -64,27 +64,7 @@ public class TSViewHMPackage extends AppCompatActivity {
 
 
 
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
-        public void onReceive(Context context, Intent intent) {
-//            String str = (String) intent
-//                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-            
-             
-                    RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-                    if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                        Toast.makeText(context, "Update Succesfully", Toast.LENGTH_SHORT).show();
-
-                    }else{
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage.getParams().get(RespondPackage.FAILED));
-                        Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
-                    }
-                    
-        }
-    };
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +77,9 @@ public class TSViewHMPackage extends AppCompatActivity {
         progress = findViewById(R.id.progress_overlay);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .registerReceiver(mBroadcastReceiver,
-                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+//        LocalBroadcastManager.getInstance(getApplicationContext())
+//                .registerReceiver(mBroadcastReceiver,
+//                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
         new MyAsynTask().execute("");
     }
 
@@ -229,12 +209,12 @@ public class TSViewHMPackage extends AppCompatActivity {
         }
         return index;
     }*/
-    protected void onDestroy() {
-        super.onDestroy();
-
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .unregisterReceiver(mBroadcastReceiver);
-    }
+//    protected void onDestroy() {
+//        super.onDestroy();
+//
+//        LocalBroadcastManager.getInstance(getApplicationContext())
+//                .unregisterReceiver(mBroadcastReceiver);
+//    }
 
 
 

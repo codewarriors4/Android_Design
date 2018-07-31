@@ -96,12 +96,9 @@ public class TSSubPayment extends AppCompatActivity {
         ButterKnife.bind(this);
         profileBody = findViewById(R.id.profile_body);
         progress = findViewById(R.id.progress_overlay);
-        ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
-        view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
-        new MyAsynTask().execute("");
     }
 
 
@@ -121,10 +118,10 @@ public class TSSubPayment extends AppCompatActivity {
 
 
         if(getCardName.equals("") || getCadNum.equals("") || getCardExpMnth.equals("") || getCardExpYear.equals("") || getCardCVV.equals("")){
-            new CustomToast().Show_Toast(this, view,
+            new CustomToast().Show_Toast(this, findViewById(android.R.id.content),
                     "All fields are required.");
         }else if(!getCadNum.equals("1111222233334444")){
-            new CustomToast().Show_Toast(this, view,
+            new CustomToast().Show_Toast(this, findViewById(android.R.id.content),
                     "Invalid card");
         }
         else{
@@ -169,98 +166,14 @@ public class TSSubPayment extends AppCompatActivity {
     }
 
 
-    public String makePayment() throws Exception {
- /*       Intent i = getIntent();
-        RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSMAKEPAYMENT);
-        requestPackage.setMethod("POST");
-        requestPackage.setParam("HMPId", i.getStringExtra("package_id"));
-        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
-        requestPackage.setHeader("Accept", "application/json; q=0.5");
-        return HttpHelper.downloadFromFeed(requestPackage);*/
- return "success";
-    }
-
-    private class MyAsynTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-              return makePayment();
-            } catch (Exception e) {
-                return e.getMessage();
-            }
-
-
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            /*profileBody.setVisibility(View.GONE);
-            progress.setVisibility(View.VISIBLE);*/
-
-        }
-
-        @Override
-        protected void onPostExecute(String aVoid) {
- /*           try {
-                Log.d("Testing data", "onPostExecute: " + aVoid);
-                super.onPostExecute(aVoid);
-               *//* profileBody.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);*//*
-                JsonObject jsonObject = new Gson().fromJson(aVoid, JsonObject.class);
-                hmPackageDetails = jsonObject.get("home_maker_packages")       // get the 'user' JsonElement
-                        .getAsJsonObject(); // get it as a JsonObject
-
-                //System.out.println(name);
-
-                // HashMap<String, Object> hashMap = new Gson().fromJson(aVoid, HashMap.class);
-           *//*     for (String key : hashMap.keySet()) {
-                    Log.d("JSONVALUE", key + ": " + hashMap.get(key));
-                }*//*
-
-                Log.d("JSONVALUE", "test");
-
-                //if(hashMap.get("UserZipCode") != null)
-                initValues(hmPackageDetails);
-            }
-
-            catch(Exception e){
-                Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG);
-            }*/
-        }
-
-    }
-
-
-    private void initValues(final JsonObject hmPackageDetails)
-    {
 
 
 
 
-    }
 
-    /*    private int getIndex(Spinner spinner, String myString){
 
-            int index = 0;
-
-            for (int i=0;i<spinner.getCount();i++){
-                if (spinner.getItemAtPosition(i).equals(myString)){
-                    index = i;
-                }
-            }
-            return index;
-        }*/
     protected void onDestroy() {
         super.onDestroy();
-
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(mBroadcastReceiver);
     }

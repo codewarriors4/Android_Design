@@ -1,5 +1,6 @@
 package com.codewarriors4.tiffin;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -51,9 +52,10 @@ public class UserHandler
                 Intent demoIntent = new Intent(context, TiffinSeekerDashboardActivity.class);
                 demoIntent.putExtra("isNewLogin", true);
                 context.startActivity(demoIntent);
+
                 Log.d("insideusertypets", "insideusertypets: ");
 
-                //((Activity) context).finish();
+                ((Activity) context).finish();
             }
 
             else if(session.getValue("UserType").equals("1.0")){
@@ -62,7 +64,7 @@ public class UserHandler
                 Intent demoIntent = new Intent(context, HomemakerDashboardActivity.class);
                 demoIntent.putExtra("isNewLogin", true);
                 context.startActivity(demoIntent);
-               // ((Activity) context).finish();
+               ((Activity) context).finish();
             }
 
             else {

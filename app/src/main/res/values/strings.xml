@@ -36,5 +36,8 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+    <string name="sucess_payment_text">Payement Success!</string>
+    <string name="sucess_payment_note">We have sent receipt at your Email Address</string>
+    <string name="sucess_payment_btn">Got it!</string>
 
 </resources>

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class CustomToast {
 
 	// Custom Toast Method
@@ -18,6 +19,8 @@ public class CustomToast {
 		// Layout Inflater for inflating custom view
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
 
 		// inflate the layout over view
 		View layout = inflater.inflate(R.layout.custom_toast,
