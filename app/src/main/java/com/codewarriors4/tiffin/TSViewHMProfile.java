@@ -100,27 +100,7 @@ public class TSViewHMProfile extends AppCompatActivity  {
     private FrameLayout progress;
     private LinearLayout profileBody;
     JsonObject hmDetailsJSONObj;
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
-        public void onReceive(Context context, Intent intent) {
-//            String str = (String) intent
-//                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-            
-             
-                    RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-                    if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                        Toast.makeText(context, "Update Succesfull", Toast.LENGTH_SHORT).show();
-
-                    }else{
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage.getParams().get(RespondPackage.FAILED));
-                        Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
-                    }
-                    
-        }
-    };
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -509,8 +489,6 @@ public class TSViewHMProfile extends AppCompatActivity  {
    protected void onDestroy() {
        super.onDestroy();
 
-       LocalBroadcastManager.getInstance(getApplicationContext())
-               .unregisterReceiver(mBroadcastReceiver);
    }
 
     public boolean onOptionsItemSelected(MenuItem item) {

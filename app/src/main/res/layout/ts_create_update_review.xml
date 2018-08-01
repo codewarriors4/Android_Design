@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="10dp"
     android:background="@color/white">
 
 
@@ -16,32 +16,45 @@
         android:layout_alignParentTop="true"
         android:text="TextView" />
 
-    <RatingBar
-        android:id="@+id/edit_rating_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="71dp"
-        android:numStars="5"
-        android:stepSize="0.5" />
-
-    <EditText
-        android:id="@+id/edit_rating_content"
+    <TextView
+        android:id="@+id/product_name"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_above="@+id/submit_rating_btn"
-        android:layout_alignParentStart="true"
-        android:ems="10"
-        android:inputType="textMultiLine" />
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/rating_profile_name"
+        android:text="TextView" />
 
-    <Button
-        android:id="@+id/submit_rating_btn"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="134dp"
-        android:text="Rate !!" />
+        android:layout_below="@id/product_name">
+
+        <RatingBar
+            android:id="@+id/edit_rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:numStars="5"
+            android:stepSize="0.5" />
+
+        <EditText
+            android:id="@+id/edit_rating_content"
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:layout_above="@+id/submit_rating_btn"
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/submit_rating_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="67dp"
+            android:text="Rate !!" />
+    </RelativeLayout>
 
 </RelativeLayout>

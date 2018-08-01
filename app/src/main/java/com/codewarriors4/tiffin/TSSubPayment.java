@@ -4,27 +4,23 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
-import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.PaymentSucessDialog;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import butterknife.BindView;
@@ -32,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class TSSubPayment extends AppCompatActivity {
+public class TSSubPayment extends AppCompatActivity implements PaymentSucessDialog.PaymentSuccessListener, View.OnClickListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
     static final int PHONELENGHT = 10;
@@ -76,7 +72,7 @@ public class TSSubPayment extends AppCompatActivity {
             if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                Toast.makeText(context, "Update Succesfull", Toast.LENGTH_SHORT).show();
+                new PaymentSucessDialog().show(getFragmentManager(), "Payment");
 
             }else{
                 Log.d("JsonResponseData", "onReceive: "
@@ -179,7 +175,16 @@ public class TSSubPayment extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(this, "Working", Toast.LENGTH_LONG).show();
+    }
 
-
-
+    @Override
+    public void getMainActivity() {
+        Intent intent = new Intent(this, TiffinSeekerDashboardActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }

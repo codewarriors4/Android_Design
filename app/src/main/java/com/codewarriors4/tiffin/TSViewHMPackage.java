@@ -163,7 +163,7 @@ public class TSViewHMPackage extends AppCompatActivity {
             packCost.setText((String)hmPackageDetails.get("HMPCost").getAsString() + " CAD");
             summaryPackCost.setText((String)hmPackageDetails.get("HMPCost").getAsString() + " CAD");
             summaryPackTaxesValue.setText((String)hmPackageDetails.get("hst").getAsString() + " CAD");
-        summaryTotalCostValue.setText((String)hmPackageDetails.get("total").getAsString() + " CAD");
+            summaryTotalCostValue.setText((String)hmPackageDetails.get("total").getAsString() + " CAD");
 
         final String HMPId = (String)hmPackageDetails.get("HMPId").getAsString();
         final String HMPCost = (String)hmPackageDetails.get("HMPCost").getAsString();

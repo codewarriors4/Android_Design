@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:background="@mipmap/baseline_check_circle_outline_white_18dp" />
+            android:background="@drawable/baseline_clear_white_48" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -28,23 +28,10 @@
             android:gravity="center"
             android:id="@+id/success_message_top"
             android:padding="10dp"
-            android:text="@string/sucess_payment_text"
+            android:text="@string/error_payment_text"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#0B6623"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:id="@+id/sucess_payment_text"
-            android:layout_height="81dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/success_message_top"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="@string/sucess_payment_note"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
         <Button
             android:id="@+id/loginBtn"
             android:layout_width="200dp"
