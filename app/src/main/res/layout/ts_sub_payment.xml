@@ -6,9 +6,7 @@
     android:background="@color/blue"
     tools:context=".Homemaker_Profile">
 
-    <include
-        layout="@layout/progress_framelayout"
-        android:visibility="visible" />
+
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -120,5 +118,10 @@
         android:layout_marginBottom="107dp"
         android:text="PAY" />
     </LinearLayout>
+
+    <include
+        layout="@layout/progress_framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

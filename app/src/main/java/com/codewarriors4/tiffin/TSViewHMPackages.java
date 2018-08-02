@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -85,13 +86,14 @@ public class TSViewHMPackages extends AppCompatActivity {
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
         new MyAsynTask().execute("");
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
 
     public String getHMPackagesList() throws Exception {
-
-        //Log.d("Testing data1", sessionUtli.getValue("access_token"));
-
         Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWHMPACKAGES + "/"+i.getStringExtra("HMId"));
@@ -133,15 +135,10 @@ public class TSViewHMPackages extends AppCompatActivity {
             try {
                 Log.d("Testing data", "onPostExecute: " + aVoid);
                 super.onPostExecute(aVoid);
-                // profileBody.setVisibility(View.VISIBLE);
-                // progress.setVisibility(View.GONE);
 
                 JSONObject mainObject = new JSONObject(aVoid);
                 JSONArray uniObject = mainObject.getJSONArray("home_maker_packages");
 
-                Log.d("JSONVALUE", "test");
-
-                //if(hashMap.get("UserZipCode") != null)
                 initValues(uniObject);
             }
 
@@ -187,23 +184,17 @@ public class TSViewHMPackages extends AppCompatActivity {
 
     }
 
-/*    private int getIndex(Spinner spinner, String myString){
-
-        int index = 0;
-
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).equals(myString)){
-                index = i;
-            }
-        }
-        return index;
-    }*/
-
-
     protected void onDestroy(){
         super.onDestroy();
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

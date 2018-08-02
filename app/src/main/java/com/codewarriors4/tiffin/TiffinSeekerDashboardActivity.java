@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.codewarriors4.tiffin.adapters.HMPackagesListAdapter;
 import com.codewarriors4.tiffin.adapters.HomeMakerListAdapter;
+import com.codewarriors4.tiffin.adapters.TSViewSubsListAdapter;
 import com.codewarriors4.tiffin.models.HMPackagesModel;
 import com.codewarriors4.tiffin.models.HomeMakerListItems;
 import com.codewarriors4.tiffin.services.HttpService;
@@ -177,6 +178,9 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
         String fcmtoken = cfcmtoken.getString(cfcmtoken.getColumnIndex("fcmkey"));
         sessionUtli.setValue("fcmtoken", fcmtoken);
         new MyAsynTask().execute("");
+        View headerView = navigationView.getHeaderView(0);
+        ((TextView)headerView.findViewById(R.id.email_holder_tiffin)).setText(sessionUtli.getValue("email"));
+//        ((TextView)().findViewById(R.id.email_holder_tiffin)).setText(sessionUtli.getValue("email"));
 
 //        if(sessionUtli.getValue("UserType").equals("0.0")){
 //
@@ -185,6 +189,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
 //        else{
 //           // greetingTextView.setText("Welcome HomeMaker");
 //        }
+
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback(){
@@ -510,26 +515,37 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
 
     private void initValues(JSONArray uniObject) throws JSONException
     {
-        ArrayList homeListArray = new ArrayList();
+        final ArrayList<HomeMakerListItems>homeListArray = new ArrayList();
 
         JSONArray jsonarray = new JSONArray(uniObject.toString());
         for (int i = 0; i < jsonarray.length(); i++) {
             JSONObject jsonobject = jsonarray.getJSONObject(i);
-//            String id = String.valueOf(i+1);
             int id = jsonobject.getInt("id");
-            int hmId = jsonobject.getInt("HMId");
-            String email = jsonobject.getString("email");
-            String UserZipCode = jsonobject.getString("UserZipCode");
-            //Double packCost = jsonobject.getDouble("UserZipCode");
+            int HMid =jsonobject.getInt("HMId");
+            String homeMakerFirstName = jsonobject.getString("UserFname");
+            String homeMakerLastName = jsonobject.getString("UserLname");
+            String homeMakerStreet = jsonobject.getString("UserStreet");
+            String homeMakerCity = jsonobject.getString("UserCity");
+            String homeMakerZipCode = jsonobject.getString("UserZipCode");
+            String homeMakerPhone = jsonobject.getString("UserPhone");
+            String homeMakerRating = jsonobject.getString("AverageRatings");
 
-            HomeMakerListItems homeList = new HomeMakerListItems(id , hmId, email, UserZipCode, UserZipCode);
+            HomeMakerListItems homeList = new HomeMakerListItems(homeMakerFirstName ,
+                    homeMakerLastName, homeMakerStreet, homeMakerCity, homeMakerZipCode,homeMakerPhone, homeMakerRating, id,HMid);
 
             homeListArray.add(homeList);
-
-
         }
         HomeMakerListAdapter adapter = new HomeMakerListAdapter(this, homeListArray);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new TSViewSubsListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent i = new Intent(TiffinSeekerDashboardActivity.this, TSViewHMProfile.class);
+                i.putExtra("Id", homeListArray.get(position).getId() + "");
+                i.putExtra("HMId", homeListArray.get(position).getHmID()+"");
+                startActivity(i);
+            }
+        });
         homeMakerProgressList.setVisibility(View.GONE);
 
     }

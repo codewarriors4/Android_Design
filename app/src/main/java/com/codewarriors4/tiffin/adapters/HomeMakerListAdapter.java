@@ -7,11 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.codewarriors4.tiffin.R;
 import com.codewarriors4.tiffin.TSViewHMPackage;
 import com.codewarriors4.tiffin.TSViewHMProfile;
+import com.codewarriors4.tiffin.models.HomeMakerListItem;
 import com.codewarriors4.tiffin.models.HomeMakerListItems;
 
 import java.util.List;
@@ -20,6 +22,16 @@ public class HomeMakerListAdapter extends RecyclerView.Adapter<HomeMakerListAdap
 {
     private Context TSViewHMPackCtxt;
     private List<HomeMakerListItems> HomeMakerListItems;
+    private TSViewSubsListAdapter.OnItemClickListener mListener;
+
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(TSViewSubsListAdapter.OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public HomeMakerListAdapter(Context TSViewHMPackCtxt, List<com.codewarriors4.tiffin.models.HomeMakerListItems> homeMakerListItems) {
 
@@ -32,7 +44,7 @@ public class HomeMakerListAdapter extends RecyclerView.Adapter<HomeMakerListAdap
 
         View view = inflater.inflate(R.layout.home_maker_item, null);
 
-        HomeMakerListItemViewHolder holder = new HomeMakerListItemViewHolder(view);
+        HomeMakerListItemViewHolder holder = new HomeMakerListItemViewHolder(view, mListener);
 
         return holder;
     }
@@ -40,17 +52,18 @@ public class HomeMakerListAdapter extends RecyclerView.Adapter<HomeMakerListAdap
     @Override
     public void onBindViewHolder(HomeMakerListItemViewHolder holder, int position) {
         final HomeMakerListItems listIteam = HomeMakerListItems.get(position);
-        holder.homemakeEmail.setText(listIteam.getHomeMakerEmail());
-        holder.homeMakerPostCode.setText(listIteam.getHomeMakerPostCode());
-        holder.homemakeEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(TSViewHMPackCtxt, TSViewHMProfile.class);
-                i.putExtra("Id", listIteam.getId()+"");
-                i.putExtra("HMId", listIteam.getHmId()+"");
-                TSViewHMPackCtxt.startActivity(i);
-            }
-        });
+        holder.homeMakerFNameView.setText(getFullName(listIteam));
+        holder.homeMakerAddressView.setText(getFullAddress(listIteam));
+        holder.homeMakerRatingView.setText(listIteam.getHomeMakerRating());
+        holder.homeMakerRatingWidget.setRating(Float.valueOf(listIteam.getHomeMakerRating()));
+    }
+
+    private String getFullAddress(HomeMakerListItems item){
+        return item.getHomeMakerStreet() + "\n" + item.getHomeMakerCity() + "\n" + item.getHomeMakerZipCode() + "\n" + item.getHomeMakerPhone();
+    }
+
+    private String getFullName(HomeMakerListItems item){
+        return item.getHomeMakerFirstName() + " " + item.getHomeMakerLastName();
     }
 
 
@@ -61,12 +74,26 @@ public class HomeMakerListAdapter extends RecyclerView.Adapter<HomeMakerListAdap
 
     class HomeMakerListItemViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView homemakeEmail, homeMakerPostCode;
+        public TextView homeMakerFNameView, homeMakerAddressView, homeMakerRatingView;
+        public RatingBar homeMakerRatingWidget;
 
-        public HomeMakerListItemViewHolder(View itemView) {
+        public HomeMakerListItemViewHolder(View itemView, final TSViewSubsListAdapter.OnItemClickListener listener) {
             super(itemView);
-            homemakeEmail = itemView.findViewById(R.id.home_maker_email);
-            homeMakerPostCode = itemView.findViewById(R.id.home_maker_postalcode);
+            homeMakerFNameView = itemView.findViewById(R.id.home_maker_fName);
+            homeMakerAddressView = itemView.findViewById(R.id.home_maker_address);
+            homeMakerRatingView = itemView.findViewById(R.id.rating_field);
+            homeMakerRatingWidget = itemView.findViewById(R.id.rating_view);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 

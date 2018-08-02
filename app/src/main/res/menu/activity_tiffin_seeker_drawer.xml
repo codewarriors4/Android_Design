@@ -11,10 +11,10 @@
         <item
             android:id="@+id/search_homemakers"
             android:title="Search Homemakers"
-            android:icon="@drawable/ic_search_black_24dp"/>
+            android:icon="@drawable/baseline_person_black_18dp"/>
         <item
             android:id="@+id/ts_view_orders"
-            android:title="View Orders"
+            android:title="My Subscriptions"
             android:icon="@drawable/ic_search_black_24dp"/>
         <item
             android:id="@+id/legal"
@@ -23,7 +23,7 @@
         <item
             android:id="@+id/privacy"
             android:title="Privacy"
-            android:icon="@drawable/ic_priority_high_black_24dp"/>
+            android:icon="@drawable/baseline_visibility_off_black_18dp"/>
         <item
             android:id="@+id/logout"
             android:title="Logout"

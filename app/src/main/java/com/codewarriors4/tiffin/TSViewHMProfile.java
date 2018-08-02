@@ -231,6 +231,7 @@ public class TSViewHMProfile extends AppCompatActivity  {
     public void submit(View view){
         Intent i = getIntent();
         Intent intent = new Intent(this, TSViewHMPackages.class);
+        String hmId = i.getStringExtra("HMId");
         intent.putExtra("HMId", i.getStringExtra("HMId"));
         startActivity(intent);
     }

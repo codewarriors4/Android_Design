@@ -100,7 +100,8 @@ public class TiffinSeeker_Profile extends AppCompatActivity {
             if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                Toast.makeText(context, "Update Succesfully2", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Profile Updated", Toast.LENGTH_SHORT).show();
+                finish();
 
             }else{
                 Log.d("JsonResponseData", "onReceive: "

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -77,10 +78,11 @@ public class TSViewHMPackage extends AppCompatActivity {
         progress = findViewById(R.id.progress_overlay);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
-//        LocalBroadcastManager.getInstance(getApplicationContext())
-//                .registerReceiver(mBroadcastReceiver,
-//                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
         new MyAsynTask().execute("");
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
 
@@ -165,23 +167,17 @@ public class TSViewHMPackage extends AppCompatActivity {
             summaryPackTaxesValue.setText((String)hmPackageDetails.get("hst").getAsString() + " CAD");
             summaryTotalCostValue.setText((String)hmPackageDetails.get("total").getAsString() + " CAD");
 
-        final String HMPId = (String)hmPackageDetails.get("HMPId").getAsString();
-        final String HMPCost = (String)hmPackageDetails.get("HMPCost").getAsString();
-        final String hst = (String)hmPackageDetails.get("hst").getAsString();
-        final String total = (String)hmPackageDetails.get("total").getAsString();
+            final String HMPId = (String)hmPackageDetails.get("HMPId").getAsString();
+            final String HMPCost = (String)hmPackageDetails.get("HMPCost").getAsString();
+            final String hst = (String)hmPackageDetails.get("hst").getAsString();
+            final String total = (String)hmPackageDetails.get("total").getAsString();
 
 
 
         subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//<<<<<<< HEAD
-//                Intent i = new Intent(TSViewHMPackage.this, TSSubPayment.class);
-//                i.putExtra("package_id", (String)hmPackageDetails.get("HMPId").getAsString());
-//                i.putExtra("package_cost", (String)hmPackageDetails.get("HMPCost").getAsString());
-//                i.putExtra("package_hst", (String)hmPackageDetails.get("hst").getAsString());
-//                i.putExtra("package_total", (String)hmPackageDetails.get("total").getAsString());
-//=======
+
                 Intent old = getIntent();
                 Intent i = new Intent(TSViewHMPackage.this, TSSubPayment.class);
                 i.putExtra("package_id", HMPId);
@@ -189,7 +185,6 @@ public class TSViewHMPackage extends AppCompatActivity {
                 i.putExtra("package_hst", hst);
                 i.putExtra("package_total", total);
                 i.putExtra("HomeMakerId",old.getStringExtra("HomeMakerId"));
-//>>>>>>> jaison
                 startActivity(i);
             }
         });
@@ -198,23 +193,15 @@ public class TSViewHMPackage extends AppCompatActivity {
 
     }
 
-/*    private int getIndex(Spinner spinner, String myString){
-
-        int index = 0;
-
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).equals(myString)){
-                index = i;
-            }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            finish();
         }
-        return index;
-    }*/
-//    protected void onDestroy() {
-//        super.onDestroy();
-//
-//        LocalBroadcastManager.getInstance(getApplicationContext())
-//                .unregisterReceiver(mBroadcastReceiver);
-//    }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
 

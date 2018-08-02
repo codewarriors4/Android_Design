@@ -1,43 +1,36 @@
 package com.codewarriors4.tiffin.models;
 
-public class TSSubscriptionsModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TSSubscriptionsModel implements Parcelable {
 
     private String id;
     private int hmID,packID,subID;
-    private String hmName, packTitle, subStartDate, subEndDate;
-    private Double package_cost;
+    private String hmName, packTitle, packDesc,subStartDate, subEndDate;
+    private Double packageCost;
     private float ratingCount;
-
-
-    public TSSubscriptionsModel(String id, int hmID, int subID, int packID, String hmName, String packTitle, String subStartDate, String subEndDate, Double package_cost,float ratingCount) {
+    private String driverName;
+    private String driverPhone;
+    private String driverUID;
+    public TSSubscriptionsModel(String id, int hmID, int packID, int subID, String hmName,
+                                String packTitle, String packDesc, String subStartDate,
+                                String subEndDate, Double packageCost, float ratingCount,
+                                String driverName, String driverPhone, String driverUID) {
         this.id = id;
         this.hmID = hmID;
         this.packID = packID;
         this.subID = subID;
-
         this.hmName = hmName;
         this.packTitle = packTitle;
+        this.packDesc = packDesc;
         this.subStartDate = subStartDate;
         this.subEndDate = subEndDate;
-        this.package_cost = package_cost;
+        this.packageCost = packageCost;
         this.ratingCount = ratingCount;
-
-    }
-
-    public float getRatingCount() {
-        return ratingCount;
-    }
-
-    public void setRatingCount(float ratingCount) {
-        this.ratingCount = ratingCount;
-    }
-
-    public Double getPackage_cost() {
-        return package_cost;
-    }
-
-    public void setPackage_cost(Double package_cost) {
-        this.package_cost = package_cost;
+        this.driverName = driverName;
+        this.driverPhone = driverPhone;
+        this.driverUID = driverUID;
     }
 
     public String getId() {
@@ -88,6 +81,14 @@ public class TSSubscriptionsModel {
         this.packTitle = packTitle;
     }
 
+    public String getPackDesc() {
+        return packDesc;
+    }
+
+    public void setPackDesc(String packDesc) {
+        this.packDesc = packDesc;
+    }
+
     public String getSubStartDate() {
         return subStartDate;
     }
@@ -104,5 +105,95 @@ public class TSSubscriptionsModel {
         this.subEndDate = subEndDate;
     }
 
+    public Double getPackageCost() {
+        return packageCost;
+    }
 
+    public void setPackageCost(Double packageCost) {
+        this.packageCost = packageCost;
+    }
+
+    public float getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(float ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public String getDriverPhone() {
+        return driverPhone;
+    }
+
+    public void setDriverPhone(String driverPhone) {
+        this.driverPhone = driverPhone;
+    }
+
+    public String getDriverUID() {
+        return driverUID;
+    }
+
+    public void setDriverUID(String driverUID) {
+        this.driverUID = driverUID;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeInt(this.hmID);
+        dest.writeInt(this.packID);
+        dest.writeInt(this.subID);
+        dest.writeString(this.hmName);
+        dest.writeString(this.packTitle);
+        dest.writeString(this.packDesc);
+        dest.writeString(this.subStartDate);
+        dest.writeString(this.subEndDate);
+        dest.writeValue(this.packageCost);
+        dest.writeFloat(this.ratingCount);
+        dest.writeString(this.driverName);
+        dest.writeString(this.driverPhone);
+        dest.writeString(this.driverUID);
+    }
+
+    protected TSSubscriptionsModel(Parcel in) {
+        this.id = in.readString();
+        this.hmID = in.readInt();
+        this.packID = in.readInt();
+        this.subID = in.readInt();
+        this.hmName = in.readString();
+        this.packTitle = in.readString();
+        this.packDesc = in.readString();
+        this.subStartDate = in.readString();
+        this.subEndDate = in.readString();
+        this.packageCost = (Double) in.readValue(Double.class.getClassLoader());
+        this.ratingCount = in.readFloat();
+        this.driverName = in.readString();
+        this.driverPhone = in.readString();
+        this.driverUID = in.readString();
+    }
+
+    public static final Parcelable.Creator<TSSubscriptionsModel> CREATOR = new Parcelable.Creator<TSSubscriptionsModel>() {
+        @Override
+        public TSSubscriptionsModel createFromParcel(Parcel source) {
+            return new TSSubscriptionsModel(source);
+        }
+
+        @Override
+        public TSSubscriptionsModel[] newArray(int size) {
+            return new TSSubscriptionsModel[size];
+        }
+    };
 }

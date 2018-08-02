@@ -16,7 +16,8 @@
         android:text="Homemakers Nearby"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
-        android:textColor="@color/black" />
+        android:textSize="25sp"
+        android:textColor="@color/blue" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_home_maker_list_recycler_view"

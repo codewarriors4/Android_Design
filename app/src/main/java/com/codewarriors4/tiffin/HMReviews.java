@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -55,27 +56,6 @@ public class HMReviews extends AppCompatActivity {
     private FrameLayout progress;
     private LinearLayout profileBody;
 
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-//            String str = (String) intent
-//                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-
-
-            RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-            if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
-                Log.d("JsonResponseData", "onReceive: "
-                        + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                Toast.makeText(context, "Update Succesfull", Toast.LENGTH_SHORT).show();
-
-            }else{
-                Log.d("JsonResponseData", "onReceive: "
-                        + respondPackage.getParams().get(RespondPackage.FAILED));
-                Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    };
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,10 +76,11 @@ public class HMReviews extends AppCompatActivity {
         progress = findViewById(R.id.progress_overlay);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .registerReceiver(mBroadcastReceiver,
-                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
         new MyAsynTask().execute("");
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
 
@@ -139,8 +120,6 @@ public class HMReviews extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            //  profileBody.setVisibility(View.GONE);
-            //progress.setVisibility(View.VISIBLE);
 
         }
 
@@ -149,14 +128,9 @@ public class HMReviews extends AppCompatActivity {
             try {
                 Log.d("Testing data", "onPostExecute: " + aVoid);
                 super.onPostExecute(aVoid);
-                // profileBody.setVisibility(View.VISIBLE);
-                // progress.setVisibility(View.GONE);
-
                 JSONArray uniObject = new JSONArray(aVoid);
                 initValues(uniObject);
-
             }
-
             catch(Exception e){
                 Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG);
             }
@@ -167,10 +141,6 @@ public class HMReviews extends AppCompatActivity {
 
     private void initValues(JSONArray uniObject) throws JSONException
     {
-        Log.d("jsondump", "tsReviewsList");
-
-
-
         Intent intent = new Intent();
         JSONArray jsonarray = new JSONArray(uniObject.toString());
         for (int i = 0; i < jsonarray.length(); i++) {
@@ -203,24 +173,13 @@ public class HMReviews extends AppCompatActivity {
 
     }
 
-/*    private int getIndex(Spinner spinner, String myString){
-
-        int index = 0;
-
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).equals(myString)){
-                index = i;
-            }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            finish();
         }
-        return index;
-    }*/
-
-
-    protected void onDestroy(){
-        super.onDestroy();
-
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .unregisterReceiver(mBroadcastReceiver);
+        return super.onOptionsItemSelected(item);
     }
 
 

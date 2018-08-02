@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,6 +28,7 @@ import com.codewarriors4.tiffin.models.TSSubscriptionsModel;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.HttpHelper;
+import com.codewarriors4.tiffin.utils.PaymentSucessDialog;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
@@ -51,6 +53,8 @@ public class TSViewTSSubscription extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
     static final int PHONELENGHT = 10;
+    static final int PICK_CONTACT_REQUEST = 1;// The request code
+    static final String REQUEST_PARAM = "response";
 
     RecyclerView recyclerView;
     TSViewSubsListAdapter adapter;
@@ -64,27 +68,6 @@ public class TSViewTSSubscription extends AppCompatActivity {
     private FrameLayout progress;
     private LinearLayout profileBody;
 
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-//            String str = (String) intent
-//                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-
-
-            RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-            if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
-                Log.d("JsonResponseData", "onReceive: "
-                        + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                Toast.makeText(context, "Update Succesfull2", Toast.LENGTH_SHORT).show();
-
-            }else{
-                Log.d("JsonResponseData", "onReceive: "
-                        + respondPackage.getParams().get(RespondPackage.FAILED));
-                Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    };
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,21 +88,35 @@ public class TSViewTSSubscription extends AppCompatActivity {
         progress = findViewById(R.id.progress_overlay);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .registerReceiver(mBroadcastReceiver,
-                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
-        new MyAsynTask().execute("");
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data ) {
+        // Check which request we're responding to
+//        if (requestCode == PICK_CONTACT_REQUEST) {
+//            if(resultCode == 1){
+//                String ok = data.getStringExtra(REQUEST_PARAM);
+//                if(ok.equals("ok")){
+//                    new CustomToast().Show_Toast(this,  findViewById(android.R.id.content), "ReView Updated!");
+//                }else{
+//
+//                }
+//            }
+//        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        packageList.clear();
+        new MyAsynTask().execute("");
+    }
 
     public String getHMPackagesList() throws Exception {
-
-        //Log.d("Testing data1", sessionUtli.getValue("access_token"));
-
         Intent i = getIntent();
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSVIEWSUBSCRIPTIONS);
@@ -151,9 +148,6 @@ public class TSViewTSSubscription extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            //  profileBody.setVisibility(View.GONE);
-            //progress.setVisibility(View.VISIBLE);
-
         }
 
         @Override
@@ -161,20 +155,10 @@ public class TSViewTSSubscription extends AppCompatActivity {
             try {
                 Log.d("Testing data", "onPostExecute: " + aVoid);
                 super.onPostExecute(aVoid);
-                // profileBody.setVisibility(View.VISIBLE);
-                // progress.setVisibility(View.GONE);
-
-
                 JSONArray uniObject = new JSONArray(aVoid);
-
-
-
                 Log.d("JSONVALUE", "test");
-
-                //if(hashMap.get("UserZipCode") != null)
                 initValues(uniObject);
             }
-
             catch(Exception e){
                 Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG);
             }
@@ -185,25 +169,24 @@ public class TSViewTSSubscription extends AppCompatActivity {
 
     private void initValues(JSONArray uniObject) throws JSONException
     {
-        Log.d("jsondump", "hmPackagesList");
-
-
-
 
         JSONArray jsonarray = new JSONArray(uniObject.toString());
         for (int i = 0; i < jsonarray.length(); i++) {
             JSONObject jsonobject = jsonarray.getJSONObject(i);
-            String id = String.valueOf(i+1);
+            String id = String.valueOf(jsonobject.getInt("id"));
             int hmID = jsonobject.getInt("HomeMakerId");
             int subID = jsonobject.getInt("SubId");
-            int packID = jsonobject.getInt("HMPId");
+            int packID = jsonobject.getInt("HMPid");
             String hmName = jsonobject.getString("UserFname") + " " + jsonobject.getString("UserLname") ;
             String packTitle = jsonobject.getString("HMPName");
+            String packDesc = jsonobject.getString("HMPDesc");
             String subStartDate = jsonobject.getString("SubStartDate");
             String subEndDate = jsonobject.getString("SubEndDate");
-            Double package_cost = jsonobject.getDouble("HMPCost");
-            float ratingCount = (float) jsonobject.getDouble("AverageRatings");
-
+            Double packageCost = jsonobject.getDouble("HMPCost");
+            float ratingCount = (float) jsonobject.getDouble("personalRating");
+            String driverName = jsonobject.getString("driverName");
+            String driverPhoneNumber = jsonobject.getString("driverPhone");
+            String driverUID = String.valueOf(jsonobject.getInt("driverUniqueCode"));
 
             TSSubscriptionsModel model= new TSSubscriptionsModel(
                     id,
@@ -212,10 +195,14 @@ public class TSViewTSSubscription extends AppCompatActivity {
                     packID,
                     hmName,
                     packTitle,
+                    packDesc,
                     subStartDate,
                     subEndDate,
-                    package_cost,
-                    ratingCount
+                    packageCost,
+                    ratingCount,
+                    driverName,
+                    driverPhoneNumber,
+                    driverUID
 
             );
 
@@ -225,28 +212,18 @@ public class TSViewTSSubscription extends AppCompatActivity {
         }
         adapter = new TSViewSubsListAdapter(TSViewTSSubscription.this, packageList);
         recyclerView.setAdapter(adapter);
-
-
-    }
-
-/*    private int getIndex(Spinner spinner, String myString){
-
-        int index = 0;
-
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).equals(myString)){
-                index = i;
+        adapter.setOnItemClickListener(new TSViewSubsListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent i = new Intent(TSViewTSSubscription.this, TSReviewHM.class);
+                i.putExtra("HomeMakerId", String.valueOf(packageList.get(position).getHmID()));
+                i.putExtra("HMName", String.valueOf(packageList.get(position).getHmName()));
+                i.putExtra("request_data", packageList.get(position));
+                startActivityForResult(i,PICK_CONTACT_REQUEST);
             }
-        }
-        return index;
-    }*/
+        });
 
 
-    protected void onDestroy(){
-        super.onDestroy();
-
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override

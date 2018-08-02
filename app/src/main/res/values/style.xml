@@ -28,6 +28,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/hankenlight</item>
+        <item name="android:textSize">18sp</item>
 
     </style>
     <style name="AppThemeActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -37,5 +38,12 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="customRatingBar"
+        parent="android:style/Widget.Material.RatingBar.Small">
+        <item name="colorControlNormal">#ffdf00</item>
+        <item name="colorControlActivated">#ffdf00</item>
+    </style>
+
 
 </resources>

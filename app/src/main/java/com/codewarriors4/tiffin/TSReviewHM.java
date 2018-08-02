@@ -6,29 +6,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codewarriors4.tiffin.models.HMPackagesModel;
 import com.codewarriors4.tiffin.models.TSSubscriptionsModel;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
@@ -36,25 +26,22 @@ import com.codewarriors4.tiffin.utils.HttpHelper;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
-import com.codewarriors4.tiffin.utils.Utils;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.codewarriors4.tiffin.TSViewTSSubscription.PICK_CONTACT_REQUEST;
 
 public class TSReviewHM extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_SELECT_IMAGE = 2;
     static final int PHONELENGHT = 10;
+    boolean receiverRegister = false;
 
 
     private  View view;
@@ -67,11 +54,29 @@ public class TSReviewHM extends AppCompatActivity {
     @BindView(R.id.submit_rating_btn)
     Button submitRatingBtn;
 
+    @BindView(R.id.package_name_view)
+            TextView packageNameView;
+    @BindView(R.id.package_desc_view)
+            TextView packageDescView;
+    @BindView(R.id.sub_start_view)
+            TextView subscribeStartDate;
+    @BindView(R.id.sub_end_view)
+            TextView subscribeEndDate;
+    @BindView(R.id.driver_name)
+    TextView driverNameView;
+    @BindView(R.id.driver_number)
+    TextView driverNumberView;
+    @BindView(R.id.package_cost_view)
+            TextView packageCostView;
+    @BindView(R.id.view_profile_btn)
+            Button view_profile_btn;
+
+
 
     SessionUtli sessionUtli;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Edit HomeMaker Ratings");
+        setTitle("Subscription Details");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ts_create_update_review);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
@@ -81,6 +86,7 @@ public class TSReviewHM extends AppCompatActivity {
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+        receiverRegister = true;
         new MyAsynTask().execute("");
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -88,10 +94,50 @@ public class TSReviewHM extends AppCompatActivity {
 
         }
         Intent i = getIntent();
+        final TSSubscriptionsModel  request_data = (TSSubscriptionsModel)i.getParcelableExtra("request_data");
+        initFields(request_data);
 
-        hm_name.setText(i.getStringExtra("HMName"));
+        view_profile_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TSReviewHM.this, TSViewHMProfile.class);
+                i.putExtra("Id", request_data.getId());
+                i.putExtra("HMId", String.valueOf(request_data.getHmID()));
+                startActivity(i);
+            }
+        });
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!receiverRegister){
+            LocalBroadcastManager.getInstance(getApplicationContext())
+                    .registerReceiver(mBroadcastReceiver,
+                            new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        receiverRegister = false;
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .unregisterReceiver(mBroadcastReceiver);
+
+    }
+
+    private void initFields(TSSubscriptionsModel model){
+
+        packageNameView.setText(model.getPackTitle());
+        packageDescView.setText(model.getPackDesc());
+        subscribeStartDate.setText(model.getSubStartDate());
+        subscribeEndDate.setText(model.getSubEndDate());
+        driverNameView.setText(model.getDriverName());
+        driverNumberView.setText(model.getDriverPhone());
+        packageCostView.setText(model.getPackageCost() + "CAD");
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -105,12 +151,17 @@ public class TSReviewHM extends AppCompatActivity {
             if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                Toast.makeText(context, "This is the Culpit", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Review Updated Successfully", Toast.LENGTH_LONG).show();
 
+                finish();
+                //onBackPressed();
             }else{
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.FAILED));
-                Toast.makeText(context, "Error11111111111111111", Toast.LENGTH_SHORT).show();
+                Intent responseIntent = new Intent();
+                responseIntent.putExtra(TSViewTSSubscription.REQUEST_PARAM, false);
+                TSReviewHM.this.setResult(PICK_CONTACT_REQUEST, intent);
+                finish();
             }
 
         }
@@ -218,7 +269,6 @@ public class TSReviewHM extends AppCompatActivity {
 
     protected void onDestroy() {
         super.onDestroy();
-
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(mBroadcastReceiver);
     }

@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -34,7 +36,7 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
     static final int PHONELENGHT = 10;
 
 
-    private  View view;
+    private View view;
 
     @BindView(R.id.card_name_value)
     EditText card_name;
@@ -54,7 +56,6 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
     Context TSViewHMPackageCtx;
 
 
-
     private SessionUtli sessionUtli;
     private FrameLayout progress;
     private LinearLayout profileBody;
@@ -69,12 +70,13 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
 
 
             RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-            if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
+            if (respondPackage.getParams().containsKey(RespondPackage.SUCCESS)) {
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
+                progress.setVisibility(View.GONE);
                 new PaymentSucessDialog().show(getFragmentManager(), "Payment");
 
-            }else{
+            } else {
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.FAILED));
                 Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
@@ -88,23 +90,28 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
         setTitle("Subscription Payment");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ts_sub_payment);
+        progress = findViewById(R.id.progress_overlay);
+        progress.setVisibility(View.GONE);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
         profileBody = findViewById(R.id.profile_body);
-        progress = findViewById(R.id.progress_overlay);
+
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
 
     @OnClick(R.id.payment_btn)
-    public void submit(View view){
+    public void submit(View view) {
         checkValidation();
     }
 
-    private void checkValidation()
-    {
+    private void checkValidation() {
         String getCardName = card_name.getText().toString();
         String getCadNum = card_number.getText().toString();
         String getCardExpMnth = card_exp_date_mnth.getText().toString();
@@ -112,25 +119,23 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
         String getCardCVV = card_cvv.getText().toString();
 
 
-
-        if(getCardName.equals("") || getCadNum.equals("") || getCardExpMnth.equals("") || getCardExpYear.equals("") || getCardCVV.equals("")){
+        if (getCardName.equals("") || getCadNum.equals("") || getCardExpMnth.equals("") || getCardExpYear.equals("") || getCardCVV.equals("")) {
             new CustomToast().Show_Toast(this, findViewById(android.R.id.content),
                     "All fields are required.");
-        }else if(!getCadNum.equals("1111222233334444")){
+        } else if (!getCadNum.equals("1111222233334444")) {
             new CustomToast().Show_Toast(this, findViewById(android.R.id.content),
                     "Invalid card");
-        }
-        else{
+        } else {
             submit();
         }
 
     }
 
-    public void submit(){
+    public void submit() {
 
         Intent i = getIntent();
-
-
+        InputMethodManager inputManager = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSMAKEPAYMENT);
@@ -140,32 +145,21 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
         requestPackage.setParam("expiration_year", card_exp_date_year.getText().toString().trim());
         requestPackage.setParam("cvc", card_cvv.getText().toString().trim());
 
-        requestPackage.setParam("HMPid",  i.getStringExtra("package_id"));
-        requestPackage.setParam("subtotal",  i.getStringExtra("package_cost"));
+        requestPackage.setParam("HMPid", i.getStringExtra("package_id"));
+        requestPackage.setParam("subtotal", i.getStringExtra("package_cost"));
 
-        requestPackage.setParam("hst",  i.getStringExtra("package_hst"));
-        requestPackage.setParam("total",  i.getStringExtra("package_total"));
-        requestPackage.setParam("HomeMakerId",  i.getStringExtra("HomeMakerId"));
-
-
+        requestPackage.setParam("hst", i.getStringExtra("package_hst"));
+        requestPackage.setParam("total", i.getStringExtra("package_total"));
+        requestPackage.setParam("HomeMakerId", i.getStringExtra("HomeMakerId"));
 
 
-
-
-
-        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Authorization", "Bearer " + sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         Intent intent = new Intent(this, HttpService.class);
         intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
-
+        progress.setVisibility(View.VISIBLE);
         startService(intent);
     }
-
-
-
-
-
-
 
 
     protected void onDestroy() {
@@ -186,5 +180,14 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
