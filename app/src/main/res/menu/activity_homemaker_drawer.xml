@@ -26,7 +26,7 @@
         <item
             android:id="@+id/review"
             android:title="My Reviews"
-            android:icon="@drawable/review"/>
+                android:icon="@drawable/review"/>
 
         <item
             android:id="@+id/my_subscribers"

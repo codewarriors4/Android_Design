@@ -41,7 +41,7 @@ public class SubscribersListAdapter extends RecyclerView.Adapter<SubscribersList
         LayoutInflater inflater = LayoutInflater.from(subscribersLayoutContext);
 
         View view = inflater.inflate(R.layout.subscriptions_list_item_recycle, null);
-
+        view.setMinimumWidth(parent.getMeasuredWidth());
         SubScribersListViewHolder holder = new SubScribersListViewHolder(view, mListener);
 
         return holder;

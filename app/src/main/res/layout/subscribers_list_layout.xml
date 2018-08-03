@@ -13,6 +13,7 @@
         <android.support.design.widget.TabLayout
             android:layout_width="match_parent"
             android:id="@+id/tab_layout"
+            app:tabTextColor="@color/white"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.AppBarLayout>
 
@@ -20,6 +21,5 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@color/buttoncolor"/>
 </LinearLayout>

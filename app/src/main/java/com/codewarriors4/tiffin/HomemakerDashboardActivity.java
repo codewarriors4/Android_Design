@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -54,6 +55,39 @@ public class HomemakerDashboardActivity extends AppCompatActivity
         sessionUtli.setValue("fcmtoken",fcmtoken);
         new MyAsynTask().execute(""); // let this run first
 
+        initDashBoardOnClick();
+
+    }
+
+    private void initDashBoardOnClick() {
+        CardView totalSubCardView = findViewById(R.id.total_subscribers);
+        totalSubCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMySubscribers();
+            }
+        });
+        CardView totalReviewCardView = findViewById(R.id.review_card_view);
+        totalReviewCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openReviews();
+            }
+        });
+        CardView recentSubCardView = findViewById(R.id.recent_sub_card_view);
+        recentSubCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRecentSubscribers();
+            }
+        });
+        CardView packageCardView = findViewById(R.id.packages_card_view);
+        packageCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPackages();
+            }
+        });
     }
 
 
@@ -124,22 +158,26 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
 
         } else if (id == R.id.view_menu) {
-            if(sessionUtli.getValue("isActive").equals("1.0")) {
-                Intent i = new Intent(this, HomemakerViewPackages.class);
-                startActivity(i);
-            }else{
-                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
-            }
+//            if(sessionUtli.getValue("isActive").equals("1.0")) {
+//                Intent i = new Intent(this, HomemakerViewPackages.class);
+//                startActivity(i);
+//            }else{
+//                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
+//            }
+
+            openPackages();
 
 
 
         }else if (id == R.id.my_subscribers) {
 
-            if(sessionUtli.getValue("isActive").equals("1.0")) {
-                startActivity(new Intent(this, SubscribersListActivity.class));
-            }else{
-                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
-            }
+//            if(sessionUtli.getValue("isActive").equals("1.0")) {
+//                startActivity(new Intent(this, SubscribersListActivity.class));
+//            }else{
+//                Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
+//            }
+
+            openMySubscribers();
 
 //        }else if (id == R.id.my_daily_subs) {
 //
@@ -164,10 +202,11 @@ public class HomemakerDashboardActivity extends AppCompatActivity
             startActivity(new Intent(this, MainActivity.class));
 
         }else if(id == R.id.review){
-            Intent i = new Intent(this, HMReviews.class);
-            String hmId = sessionUtli.getValue("HMId");
-            i.putExtra("HomeMakerID", sessionUtli.getValue("HMId"));
-            startActivity(i);
+//            Intent i = new Intent(this, HMReviews.class);
+//            String hmId = sessionUtli.getValue("HMId");
+//            i.putExtra("HomeMakerID", sessionUtli.getValue("HMId"));
+//            startActivity(i);
+            openReviews();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.homemaker_drawer_layout);
@@ -219,5 +258,37 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
         }
 
+    }
+
+    private void openMySubscribers(){
+        if(sessionUtli.getValue("isActive").equals("1.0")) {
+            startActivity(new Intent(this, SubscribersListActivity.class));
+        }else{
+            Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void openReviews(){
+        Intent i = new Intent(this, HMReviews.class);
+        String hmId = sessionUtli.getValue("HMId");
+        i.putExtra("HomeMakerID", sessionUtli.getValue("HMId"));
+        startActivity(i);
+    }
+
+    private void openRecentSubscribers(){
+        if(sessionUtli.getValue("isActive").equals("1.0")) {
+            startActivity(new Intent(this, SubscribersListActivity.class));
+        }else{
+            Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void openPackages(){
+        if(sessionUtli.getValue("isActive").equals("1.0")) {
+            Intent i = new Intent(this, HomemakerViewPackages.class);
+            startActivity(i);
+        }else{
+            Toast.makeText(this, "Verification is pending, Please Contact Admin", Toast.LENGTH_LONG).show();
+        }
     }
 }

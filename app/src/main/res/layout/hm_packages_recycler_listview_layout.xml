@@ -31,7 +31,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/packageCost"
+                android:layout_toEndOf="@+id/package_cost"
                 android:padding="5dp"
                 android:text="TextView"
                 android:ellipsize="end"
@@ -40,7 +40,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/packageCost"
+                android:id="@+id/package_cost"
                 android:layout_width="280dp"
                 android:layout_height="67dp"
                 android:layout_alignParentStart="true"
@@ -59,7 +59,7 @@
                 android:id="@+id/hm_edit_pack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignBottom="@+id/packageCost"
+                android:layout_alignBottom="@+id/package_cost"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"
                 android:background="@mipmap/edit_pencil" />
