@@ -2,37 +2,48 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/account"
-            android:title="Account" />
+            android:title="Account"
+            android:icon="@drawable/ic_account_box_black_24dp"/>
         <item
             android:id="@+id/menu"
             android:title="Menu"
-            android:menuCategory="container">
+            android:menuCategory="container"
+            android:icon="@drawable/hamburger">
             <menu>
                 <item
                     android:id="@+id/create_new"
-                    android:title="Add menu" />
+                    android:title="Add menu"
+                    android:icon="@drawable/add_ic"/>
                 <item android:id="@+id/view_menu"
-                    android:title="View menu" />
+                    android:title="View menu"
+                    android:icon="@mipmap/view_eye"/>
             </menu>
 
         </item>
+        <item
+            android:id="@+id/review"
+            android:title="My Reviews"
+            android:icon="@drawable/review"/>
 
         <item
             android:id="@+id/my_subscribers"
-            android:title="MySubscribers" />
+            android:title="MySubscribers"
+            android:icon="@drawable/baseline_person_black_18dp"/>
         <item
             android:id="@+id/legal"
-            android:title="Legal" />
+            android:title="Legal"
+            android:icon="@drawable/ic_priority_high_black_24dp"/>
         <item
             android:id="@+id/privacy"
-            android:title="Privacy" />
+            android:title="Privacy"
+            android:icon="@drawable/baseline_visibility_off_black_18dp"/>
         <item
             android:id="@+id/logout"
-            android:title="Logout" />
+            android:title="Logout"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"/>
     </group>
 
 </menu>

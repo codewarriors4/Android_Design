@@ -25,6 +25,10 @@ import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -74,7 +78,18 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
                 progress.setVisibility(View.GONE);
-                new PaymentSucessDialog().show(getFragmentManager(), "Payment");
+                String success = respondPackage.getParams().get("success");
+                try {
+                    JSONObject jsonObject = new JSONArray(success).getJSONObject(0);
+                    int pId = jsonObject.getInt("PId");
+                    String pAmt = jsonObject.getString("PAmt");
+                    PaymentSucessDialog paymentSucessDialog = new PaymentSucessDialog();
+                    paymentSucessDialog.setValues(pId, pAmt);
+                    paymentSucessDialog.show(getFragmentManager(), "Payment");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
             } else {
                 Log.d("JsonResponseData", "onReceive: "

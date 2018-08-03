@@ -69,7 +69,7 @@ public class SessionUtli
         for (Object key : hashMap.keySet())
         {
             String str = (String) key;
-            edit.putString(str, hashMap.get(key) + "");
+            edit.putString(str, String.valueOf(hashMap.get(key)));
         }
         edit.apply();
     }

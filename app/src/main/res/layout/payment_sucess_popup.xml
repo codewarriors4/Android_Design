@@ -71,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:text="Transaction Id "
+
                     android:textStyle="bold" />
 
                 <TextView
@@ -78,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:text="Package Cost"
+                    android:id="@+id/cost_view"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -91,7 +93,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ABCDEF"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    />
 
                 <TextView
                     android:id="@+id/package_cost_field"

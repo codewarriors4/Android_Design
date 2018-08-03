@@ -163,6 +163,11 @@ public class HomemakerDashboardActivity extends AppCompatActivity
             sessionUtli.clearAll();
             startActivity(new Intent(this, MainActivity.class));
 
+        }else if(id == R.id.review){
+            Intent i = new Intent(this, HMReviews.class);
+            String hmId = sessionUtli.getValue("HMId");
+            i.putExtra("HomeMakerID", sessionUtli.getValue("HMId"));
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.homemaker_drawer_layout);
