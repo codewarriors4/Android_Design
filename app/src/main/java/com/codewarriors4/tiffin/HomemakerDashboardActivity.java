@@ -18,13 +18,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codewarriors4.tiffin.adapters.HMReviewsListAdapter;
+import com.codewarriors4.tiffin.models.HMReviewsModel;
 import com.codewarriors4.tiffin.utils.Constants;
 import com.codewarriors4.tiffin.utils.DatabaseHelper;
 import com.codewarriors4.tiffin.utils.HttpHelper;
 import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HomemakerDashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,40 +64,11 @@ public class HomemakerDashboardActivity extends AppCompatActivity
         sessionUtli.setValue("fcmtoken",fcmtoken);
         new MyAsynTask().execute(""); // let this run first
 
-        initDashBoardOnClick();
+       // initDashBoardOnClick();
 
     }
 
-    private void initDashBoardOnClick() {
-        CardView totalSubCardView = findViewById(R.id.total_subscribers);
-        totalSubCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMySubscribers();
-            }
-        });
-        CardView totalReviewCardView = findViewById(R.id.review_card_view);
-        totalReviewCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openReviews();
-            }
-        });
-        CardView recentSubCardView = findViewById(R.id.recent_sub_card_view);
-        recentSubCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openRecentSubscribers();
-            }
-        });
-        CardView packageCardView = findViewById(R.id.packages_card_view);
-        packageCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openPackages();
-            }
-        });
-    }
+
 
 
     @Override
@@ -215,22 +195,72 @@ public class HomemakerDashboardActivity extends AppCompatActivity
     }
 
 
-    public String getUserInfo(String fcmtoken) throws Exception {
+    public String getStats() throws Exception {
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.FCMTOKENSTORE);
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.HMDASHBOARDSTATS);
         requestPackage.setMethod("POST");
-        requestPackage.setParam("fcmToken", fcmtoken);
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         return HttpHelper.downloadFromFeed(requestPackage);
     }
+
+
+    private void initDashBoardOnClick(JSONObject  uniObject) throws JSONException {
+
+        CardView totalSubCardView = findViewById(R.id.total_subscribers);
+
+        TextView active_subscriber_count = findViewById(R.id.active_subscriber_count);
+        TextView total_review_count = findViewById(R.id.total_review_count);
+
+        TextView recent_subs_count = findViewById(R.id.recent_subs_count);
+
+        TextView no_of_packages_count = findViewById(R.id.no_of_packages_count);
+
+
+
+            active_subscriber_count.setText(uniObject.getString("total_active_subscribers"));
+            total_review_count.setText(uniObject.getString("total_reviews"));
+            recent_subs_count.setText(uniObject.getString("recent_subscription_count"));
+            no_of_packages_count.setText(uniObject.getString("total_no_packages"));
+
+
+        totalSubCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMySubscribers();
+            }
+        });
+        CardView totalReviewCardView = findViewById(R.id.review_card_view);
+        totalReviewCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openReviews();
+            }
+        });
+        CardView recentSubCardView = findViewById(R.id.recent_sub_card_view);
+        recentSubCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRecentSubscribers();
+            }
+        });
+        CardView packageCardView = findViewById(R.id.packages_card_view);
+        packageCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPackages();
+            }
+        });
+    }
+
+
 
     private class MyAsynTask extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             try {
-                return getUserInfo(sessionUtli.getValue("fcmtoken"));
+                return getStats();
             } catch (Exception e) {
                 return e.getMessage();
             }
@@ -252,8 +282,19 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(String aVoid) {
+            try {
             super.onPostExecute(aVoid);
             Log.d("JSONVALUE", "done");
+
+                JSONObject  uniObject = new JSONObject (aVoid);
+                initDashBoardOnClick(uniObject);
+            }
+            catch(Exception e){
+                Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG);
+
+            }
+
+
 
 
         }
