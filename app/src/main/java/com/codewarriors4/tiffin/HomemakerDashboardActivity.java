@@ -204,6 +204,15 @@ public class HomemakerDashboardActivity extends AppCompatActivity
         return HttpHelper.downloadFromFeed(requestPackage);
     }
 
+    public String getUserInfo(String fcmtoken) throws Exception {
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setEndPoint(Constants.BASE_URL + Constants.FCMTOKENSTORE);
+        requestPackage.setMethod("POST");
+        requestPackage.setParam("fcmToken", fcmtoken);
+        requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
+        requestPackage.setHeader("Accept", "application/json; q=0.5");
+        return HttpHelper.downloadFromFeed(requestPackage);
+    }
 
     private void initDashBoardOnClick(JSONObject  uniObject) throws JSONException {
 
@@ -260,7 +269,9 @@ public class HomemakerDashboardActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String... strings) {
             try {
-                return getStats();
+                getUserInfo(sessionUtli.getValue("fcmtoken"));
+                        return getStats();
+
             } catch (Exception e) {
                 return e.getMessage();
             }
