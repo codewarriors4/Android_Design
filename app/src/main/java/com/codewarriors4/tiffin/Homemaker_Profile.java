@@ -1,10 +1,13 @@
 package com.codewarriors4.tiffin;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.icu.util.Calendar;
 import android.net.Uri;
@@ -13,7 +16,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -76,7 +82,8 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     static final int PHONELENGHT = 10;
     int year_x, month_x, day_x;
     static final int DIALOG_ID = 0;
-
+    final int PERMISSION_REQUEST_CAMERA = 3;
+    final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 4;
 
     private View view;
     @BindView(R.id.first_name)
@@ -333,10 +340,10 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.photoFromCamera:
-                dispatchTakePictureIntent();
+                requestCameraPermission();
                 return true;
             case R.id.selectFromGallery:
-                galleryAddPic();
+                requestGalleryPermission();
                 return true;
             default:
                 return false;
@@ -473,5 +480,71 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void requestCameraPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permision Needed")
+                    .setMessage("This permission is needed to start activity")
+                    .setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(Homemaker_Profile.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+                                }
+                            }).create().show();
+        }else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+        }
+
+    }
+    private void requestGalleryPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permision Needed")
+                    .setMessage("This permission is needed to start activity")
+                    .setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(Homemaker_Profile.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_EXTERNAL_STORAGE);
+                                }
+                            }).create().show();
+        }else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_EXTERNAL_STORAGE);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String[] permissions,
+                                           int[] grantResults) {
+
+        if (requestCode == PERMISSION_REQUEST_CAMERA) {
+
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            } else {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        }
+        if (requestCode == PERMISSION_REQUEST_EXTERNAL_STORAGE) {
+
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                galleryAddPic();
+            } else {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        }
+        // END_INCLUDE(onRequestPermissionsResult)
     }
 }
