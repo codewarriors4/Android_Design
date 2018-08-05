@@ -59,6 +59,7 @@
         <activity android:name=".HomemakerUpdatePackage" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".SubscribersListActivity" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".SubscriptionFullView" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".SettingActivity" android:theme="@style/AppThemeActionBar"></activity>
 
 
         <activity android:name=".Legal"></activity>
