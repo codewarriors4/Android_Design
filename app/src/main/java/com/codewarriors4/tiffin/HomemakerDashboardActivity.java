@@ -172,10 +172,10 @@ public class HomemakerDashboardActivity extends AppCompatActivity
 //
 //
         } else if (id == R.id.legal) {
-            startActivity(new Intent(this, Legal.class));
+            startActivity(new Intent(this, Legal_HM.class));
 
         }else if (id == R.id.privacy) {
-            startActivity(new Intent(this, Privacy.class));
+            startActivity(new Intent(this, Privacy_HM.class));
 
         } else if (id == R.id.logout) {
             sessionUtli.clearAll();

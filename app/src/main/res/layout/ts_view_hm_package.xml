@@ -90,7 +90,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/pack_cost_text"
         android:layout_marginBottom="115dp"
-        android:text="Total Subscription Cost:" />
+        android:text="Total Price:" />
 
     <TextView
         android:id="@+id/pack_cost_text"

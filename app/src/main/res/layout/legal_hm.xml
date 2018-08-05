@@ -32,7 +32,7 @@
         android:layout_marginTop="8dp"
         android:maxLines="5000"
         android:scrollbars="vertical"
-        android:text="This is a legal agreement for your acknowledgement as a TiffinSeeker prior to usage of this app. This is currently for use in Ontario, Canada. The legal content may change from time to time but registered users will be notified of the changes."
+        android:text="This is a legal agreement for your acknowledgement as a HomeMaker prior to usage of this app. This is currently for use in Ontario, Canada. The legal content may change from time to time but registered users will be notified of the changes."
         android:textSize="14sp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
