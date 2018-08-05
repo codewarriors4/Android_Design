@@ -44,14 +44,15 @@
 
             />
 
-    <EditText
-        android:id="@+id/pack_cost"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:hint="Package cost "
-        android:inputType="numberDecimal"
-        android:textColor="@color/black" />
+        <EditText
+            android:id="@+id/pack_cost"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:hint="Package cost "
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:textColor="@color/black" />
 
 
     <Button

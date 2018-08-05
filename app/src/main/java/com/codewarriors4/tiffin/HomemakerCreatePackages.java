@@ -23,6 +23,9 @@ import com.codewarriors4.tiffin.utils.RequestPackage;
 import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -105,7 +108,26 @@ public class HomemakerCreatePackages extends AppCompatActivity {
         String getPackDesc = packDesc.getText().toString();
         String getPackCost = packCost.getText().toString();
 
-        if(getPackName.equals("") || getPackDesc.equals("") || getPackCost.equals("")){
+       // final String regExp = "^\\d{1,6}(\\.\\d{2})?$";
+
+        final String regExp = "^(?!^0\\.00$)(([1-9][\\d]{0,6})|([0]))\\.[\\d]{2}$";
+
+
+        final Pattern pattern = Pattern.compile(regExp);
+
+// This can be repeated in a loop with different inputs:
+        Matcher matcher = pattern.matcher(getPackCost);
+        if(!matcher.matches()){
+
+            new CustomToast().Show_Toast(this, view,
+                    "Please provide 3 digits before and 2 digits after decimal");
+
+        }else if(Double.parseDouble(getPackCost) < 1){
+
+            new CustomToast().Show_Toast(this, view,
+                    "Please enter package cost greater than 1");
+
+        } else if(getPackName.equals("") || getPackDesc.equals("") || getPackCost.equals("")){
             new CustomToast().Show_Toast(this, view,
                     "All fields are required.");
         }
