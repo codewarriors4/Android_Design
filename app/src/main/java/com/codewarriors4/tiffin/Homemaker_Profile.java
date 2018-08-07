@@ -371,8 +371,8 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         requestPackage.setParam("UserPhone", phoneView.getText().toString().trim());
         requestPackage.setParam("UserCountry", "Canada");
         requestPackage.setParam("UserProvince", "ON");
-        requestPackage.setParam("UserCity", city.getText().toString());
-        requestPackage.setParam("UserZipCode", zipcodeView.getText().toString());
+        requestPackage.setParam("UserCity", city.getText().toString().trim());
+        requestPackage.setParam("UserZipCode", zipcodeView.getText().toString().trim());
         requestPackage.setParam("UserCompanyName", "Tiffin Demo");
         if(imageSelected)
             requestPackage.setFile("file", uploadLicence);

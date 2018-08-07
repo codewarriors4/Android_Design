@@ -25,50 +25,53 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ForgotPassword">
+        <activity android:name=".ForgotPassword" android:screenOrientation="portrait">
         </activity>
         <activity android:name=".TiffinSeekerDashboardActivity"
-            android:theme="@style/AppThemeActionBar.NoActionBar">
+            android:theme="@style/AppThemeActionBar.NoActionBar" android:screenOrientation="portrait">
         </activity>
         <activity android:name=".HomemakerDashboardActivity"
-            android:theme="@style/AppThemeActionBar.NoActionBar">
+            android:theme="@style/AppThemeActionBar.NoActionBar"
+            android:screenOrientation="portrait"
+            android:label="Welcome Chef !">
         </activity>
         <activity android:name=".Homemaker_Profile"
-            android:theme="@style/AppThemeActionBar">
+            android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".TiffinSeeker_Profile" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".TiffinSeeker_Profile" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
         <activity android:name=".TSViewHMProfile" android:theme="@style/AppThemeActionBar"></activity>
 
-        <activity android:name=".TSViewHMPackages" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".TSViewHMPackage" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".TSSubPayment" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".TSViewHMPackages" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
+        <activity android:name=".TSViewHMPackage" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait" ></activity>
+        <activity android:name=".TSSubPayment" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".TSViewTSSubscription" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".TSViewTSSubscription" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
 
         <activity android:name=".TSReviewHM" android:theme="@style/AppThemeActionBar"></activity>
         <activity android:name=".HMReviews" android:theme="@style/AppThemeActionBar"></activity>
 
 
 
-        <activity android:name=".HomemakerCreatePackages" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".HomemakerViewPackages" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".HomemakerViewPackage" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".HomemakerUpdatePackage" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".SubscribersListActivity" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".SubscriptionFullView" android:theme="@style/AppThemeActionBar"></activity>
-        <activity android:name=".SettingActivity" android:theme="@style/AppThemeActionBar"></activity>
+        <activity android:name=".HomemakerCreatePackages" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
+        <activity android:name=".HomemakerViewPackages" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
+        <activity android:name=".HomemakerViewPackage" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
+        <activity android:name=".HomemakerUpdatePackage" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
+        <activity android:name=".SubscribersListActivity" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"
+            android:label="My Subscribers"></activity>
+        <activity android:name=".SubscriptionFullView" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
+        <activity android:name=".SettingActivity" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
 
 
-        <activity android:name=".Legal"></activity>
-        <activity android:name=".Privacy"></activity>
+        <activity android:name=".Legal" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Privacy" android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".Legal_HM"></activity>
-        <activity android:name=".Privacy_HM"></activity>
+        <activity android:name=".Legal_HM" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Privacy_HM" android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity" android:screenOrientation="portrait"></activity>
 
         <service android:name=".services.HttpService" android:exported="false">
         </service>

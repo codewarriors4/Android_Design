@@ -212,6 +212,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
 
 
         //listViewAdapter = new HomeMakerListAdapter(this);
+        //getLocation();
     }
 
     public void getLocation() {
@@ -310,7 +311,10 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
 
         }else if (id == R.id.logout) {
             sessionUtli.clearAll();
-            startActivity(new Intent(this, MainActivity.class));
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.tiffin_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

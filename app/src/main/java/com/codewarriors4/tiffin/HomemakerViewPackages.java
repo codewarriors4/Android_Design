@@ -295,10 +295,11 @@ public class HomemakerViewPackages extends AppCompatActivity {
 
             HMPackagesModel model= new HMPackagesModel(
                     id,
+                    packID,
                     packTitle,
                     packDesc,
                     packCost,
-                    packID
+                    "0"
             );
 
             packageList.add(model);

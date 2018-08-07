@@ -43,7 +43,7 @@ public class SettingActivity extends AppCompatActivity
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isActivityStarted)
-                    new HttpSettingValues().execute("1", isChecked ? "0" : "1");
+                    new HttpSettingValues().execute("2", isChecked ? "0" : "1");
             }
         });
         if(getSupportActionBar() != null){

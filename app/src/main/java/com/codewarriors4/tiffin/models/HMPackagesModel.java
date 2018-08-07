@@ -5,20 +5,6 @@ public class HMPackagesModel {
     private String id;
     private int packID;
     private String packTitle, packDesc;
-    private double packCost;
-
-
-
-    public HMPackagesModel(String id, String packTitle, String packDesc, double packCost, int packID) {
-        this.id = id;
-        this.packTitle = packTitle;
-        this.packDesc = packDesc;
-        this.packCost = packCost;
-        this.packID = packID;
-
-    }
-
-
 
     public String getId() {
         return id;
@@ -58,5 +44,25 @@ public class HMPackagesModel {
 
     public void setPackCost(double packCost) {
         this.packCost = packCost;
+    }
+
+    public String getHmId() {
+        return hmId;
+    }
+
+    public void setHmId(String hmId) {
+        this.hmId = hmId;
+    }
+
+    private double packCost;
+    private String hmId;
+
+    public HMPackagesModel(String id, int packID, String packTitle, String packDesc, double packCost, String hmId) {
+        this.id = id;
+        this.packID = packID;
+        this.packTitle = packTitle;
+        this.packDesc = packDesc;
+        this.packCost = packCost;
+        this.hmId = hmId;
     }
 }

@@ -19,10 +19,18 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
 
     private Context TSViewHMPackCtxt;
     private List<HMPackagesModel> HMPackageList;
+    private TSViewSubsListAdapter.OnItemClickListener mListener;
 
     public TSViewHMPackagesListAdapter(Context TSViewHMPackCtxt, List<HMPackagesModel> MPackageList) {
         this.TSViewHMPackCtxt = TSViewHMPackCtxt;
         this.HMPackageList = MPackageList;
+    }
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(TSViewSubsListAdapter.OnItemClickListener listener) {
+        mListener = listener;
     }
 
     @NonNull
@@ -32,7 +40,7 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
 
         View view = inflater.inflate(R.layout.ts_view_hm_packages_recycler, null);
 
-        TSViewHMPackagesViewHolder holder = new TSViewHMPackagesViewHolder(view);
+        TSViewHMPackagesViewHolder holder = new TSViewHMPackagesViewHolder(view, mListener);
 
         return holder;
     }
@@ -47,37 +55,6 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
         holder.HMPackDesc.setText(hmPackage.getPackDesc());
         holder.HMPackCost.setText(String.valueOf(hmPackage.getPackCost())+" CAD");
 
-        holder.HMPackTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(TSViewHMPackCtxt, TSViewHMPackage.class);
-                i.putExtra("HomeMakerId", "35");
-                i.putExtra("package_id", String.valueOf(hmPackage.getPackID()));
-                TSViewHMPackCtxt.startActivity(i);
-            }
-        });
-
-        holder.HMPackDesc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(TSViewHMPackCtxt, TSViewHMPackage.class);
-                i.putExtra("HomeMakerId", "35");
-                i.putExtra("package_id", String.valueOf(hmPackage.getPackID()));
-                TSViewHMPackCtxt.startActivity(i);
-            }
-        });
-
-        holder.HMPackCost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(TSViewHMPackCtxt, TSViewHMPackage.class);
-                i.putExtra("HomeMakerId", "35");
-                i.putExtra("package_id", String.valueOf(hmPackage.getPackID()));
-                TSViewHMPackCtxt.startActivity(i);
-            }
-        });
-
     }
 
     @Override
@@ -89,13 +66,23 @@ public class TSViewHMPackagesListAdapter extends RecyclerView.Adapter<TSViewHMPa
 
         public TextView HMPackTitle, HMPackDesc, HMPackCost;
 
-        public TSViewHMPackagesViewHolder(View itemView) {
+        public TSViewHMPackagesViewHolder(View itemView, final TSViewSubsListAdapter.OnItemClickListener listener) {
             super(itemView);
 
             HMPackTitle = itemView.findViewById(R.id.hm_name);
             HMPackDesc = itemView.findViewById(R.id.package_cost);
             HMPackCost = itemView.findViewById(R.id.hm_pack_cost);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
 
         }

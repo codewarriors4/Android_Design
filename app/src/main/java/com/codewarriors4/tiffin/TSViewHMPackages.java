@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.codewarriors4.tiffin.adapters.HMPackagesListAdapter;
 import com.codewarriors4.tiffin.adapters.TSViewHMPackagesListAdapter;
+import com.codewarriors4.tiffin.adapters.TSViewSubsListAdapter;
 import com.codewarriors4.tiffin.models.HMPackagesModel;
 import com.codewarriors4.tiffin.services.HttpService;
 import com.codewarriors4.tiffin.utils.Constants;
@@ -165,13 +166,14 @@ public class TSViewHMPackages extends AppCompatActivity {
             String packTitle = jsonobject.getString("HMPName");
             String packDesc = jsonobject.getString("HMPDesc");
             Double packCost = jsonobject.getDouble("HMPCost");
-
+            String hmId = getIntent().getStringExtra("HMId");
             HMPackagesModel model= new HMPackagesModel(
                     id,
+                    packID,
                     packTitle,
                     packDesc,
                     packCost,
-                    packID
+                    hmId
             );
 
             packageList.add(model);
@@ -180,6 +182,15 @@ public class TSViewHMPackages extends AppCompatActivity {
         }
         adapter = new TSViewHMPackagesListAdapter(this, packageList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new TSViewSubsListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent i = new Intent(TSViewHMPackages.this, TSViewHMPackage.class);
+                i.putExtra("HomeMakerId", String.valueOf(packageList.get(position).getHmId()));
+                i.putExtra("package_id", String.valueOf(packageList.get(position).getPackID()));
+                startActivity(i);
+            }
+        });
 
 
     }

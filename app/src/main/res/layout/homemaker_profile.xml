@@ -10,7 +10,7 @@
     android:id="@+id/profile_body">
 
     <EditText
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="FirstName"
         android:inputType="textPersonName"
@@ -19,7 +19,7 @@
 
 
     <EditText
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Lastname"
         android:inputType="textPersonName"
@@ -27,7 +27,7 @@
         android:id="@+id/last_name"/>
 
     <EditText
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Phone"
         android:inputType="phone"
@@ -35,7 +35,7 @@
         android:id="@+id/phone"/>
 
     <EditText
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Street Name"
         android:inputType="text"
@@ -43,7 +43,7 @@
         android:id="@+id/street_name"/>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -68,7 +68,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -93,8 +93,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="64dp"
         android:orientation="horizontal">
 
         <TextView

@@ -66,10 +66,13 @@ public class TSReviewHM extends AppCompatActivity {
     TextView driverNameView;
     @BindView(R.id.driver_number)
     TextView driverNumberView;
+    @BindView(R.id.driver_id)
+    TextView driverID;
     @BindView(R.id.package_cost_view)
             TextView packageCostView;
     @BindView(R.id.view_profile_btn)
             Button view_profile_btn;
+
 
 
 
@@ -137,6 +140,7 @@ public class TSReviewHM extends AppCompatActivity {
         subscribeEndDate.setText(model.getSubEndDate());
         driverNameView.setText(model.getDriverName());
         driverNumberView.setText(model.getDriverPhone());
+        driverID.setText(model.getDriverUID());
         packageCostView.setText(model.getPackageCost() + "CAD");
     }
 
