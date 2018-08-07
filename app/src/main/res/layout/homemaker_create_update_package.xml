@@ -32,14 +32,14 @@
 
         <EditText
             android:id="@+id/pack_desc"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:gravity="top"
             android:hint="Description"
             android:singleLine="false"
             android:textColor="@color/black"
-            android:lines="10"
+            android:lines="5"
             android:inputType="textMultiLine"
 
             />
@@ -55,18 +55,18 @@
             android:textColor="@color/black" />
 
 
-    <Button
-        android:id="@+id/menu_submit_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/blue"
-        android:elevation="4dp"
-        android:paddingLeft="70dp"
-        android:paddingRight="70dp"
-        android:text="Submit"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        <Button
+            android:id="@+id/menu_submit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/blue"
+            android:elevation="4dp"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:text="Submit"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
 </LinearLayout>
 </RelativeLayout>
