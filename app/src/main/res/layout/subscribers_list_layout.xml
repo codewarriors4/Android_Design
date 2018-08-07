@@ -21,5 +21,5 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/buttoncolor"/>
+        android:background="@color/white"/>
 </LinearLayout>

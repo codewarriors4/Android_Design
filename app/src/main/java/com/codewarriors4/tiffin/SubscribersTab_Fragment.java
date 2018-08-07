@@ -159,7 +159,7 @@ public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
                     String packageName = subscriber.getString("HMPName");
                     String packageDesc = subscriber.getString("HMPDesc");
                     lists.add(new SubscribersListModel(firstName + " " +lastName,
-                            email + "\n" + street, phoneNumber, cost, packageName, packageDesc));
+                            email, street, phoneNumber, cost, packageName, packageDesc));
                 }
 
                 SubscribersListAdapter subscribersListAdapter = new SubscribersListAdapter(context, lists);

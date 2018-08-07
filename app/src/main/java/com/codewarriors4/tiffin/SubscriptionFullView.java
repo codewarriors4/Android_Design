@@ -16,14 +16,20 @@ public class SubscriptionFullView extends AppCompatActivity
 {
     @BindView(R.id.full_name)
     public TextView fullName;
-    @BindView(R.id.contact_inform)
-    public TextView contact_inform;
-    @BindView(R.id.package_cost)
-    public TextView packageCost;
+    @BindView(R.id.email_view)
+    public TextView emailView;
+    @BindView(R.id.address_view)
+    public TextView addressView;
+    @BindView(R.id.phone_no_view)
+    public TextView phoneNoView;
     @BindView(R.id.package_name)
     public TextView packageName;
-    @BindView(R.id.package_desc)
-    public TextView packageDesc;
+    @BindView(R.id.descri_view)
+    public TextView descriView;
+    @BindView(R.id.price_view)
+    public TextView priceView;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,13 +48,14 @@ public class SubscriptionFullView extends AppCompatActivity
 
     private void initValue(SubscribersListModel subscribersListModel)
     {
-        fullName.setText("Full Name: "+subscribersListModel.getUserName());
-        contact_inform.setText("User Detail: "+subscribersListModel.getUserStreet() + "\n" + subscribersListModel.getPhoneNumber());
-        packageCost.setText("Package Cost: "+subscribersListModel.getPackageCost() + "CAD");
-        packageName.setText("Package Name: "+subscribersListModel.getPackageName());
-        packageDesc.setText("Package Desc: "+subscribersListModel.getPackageDesc());
-
-
+        fullName.setText(subscribersListModel.getUserName());
+        emailView.setText(subscribersListModel.getUsereEmail());
+        addressView.setText(subscribersListModel.getUserStreet());
+        phoneNoView.setText(subscribersListModel.getPhoneNumber());
+        packageName.setText(subscribersListModel.getPackageName());
+        descriView.setText(subscribersListModel.getPackageDesc());
+        priceView.setText(subscribersListModel.getPackageCost() + "CAD");
+        packageName.setText(subscribersListModel.getPackageName());
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

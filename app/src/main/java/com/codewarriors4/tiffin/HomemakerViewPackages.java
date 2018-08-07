@@ -325,6 +325,14 @@ public class HomemakerViewPackages extends AppCompatActivity {
         }
         adapter = new HMPackagesListAdapter(this, packageList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new HMPackagesListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent i = new Intent(HomemakerViewPackages.this, HomemakerUpdatePackage.class);
+                i.putExtra("package_id", String.valueOf(packageList.get(position).getPackID()));
+                startActivity(i);
+            }
+        });
 
 
     }

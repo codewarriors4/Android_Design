@@ -5,21 +5,8 @@ import android.os.Parcelable;
 
 public class SubscribersListModel implements Parcelable {
     private String userName;
+    private String usereEmail;
     private String userStreet;
-    private String phoneNumber;
-    private String packageCost;
-    private String packageName;
-    private String packageDesc;
-
-    public SubscribersListModel(String userName, String userStreet, String phoneNumber, String packageCost, String packageName, String packageDesc) {
-        this.userName = userName;
-        this.userStreet = userStreet;
-        this.phoneNumber = phoneNumber;
-        this.packageCost = packageCost;
-        this.packageName = packageName;
-        this.packageDesc = packageDesc;
-    }
-
 
     public String getUserName() {
         return userName;
@@ -27,6 +14,14 @@ public class SubscribersListModel implements Parcelable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUsereEmail() {
+        return usereEmail;
+    }
+
+    public void setUsereEmail(String usereEmail) {
+        this.usereEmail = usereEmail;
     }
 
     public String getUserStreet() {
@@ -69,6 +64,22 @@ public class SubscribersListModel implements Parcelable {
         this.packageDesc = packageDesc;
     }
 
+    private String phoneNumber;
+    private String packageCost;
+    private String packageName;
+    private String packageDesc;
+
+    public SubscribersListModel(String userName, String usereEmail, String userStreet, String phoneNumber, String packageCost, String packageName, String packageDesc) {
+        this.userName = userName;
+        this.usereEmail = usereEmail;
+        this.userStreet = userStreet;
+        this.phoneNumber = phoneNumber;
+        this.packageCost = packageCost;
+        this.packageName = packageName;
+        this.packageDesc = packageDesc;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -77,6 +88,7 @@ public class SubscribersListModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.userName);
+        dest.writeString(this.usereEmail);
         dest.writeString(this.userStreet);
         dest.writeString(this.phoneNumber);
         dest.writeString(this.packageCost);
@@ -86,6 +98,7 @@ public class SubscribersListModel implements Parcelable {
 
     protected SubscribersListModel(Parcel in) {
         this.userName = in.readString();
+        this.usereEmail = in.readString();
         this.userStreet = in.readString();
         this.phoneNumber = in.readString();
         this.packageCost = in.readString();
