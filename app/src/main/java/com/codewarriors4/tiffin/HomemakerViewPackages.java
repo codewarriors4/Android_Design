@@ -62,27 +62,7 @@ public class HomemakerViewPackages extends AppCompatActivity {
     private FrameLayout progress;
     private LinearLayout profileBody;
 
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 
-        public void onReceive(Context context, Intent intent) {
-//            String str = (String) intent
-//                    .getStringExtra(HttpService.MY_SERVICE_PAYLOAD);
-
-
-                    RespondPackage respondPackage = (RespondPackage) intent.getParcelableExtra(HttpService.MY_SERVICE_PAYLOAD);
-                    if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                        Toast.makeText(context, "Update Succesfully", Toast.LENGTH_SHORT).show();
-
-                    }else{
-                        Log.d("JsonResponseData", "onReceive: "
-                                + respondPackage.getParams().get(RespondPackage.FAILED));
-                        Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
-                    }
-
-        }
-    };
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,19 +83,20 @@ public class HomemakerViewPackages extends AppCompatActivity {
         progress = findViewById(R.id.progress_overlay);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .registerReceiver(mBroadcastReceiver,
-                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
-        new MyAsynTask().execute("");
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new MyAsynTask().execute("");
+    }
 
-
-  /*  @OnClick(R.id.menu_submit_btn)
+    /*  @OnClick(R.id.menu_submit_btn)
     public void submit(View view){
         checkValidation();
     }*/
@@ -303,6 +284,7 @@ public class HomemakerViewPackages extends AppCompatActivity {
 
 
         JSONArray jsonarray = new JSONArray(uniObject.toString());
+        packageList.clear();
         for (int i = 0; i < jsonarray.length(); i++) {
             JSONObject jsonobject = jsonarray.getJSONObject(i);
             String id = String.valueOf(i+1);
@@ -350,12 +332,7 @@ public class HomemakerViewPackages extends AppCompatActivity {
     }*/
 
 
-        protected void onDestroy(){
-            super.onDestroy();
 
-            LocalBroadcastManager.getInstance(getApplicationContext())
-                    .unregisterReceiver(mBroadcastReceiver);
-        }
 
 
     public boolean onOptionsItemSelected(MenuItem item) {

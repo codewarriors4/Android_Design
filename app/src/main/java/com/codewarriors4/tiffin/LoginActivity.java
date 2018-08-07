@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     session.setValues(access_token);
                     new UserHandler().startActivity(session, LoginActivity.this);
                 }else{
-                    new CustomToast().Show_Toast(LoginActivity.this, findViewById(android.R.id.content), "Please Contact with Admin");
+                    new CustomToast().Show_Toast(LoginActivity.this, findViewById(android.R.id.content), "Please Verify Your Email");
                     loginButton.setEnabled(true);
                 }
 //                Intent demoIntent = new Intent(context, TiffinSeekerDashboardActivity.class);

@@ -34,6 +34,9 @@ import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.Utils;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
@@ -75,11 +78,22 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }else{
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.FAILED));
-                Toast.makeText(context,
-                        respondPackage.getParams().get(RespondPackage.FAILED), Toast.LENGTH_SHORT)
-                        .show();
-                progressBar.setVisibility(View.GONE);
-                signUpButton.setVisibility(View.VISIBLE);
+                String s = respondPackage.getParams().get(RespondPackage.FAILED);
+                String response = null;
+                try {
+                    response = new JSONObject(s).getString("errors");
+                    new CustomToast().Show_Toast(context, view, response);
+                } catch (JSONException e) {
+                    Toast.makeText(context, "Server Error"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+
+
+                }finally {
+                    progressBar.setVisibility(View.GONE);
+                    signUpButton.setVisibility(View.VISIBLE);
+                }
+
             }
 
         }

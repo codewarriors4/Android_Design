@@ -138,6 +138,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
                 Toast.makeText(context, "Update Succesfully", Toast.LENGTH_SHORT).show();
+                finish();
 
             } else {
                 Log.d("JsonResponseData", "onReceive: "
@@ -198,7 +199,9 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
 
     protected DatePickerDialog onCreateDialog(int id) {
         if (id == DIALOG_ID) {
-            return new DatePickerDialog(this, dpickerListener, year_x, month_x, day_x);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, dpickerListener, year_x, month_x, day_x);
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            return datePickerDialog;
         } else {
             return null;
         }

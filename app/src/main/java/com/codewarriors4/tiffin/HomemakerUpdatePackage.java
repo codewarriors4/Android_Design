@@ -69,12 +69,13 @@ public class HomemakerUpdatePackage extends AppCompatActivity {
                     if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                         Log.d("JsonResponseData", "onReceive: "
                                 + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                        Toast.makeText(context, "Update Succesfull", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Package Updated", Toast.LENGTH_SHORT).show();
+                        finish();
 
                     }else{
                         Log.d("JsonResponseData", "onReceive: "
                                 + respondPackage.getParams().get(RespondPackage.FAILED));
-                        Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
                     }
                     
         }
