@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="42dp"
-            android:text="Receive push notifications on license approvals" />
+            android:text="Receive push notifications on new subscriptions"/>
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/setting_licence"
             android:layout_width="wrap_content"
@@ -35,7 +35,8 @@
         <TextView
             android:layout_width="302dp"
             android:layout_height="35dp"
-            android:text="Receive push notifications on new subscriptions" />
+            android:text="Receive push notifications on license approvals"
+             />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/setting_subscri"
