@@ -74,7 +74,7 @@ public class SettingActivity extends AppCompatActivity
                 JSONArray settingJson = new JSONArray(s);
                 if(settingJson.length() == 2){
                     pushforLicence.setChecked( settingJson.getJSONObject(0).getInt("status") == 0 ? true : false);
-                    pushforNewSubScribers.setChecked( settingJson.getJSONObject(1).getInt("status") == 0 ? true : false);
+                    pushforNewSubScribers.setChecked( settingJson.getJSONObject(1).getInt("status") == 0     ? true : false);
                     isActivityStarted = false;
                 }
             } catch (JSONException e) {
