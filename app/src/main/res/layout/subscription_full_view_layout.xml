@@ -15,91 +15,105 @@
             android:textSize="25sp"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="@color/blue"/>
+            android:textColor="@color/blue"
+            android:background="@color/buttoncolor"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Subscriber Name"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:id="@+id/full_name"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:text="Jaison Joseph"/>
+            android:layout_marginTop="25dp"
+            android:padding="5dp"
+            >
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="1,2"
+                android:gravity="center"
+                >
+
+                <TableRow
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:text="Subscriber Name :"
+                        android:textSize="16sp"
+                        android:layout_width="fill_parent"
+                        android:layout_column="1"
+
+                        />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:id="@+id/full_name"
+                        android:textSize="18sp"
+                        android:layout_column="2"
+                        android:text="Jaison Joseph"/>
+
+
+                </TableRow>
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    >
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:text="Email :"
+                    android:textSize="16sp"
+                    android:layout_column="1"
+                    />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:id="@+id/email_view"
+                    android:textSize="18sp"
+                    android:layout_column="2"
+                    android:text="amitc005@gmail.com"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:text="Address :"
+                        android:layout_column="1"
+                        android:textSize="16sp"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:id="@+id/address_view"
+                        android:layout_column="2"
+                        android:text="200 Old Carriage"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Phone No :"
+                        android:textSize="16sp"
+                        android:layout_column="1"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:id="@+id/phone_no_view"
+                        android:layout_column="2"
+
+                        android:text="4168314587"/>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:id="@+id/email_view"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:text="amitc005@gmail.com"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Address"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:id="@+id/address_view"
-                android:layout_marginLeft="10dp"
-                android:text="200 Old Carriage"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phone No."
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:id="@+id/phone_no_view"
-                android:layout_marginLeft="10dp"
-                android:text="4168314587"/>
-        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,28 +121,91 @@
             android:textSize="25sp"
             android:textStyle="bold"
             android:padding="5dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/blue"/>
+            android:layout_marginTop="25dp"
+            android:textColor="@color/blue"
+            android:background="@color/buttoncolor"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp"
+            android:padding="5dp">
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="1,2"
+
+                >
+
+
+            <TableRow
+                android:layout_height="match_parent"
+                android:layout_width="0dp">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:text="Package Name :"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:id="@+id/package_name"
+                    android:text="Mid Day Meal"
+                    android:layout_column="2"
+                    />
+            </TableRow>
+
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:text="Description :"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/descri_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:text="Mid Day Meal for Poor People"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </TableRow>
+                <TableRow
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price :"
+                        android:textSize="16sp"
+                        android:layout_column="1"/>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:id="@+id/price_view"
+                        android:text="50 CAD"/>
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="5dp"
             android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Package Name"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:id="@+id/package_name"
-                android:layout_marginLeft="10dp"
-                android:text="Mid Day Meal"/>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -139,49 +216,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:id="@+id/descri_view"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:text="Mid Day Meal for Poor People"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Price"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:id="@+id/price_view"
-                android:layout_marginLeft="10dp"
-                android:text="50CAD"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Subscription Start Date"
+                android:text="Start Date :"
                 android:textStyle="bold"
                 android:textSize="16sp"/>
             <TextView
@@ -202,7 +237,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subscription End Date"
+                android:text="End Date :"
                 android:textStyle="bold"
                 android:textSize="16sp"/>
             <TextView
@@ -214,6 +249,11 @@
                 android:layout_marginLeft="10dp"
                 android:text="50CAD"/>
         </LinearLayout>
+
+
+
+
     </LinearLayout>
+
 
 </ScrollView>
