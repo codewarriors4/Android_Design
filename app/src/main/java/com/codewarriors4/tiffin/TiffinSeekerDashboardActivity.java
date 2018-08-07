@@ -245,6 +245,8 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
                 fromLocation = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
                 if(fromLocation.get(0).getPostalCode() != null) {
                    new LocationAsynTask().execute(fromLocation.get(0).getPostalCode());
+                    TextView app_bar_editTxt = findViewById(R.id.location_auto_complete);
+                    app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] + "  " + fromLocation.get(0).getPostalCode());
                }else{
                     new LocationDialog().show(getFragmentManager(), "Invalid Location Detect");
                 }
@@ -253,8 +255,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-          TextView app_bar_editTxt = findViewById(R.id.location_auto_complete);
-            app_bar_editTxt.setText(fromLocation.get(0).getAddressLine(0).split(",")[0] + "  " + fromLocation.get(0).getPostalCode());
+
 
     }
 
@@ -499,8 +500,7 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
                     Toast.makeText(TiffinSeekerDashboardActivity.this, "No Homamaker around \n your location", Toast.LENGTH_LONG ).show();
                 }
             } catch (JSONException e) {
-                Toast.makeText(TiffinSeekerDashboardActivity.this, "Zip code error", Toast.LENGTH_LONG).show();
-                homeMakerProgressList.setVisibility(View.GONE);
+                new LocationDialog().show(getFragmentManager(), "Invalid Location Detect");
             }
 
 

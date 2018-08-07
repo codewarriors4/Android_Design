@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:id="@+id/full_name"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:layout_marginLeft="10dp"
             android:padding="10dp"
             android:text="Jaison Joseph"/>
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:id="@+id/email_view"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:layout_marginLeft="10dp"
             android:padding="10dp"
             android:text="amitc005@gmail.com"/>
@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:id="@+id/address_view"
             android:layout_marginLeft="10dp"
             android:padding="10dp"
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:id="@+id/phone_no_view"
             android:layout_marginLeft="10dp"
             android:padding="10dp"
@@ -131,7 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:id="@+id/package_name"
             android:layout_marginLeft="10dp"
             android:padding="10dp"
@@ -155,7 +155,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:id="@+id/descri_view"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:layout_marginLeft="10dp"
             android:padding="10dp"
             android:text="Mid Day Meal for Poor People"/>
@@ -177,8 +177,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:id="@+id/price_view"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:text="50CAD"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:id="@+id/start_date"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:text="50CAD"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:id="@+id/end_date"
             android:layout_marginLeft="10dp"
             android:padding="10dp"
             android:text="50CAD"/>

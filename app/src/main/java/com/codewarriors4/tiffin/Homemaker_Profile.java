@@ -158,6 +158,15 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         profileBody = findViewById(R.id.profile_body);
         progress = findViewById(R.id.progress_overlay);
         mImageView = findViewById(R.id.license_preview);
+//        mImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+////            public void onClick(View v) {
+////                Intent intent = new Intent();
+////                intent.setAction(Intent.ACTION_VIEW);
+////                intent.setDataAndType(Uri.parse(Homemaker_Profile.this.getCacheDir().toURI().toString() + "1" + ".jpg"), "image/*");
+////                startActivity(intent);
+////            }
+//        });
         uploadLicenceButton.setOnCreateContextMenuListener(this);
         showDialogOnButtonClick();
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
@@ -305,7 +314,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     public File saveImageToFile(ByteArrayOutputStream bytes)
     {
         File destination = new File(this.getCacheDir(),
-                System.currentTimeMillis() + ".jpg");
+                "1" + ".jpg");
         Log.d("imageURI", "saveImageToFile: " + destination.getAbsolutePath());
         FileOutputStream fo;
         try {

@@ -63,7 +63,8 @@ public class HomemakerDashboardActivity extends AppCompatActivity
         String fcmtoken = cfcmtoken.getString(cfcmtoken.getColumnIndex("fcmkey"));
         sessionUtli.setValue("fcmtoken",fcmtoken);
         new MyAsynTask().execute(""); // let this run first
-
+        View headerView = navigationView.getHeaderView(0);
+        ((TextView)headerView.findViewById(R.id.email_holder_home_maker)).setText(sessionUtli.getValue("email"));
        // initDashBoardOnClick();
 
     }

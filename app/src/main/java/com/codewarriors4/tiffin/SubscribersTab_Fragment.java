@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Set;
 
 public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
@@ -158,8 +159,11 @@ public class SubscribersTab_Fragment extends android.support.v4.app.Fragment
                     String cost = subscriber.getString("SubCost");
                     String packageName = subscriber.getString("HMPName");
                     String packageDesc = subscriber.getString("HMPDesc");
+                    String startDate = subscriber.getString("SubStartDate").split(" ")[0];
+                    String endDate = subscriber.getString("SubEndDate").split(" ")[0];
+
                     lists.add(new SubscribersListModel(firstName + " " +lastName,
-                            email, street, phoneNumber, cost, packageName, packageDesc));
+                           email, street, phoneNumber, cost, packageName, packageDesc, startDate, endDate));
                 }
 
                 SubscribersListAdapter subscribersListAdapter = new SubscribersListAdapter(context, lists);

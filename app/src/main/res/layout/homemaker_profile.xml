@@ -117,21 +117,29 @@
 
     </LinearLayout>
 
+
+    <ImageView
+        android:id="@+id/license_preview"
+        android:layout_width="102dp"
+        android:layout_height="95dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        app:srcCompat="@color/YellowGreen" />
+
     <Button
+        android:id="@+id/upload_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:layout_gravity="center"
         android:background="@color/blue"
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
         android:text="Licence"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        android:id="@+id/upload_btn"/>
-
+        android:textStyle="bold" />
 
     <Button
         android:layout_width="wrap_content"
@@ -145,13 +153,5 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:id="@+id/submit_btn"/>
-
-    <ImageView
-        android:id="@+id/license_preview"
-        android:layout_width="102dp"
-        android:layout_height="95dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        app:srcCompat="@color/YellowGreen" />
 
 </LinearLayout>

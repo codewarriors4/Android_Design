@@ -3,10 +3,32 @@ package com.codewarriors4.tiffin.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 public class SubscribersListModel implements Parcelable {
     private String userName;
     private String usereEmail;
     private String userStreet;
+    private String phoneNumber;
+    private String packageCost;
+    private String packageName;
+    private String packageDesc;
+    private String startDate;
+    private String endDate;
+
+    public SubscribersListModel(String userName, String usereEmail, String userStreet,
+                                String phoneNumber, String packageCost, String packageName,
+                                String packageDesc, String startDate, String endDate) {
+        this.userName = userName;
+        this.usereEmail = usereEmail;
+        this.userStreet = userStreet;
+        this.phoneNumber = phoneNumber;
+        this.packageCost = packageCost;
+        this.packageName = packageName;
+        this.packageDesc = packageDesc;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public String getUserName() {
         return userName;
@@ -64,19 +86,20 @@ public class SubscribersListModel implements Parcelable {
         this.packageDesc = packageDesc;
     }
 
-    private String phoneNumber;
-    private String packageCost;
-    private String packageName;
-    private String packageDesc;
+    public String getStartDate() {
+        return startDate;
+    }
 
-    public SubscribersListModel(String userName, String usereEmail, String userStreet, String phoneNumber, String packageCost, String packageName, String packageDesc) {
-        this.userName = userName;
-        this.usereEmail = usereEmail;
-        this.userStreet = userStreet;
-        this.phoneNumber = phoneNumber;
-        this.packageCost = packageCost;
-        this.packageName = packageName;
-        this.packageDesc = packageDesc;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
 
@@ -94,6 +117,8 @@ public class SubscribersListModel implements Parcelable {
         dest.writeString(this.packageCost);
         dest.writeString(this.packageName);
         dest.writeString(this.packageDesc);
+        dest.writeString(this.startDate);
+        dest.writeString(this.endDate);
     }
 
     protected SubscribersListModel(Parcel in) {
@@ -104,6 +129,8 @@ public class SubscribersListModel implements Parcelable {
         this.packageCost = in.readString();
         this.packageName = in.readString();
         this.packageDesc = in.readString();
+        this.startDate = in.readString();
+        this.endDate = in.readString();
     }
 
     public static final Parcelable.Creator<SubscribersListModel> CREATOR = new Parcelable.Creator<SubscribersListModel>() {

@@ -23,6 +23,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="email@email.com"
+        android:id="@+id/email_holder_home_maker"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />

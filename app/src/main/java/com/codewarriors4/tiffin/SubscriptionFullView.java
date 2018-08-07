@@ -28,6 +28,10 @@ public class SubscriptionFullView extends AppCompatActivity
     public TextView descriView;
     @BindView(R.id.price_view)
     public TextView priceView;
+    @BindView(R.id.start_date)
+    public TextView startDateView;
+    @BindView(R.id.end_date)
+    public TextView endDateView;
 
 
 
@@ -37,6 +41,7 @@ public class SubscriptionFullView extends AppCompatActivity
         setContentView(R.layout.subscription_full_view_layout);
         ButterKnife.bind(this);
         Intent intent = getIntent();
+        setTitle("Subscription Details");
         SubscribersListModel subscribersListModel = intent.getParcelableExtra("Example Item");
         
         initValue(subscribersListModel);
@@ -56,6 +61,8 @@ public class SubscriptionFullView extends AppCompatActivity
         descriView.setText(subscribersListModel.getPackageDesc());
         priceView.setText(subscribersListModel.getPackageCost() + "CAD");
         packageName.setText(subscribersListModel.getPackageName());
+        startDateView.setText(subscribersListModel.getStartDate());
+        endDateView.setText(subscribersListModel.getEndDate());
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

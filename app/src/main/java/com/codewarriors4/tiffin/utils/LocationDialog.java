@@ -45,7 +45,7 @@ public class LocationDialog extends DialogFragment {
         View inflate = inflater.inflate(R.layout.location_diglog_box, null);
         builder.setView(inflate);
         final TextView postalUserInput = (TextView) inflate.findViewById(R.id.location_postal_code);
-        builder.setMessage("Hello")
+        builder.setMessage("Postal Code")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
