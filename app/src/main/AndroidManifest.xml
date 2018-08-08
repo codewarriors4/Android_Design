@@ -72,7 +72,7 @@
         <activity android:name=".Privacy_HM" android:screenOrientation="portrait"></activity>
 
         <activity android:name=".SignupActivity" android:screenOrientation="portrait"></activity>
-
+        <activity android:name=".ImagePreviewActivity" android:screenOrientation="portrait" android:theme="@style/AppThemeActionBar"></activity>
         <service android:name=".services.HttpService" android:exported="false">
         </service>
 

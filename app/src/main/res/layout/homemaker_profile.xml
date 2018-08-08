@@ -117,7 +117,7 @@
     </LinearLayout>
 
 
-    <br.com.felix.imagezoom.ImageZoom
+    <ImageView
         android:id="@+id/license_preview"
         android:adjustViewBounds="true"
         android:layout_width="102dp"

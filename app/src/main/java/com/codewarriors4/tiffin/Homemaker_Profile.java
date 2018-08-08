@@ -10,7 +10,9 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.icu.util.Calendar;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -62,16 +64,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.com.felix.imagezoom.ImageZoom;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -106,6 +109,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     EditText countryView;
     @BindView(R.id.zipcode)
     EditText zipcodeView;
+    Bitmap bitmap;
 
     @BindView(R.id.hm_lic_exp_date)
     TextView exp_date_text;
@@ -118,7 +122,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     @BindView(R.id.submit_btn)
     Button submitProfileButton;
     boolean imageSelected;
-    ImageZoom mImageView;
+    ImageView mImageView;
     String mCurrentPhotoPath;
 
     Bitmap imageBitmap;
@@ -284,22 +288,50 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         popup.setOnMenuItemClickListener(this);
         popup.show();
     }
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-    }
+//    private void dispatchTakePictureIntent() {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            imageBitmap = (Bitmap) extras.get("data");
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            mImageView.setImageBitmap(BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray())));
-            uploadLicence = saveImageToFile(bytes);
-            imageSelected = true;
-            sessionUtli.setValue("isLicenceUploaded", "true");
+//            Bundle extras = data.getExtras();
+//            imageBitmap = (Bitmap) extras.get("data");
+//            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//            mImageView.setImageBitmap(BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray())));
+//            uploadLicence = saveImageToFile(bytes);
+//            imageSelected = true;
+//            sessionUtli.setValue("isLicenceUploaded", "true");
+            File file = new File(mCurrentPhotoPath);
+            try {
+                bitmap = MediaStore.Images.Media
+                        .getBitmap(getContentResolver(), Uri.fromFile(file));
+                if (bitmap != null) {
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+                    //bitmap = rotateImage(this.bitmap, ExifInterface.ORIENTATION_ROTATE_180);
+                    rotateImage(bitmap);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                    //mImageView.setImageBitmap(BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray())));
+                    uploadLicence = saveImageToFile(bytes);
+                    mImageView.setImageBitmap(bitmap);
+                    mImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(Homemaker_Profile.this, ImagePreviewActivity.class);
+                            i.putExtra("bitmap_img", uploadLicence.getAbsolutePath());
+                            startActivity(i);
+                        }
+                    });
+
+                    imageSelected = true;
+                    sessionUtli.setValue("isLicenceUploaded", "true");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         else if(requestCode == REQUEST_SELECT_IMAGE && resultCode == RESULT_OK){
             Uri uri = data.getData();
@@ -310,10 +342,133 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 uploadLicence = saveImageToFile(bytes);
                 mImageView.setImageBitmap(bitmap);
+                mImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(Homemaker_Profile.this, ImagePreviewActivity.class);
+                        i.putExtra("bitmap_img", uploadLicence.getAbsolutePath());
+                        startActivity(i);
+                    }
+                });
                 imageSelected = true;
                 sessionUtli.setValue("isLicenceUploaded", "true");
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+//    private static Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) throws IOException {
+//
+//        InputStream input = context.getContentResolver().openInputStream(selectedImage);
+//        ExifInterface ei;
+//        if (Build.VERSION.SDK_INT > 23)
+//            ei = new ExifInterface(input);
+//        else
+//            ei = new ExifInterface(selectedImage.getPath());
+//
+//        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+//
+//        switch (orientation) {
+//            case ExifInterface.ORIENTATION_ROTATE_90:
+//                return rotateImage(img, 90);
+//            case ExifInterface.ORIENTATION_ROTATE_180:
+//                return rotateImage(img, 180);
+//            case ExifInterface.ORIENTATION_ROTATE_270:
+//                return rotateImage(img, 270);
+//            default:
+//                return img;
+//        }
+//    }
+
+    private static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+
+        Bitmap bitmap = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+        return bitmap;
+    }
+
+    private void rotateImage(Bitmap bitmap){
+        ExifInterface exifInterface = null;
+        try {
+            exifInterface = new ExifInterface(mCurrentPhotoPath);
+        }catch (Exception e){
+
+        }
+
+        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        Matrix matrix = new Matrix();
+        switch (orientation){
+            case ExifInterface.ORIENTATION_NORMAL:
+                //return bitmap;
+                break;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+        }
+
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0,0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+        this.bitmap = rotatedBitmap;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Toast.makeText(this, "Photo Capture Error", Toast.LENGTH_LONG);
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.codewarriors4.tiffin.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
     }
