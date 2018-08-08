@@ -25,6 +25,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
+import android.util.Base64;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -42,6 +43,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -124,12 +126,13 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     boolean imageSelected;
     ImageView mImageView;
     String mCurrentPhotoPath;
+    @BindView(R.id.progress_get_homemaker)
+    ProgressBar progressBar;
 
     Bitmap imageBitmap;
     File uploadLicence;
 
     private SessionUtli sessionUtli;
-    private FrameLayout progress;
     private LinearLayout profileBody;
     JsonObject hmDetailsJSONObj;
 
@@ -146,6 +149,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
                 Log.d("JsonResponseData", "onReceive: "
                         + respondPackage.getParams().get(RespondPackage.SUCCESS));
                 Toast.makeText(context, "Update Succesfully", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
                 finish();
 
             } else {
@@ -163,9 +167,11 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homemaker_profile);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
+
         ButterKnife.bind(this);
+
         profileBody = findViewById(R.id.profile_body);
-        progress = findViewById(R.id.progress_overlay);
+        progressBar.setVisibility(View.VISIBLE);
         //mImageView = findViewById(R.id.license_preview);
          mImageView = findViewById(R.id.license_preview);
         //mImageView.setImageBitmap(thumbnail);
@@ -524,6 +530,7 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     }
 
     public void submit(){
+        progressBar.setVisibility(View.VISIBLE);
         RequestPackage requestPackage = new RequestPackage();
         requestPackage.setEndPoint(Constants.BASE_URL + Constants.HOMEMAKERPROFILE);
         requestPackage.setMethod("POST");
@@ -612,17 +619,33 @@ public class Homemaker_Profile extends AppCompatActivity implements PopupMenu.On
     private void initValues(JsonObject hmdetails) throws JSONException {
             firstNameView.setText(hmdetails.get("UserFname").getAsString());
             lastNameView.setText(hmdetails.get("UserLname").getAsString());
-        phoneView.setText(hmdetails.get("UserPhone").getAsString());
-        streetName.setText(hmdetails.get("UserStreet").getAsString());
-        city.setText(hmdetails.get("UserCity").getAsString());
-        countryView.setText(hmdetails.get("UserCountry").getAsString());
-        zipcodeView.setText(hmdetails.get("UserZipCode").getAsString());
-        provinceSpinner.setSelection(getIndex(provinceSpinner, hmdetails.get("UserProvince").getAsString()));
-        exp_date_text.setText(hmdetails.get("HMLicenseExpiryDate").getAsString());
+            phoneView.setText(hmdetails.get("UserPhone").getAsString());
+            streetName.setText(hmdetails.get("UserStreet").getAsString());
+            city.setText(hmdetails.get("UserCity").getAsString());
+            countryView.setText(hmdetails.get("UserCountry").getAsString());
+            zipcodeView.setText(hmdetails.get("UserZipCode").getAsString());
+            provinceSpinner.setSelection(getIndex(provinceSpinner, hmdetails.get("UserProvince").getAsString()));
+            exp_date_text.setText(hmdetails.get("HMLicenseExpiryDate").getAsString());
 
-
-
-
+            try {
+                byte[] decodedString = Base64.decode(hmdetails.get("prod_encoded_img").getAsString(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                mImageView.setImageBitmap(decodedByte);
+                uploadLicence = saveImageToFile(bytes);
+                mImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(Homemaker_Profile.this, ImagePreviewActivity.class);
+                        i.putExtra("bitmap_img", uploadLicence.getAbsolutePath());
+                        startActivity(i);
+                    }
+                });
+            }catch (Exception e){
+                Toast.makeText(this, "Please Upload Licence Image", Toast.LENGTH_LONG);
+            }
+        progressBar.setVisibility(View.GONE);
 
 
     }

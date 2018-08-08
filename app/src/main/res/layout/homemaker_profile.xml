@@ -1,157 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/white"
-    android:id="@+id/profile_body">
-
-    <EditText
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="FirstName"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:id="@+id/first_name"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:id="@+id/profile_body">
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/progress_get_homemaker"
+            android:visibility="gone"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="FirstName"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:id="@+id/first_name"/>
 
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Lastname"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:id="@+id/last_name"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Phone"
-        android:inputType="phone"
-        android:textColor="@color/black"
-        android:id="@+id/phone"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Street Name"
-        android:inputType="text"
-        android:textColor="@color/black"
-        android:id="@+id/street_name"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="City"
-            android:layout_weight="1"
+            android:hint="Lastname"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:id="@+id/last_name"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:id="@+id/phone"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Street Name"
             android:inputType="text"
             android:textColor="@color/black"
-            android:id="@+id/city"/>
+            android:id="@+id/street_name"/>
 
-        <Spinner
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:entries="@array/Province_arrays"
-            android:prompt="@string/Province_prompt"
-            tools:layout_editor_absoluteX="182dp"
-            tools:layout_editor_absoluteY="11dp"
-            android:id="@+id/province_spinner"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="City"
+                android:layout_weight="1"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:id="@+id/city"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <Spinner
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:entries="@array/Province_arrays"
+                android:prompt="@string/Province_prompt"
+                tools:layout_editor_absoluteX="182dp"
+                tools:layout_editor_absoluteY="11dp"
+                android:id="@+id/province_spinner"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:hint="Country"
-            android:inputType="text"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:id="@+id/country"/>
+        </LinearLayout>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:hint="Zipcode"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:id="@+id/zipcode"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="Country"
+                android:inputType="text"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:id="@+id/country"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="Zipcode"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:id="@+id/zipcode"/>
 
-        <TextView
-            android:id="@+id/hm_lic_exp_date"
-            android:layout_width="272dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:paddingTop="10dp"
-            android:text="Pick License Expiry Date"
-            android:textAlignment="center"
-            android:textSize="18sp" />
+        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/hm_profile_datepicker"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hm_lic_exp_date"
+                android:layout_width="272dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:text="Pick License Expiry Date"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/hm_profile_datepicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_datepicker" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/license_preview"
+            android:adjustViewBounds="true"
+            android:layout_width="102dp"
+            android:layout_height="95dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            app:srcCompat="@color/YellowGreen" />
+
+        <Button
+            android:id="@+id/upload_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_datepicker" />
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/blue"
+            android:elevation="4dp"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:text="Licence"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/blue"
+            android:elevation="4dp"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:text="Submit"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:id="@+id/submit_btn"/>
 
     </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/license_preview"
-        android:adjustViewBounds="true"
-        android:layout_width="102dp"
-        android:layout_height="95dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        app:srcCompat="@color/YellowGreen" />
-
-    <Button
-        android:id="@+id/upload_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/blue"
-        android:elevation="4dp"
-        android:paddingLeft="70dp"
-        android:paddingRight="70dp"
-        android:text="Licence"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/blue"
-        android:elevation="4dp"
-        android:paddingLeft="70dp"
-        android:paddingRight="70dp"
-        android:text="Submit"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:id="@+id/submit_btn"/>
-
-</LinearLayout>
