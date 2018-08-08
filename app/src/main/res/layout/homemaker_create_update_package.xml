@@ -1,73 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/blue"
-    tools:context=".Homemaker_Profile">
-
-    <include
-        layout="@layout/progress_framelayout"
-        android:visibility="visible" />
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="16dp"
+android:background="@color/white"
+android:id="@+id/profile_body">
+<ProgressBar
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/white"
-    android:id="@+id/profile_body">
-
-    <EditText
-        android:id="@+id/package_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:hint="Package Name"
-        android:inputType="textPersonName"
-        android:textColor="@color/black" />
+    android:id="@+id/progress_bar"
+    android:visibility="gone"/>
+<EditText
+android:id="@+id/package_name"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginBottom="20dp"
+android:hint="Package Name"
+android:inputType="textPersonName"
+android:textColor="@color/black" />
 
 
-        <EditText
-            android:id="@+id/pack_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="top"
-            android:hint="Description"
-            android:singleLine="false"
-            android:textColor="@color/black"
-            android:lines="5"
-            android:inputType="textMultiLine"
+<EditText
+    android:id="@+id/pack_desc"
+    android:layout_width="match_parent"
+    android:layout_height="86dp"
+    android:layout_marginBottom="20dp"
+    android:gravity="top"
+    android:hint="Description"
+    android:inputType="textMultiLine"
+    android:lines="5"
+    android:singleLine="false"
+    android:textColor="@color/black" />
+<EditText
+    android:id="@+id/pack_cost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:hint="Package cost "
+    android:inputType="numberDecimal"
+    android:maxLength="6"
+    android:textColor="@color/black" />
 
-            />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/pack_cost"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:hint="Package cost "
-            android:inputType="numberDecimal"
-            android:maxLength="6"
-            android:textColor="@color/black" />
+    <ImageButton
+        android:id="@+id/image_upload_btn"
+        android:layout_width="72dp"
+        android:layout_height="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/baseline_cloud_upload_black_18dp" />
 
-
-        <Button
-            android:id="@+id/menu_submit_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/blue"
-            android:elevation="4dp"
-            android:paddingLeft="70dp"
-            android:paddingRight="70dp"
-            android:text="Submit"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-
-</LinearLayout>
+    <ImageView
+        android:id="@+id/image_preview"
+        android:layout_width="102dp"
+        android:layout_height="95dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="clip_vertical"
+        android:adjustViewBounds="true"
+        app:srcCompat="@color/YellowGreen" />
 </RelativeLayout>
+
+<Button
+    android:id="@+id/menu_submit_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="20dp"
+    android:background="@color/blue"
+    android:paddingLeft="70dp"
+    android:paddingRight="70dp"
+    android:text="Submit"
+    android:textColor="@color/white"
+    android:textStyle="bold" />
+</LinearLayout>
+
 
