@@ -63,6 +63,7 @@
             android:label="My Subscribers"></activity>
         <activity android:name=".SubscriptionFullView" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
         <activity android:name=".SettingActivity" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ConfirmPaymentActivity" android:theme="@style/AppThemeActionBar" android:screenOrientation="portrait"></activity>
 
 
         <activity android:name=".Legal" android:screenOrientation="portrait"></activity>

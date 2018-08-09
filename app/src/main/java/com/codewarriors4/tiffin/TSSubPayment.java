@@ -110,10 +110,6 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
         profileBody = findViewById(R.id.profile_body);
-
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .registerReceiver(mBroadcastReceiver,
-                        new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -151,37 +147,29 @@ public class TSSubPayment extends AppCompatActivity implements PaymentSucessDial
         Intent i = getIntent();
         InputMethodManager inputManager = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-
-        RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setEndPoint(Constants.BASE_URL + Constants.TSMAKEPAYMENT);
-        requestPackage.setMethod("POST");
-        requestPackage.setParam("card_number", card_number.getText().toString().trim());
-        requestPackage.setParam("expiration_month", card_exp_date_mnth.getText().toString().trim());
-        requestPackage.setParam("expiration_year", card_exp_date_year.getText().toString().trim());
-        requestPackage.setParam("cvc", card_cvv.getText().toString().trim());
-
-        requestPackage.setParam("HMPid", i.getStringExtra("package_id"));
-        requestPackage.setParam("subtotal", i.getStringExtra("package_cost"));
-
-        requestPackage.setParam("hst", i.getStringExtra("package_hst"));
-        requestPackage.setParam("total", i.getStringExtra("package_total"));
-        requestPackage.setParam("HomeMakerId", i.getStringExtra("HomeMakerId"));
-
-
-        requestPackage.setHeader("Authorization", "Bearer " + sessionUtli.getValue("access_token"));
-        requestPackage.setHeader("Accept", "application/json; q=0.5");
-        Intent intent = new Intent(this, HttpService.class);
-        intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
-        progress.setVisibility(View.VISIBLE);
-        startService(intent);
+        String cardNumber =  card_number.getText().toString().trim();
+        String expMonth = card_exp_date_mnth.getText().toString().trim();
+        String expYear = card_exp_date_year.getText().toString().trim();
+        String cvc = card_cvv.getText().toString().trim();
+        String packageId = i.getStringExtra("package_id");
+        String packageCost = i.getStringExtra("package_cost");
+        String packageHST = i.getStringExtra("package_hst");
+        String packageTotal = i.getStringExtra("package_total");
+        String homeMakerId = i.getStringExtra("HomeMakerId");
+        Intent newIntent = new Intent (this, ConfirmPaymentActivity.class);
+        newIntent.putExtra("cardNumber", cardNumber);
+        newIntent.putExtra("expMonth", expMonth);
+        newIntent.putExtra("expYear", expYear);
+        newIntent.putExtra("cvc", cvc);
+        newIntent.putExtra("packageId", packageId);
+        newIntent.putExtra("packageCost", packageCost);
+        newIntent.putExtra("packageHST", packageHST);
+        newIntent.putExtra("packageTotal", packageTotal);
+        newIntent.putExtra("homeMakerId", homeMakerId);
+        startActivity(newIntent);
     }
 
 
-    protected void onDestroy() {
-        super.onDestroy();
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .unregisterReceiver(mBroadcastReceiver);
-    }
 
 
     @Override
