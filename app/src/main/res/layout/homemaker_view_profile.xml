@@ -3,12 +3,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/blue"
     tools:context=".Homemaker_Profile">
 
     <include
         layout="@layout/progress_framelayout"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -98,7 +97,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:text="TextView"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:drawableRight="@mipmap/baseline_place_black_24dp"/>
         </LinearLayout>
 
 

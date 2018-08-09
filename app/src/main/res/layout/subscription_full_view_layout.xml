@@ -82,14 +82,16 @@
                         android:text="Address :"
                         android:layout_column="1"
                         android:textSize="16sp"/>
+
                     <TextView
+                        android:id="@+id/address_view"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:id="@+id/address_view"
                         android:layout_column="2"
-                        android:text="200 Old Carriage"/>
+                        android:text="200 Old Carriage"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:drawableRight="@mipmap/baseline_place_black_24dp"/>
                 </TableRow>
                 <TableRow
                     android:layout_width="0dp"

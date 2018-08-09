@@ -103,7 +103,9 @@ public class HomemakerCreatePackages extends AppCompatActivity implements PopupM
                     if(respondPackage.getParams().containsKey(RespondPackage.SUCCESS)){
                         Log.d("JsonResponseData", "onReceive: "
                                 + respondPackage.getParams().get(RespondPackage.SUCCESS));
-                        Toast.makeText(context, "Update Succesfull", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Package Updated", Toast.LENGTH_SHORT).show();
+                        progress.setVisibility(View.GONE);
+                        finish();
 
                     }else{
                         Log.d("JsonResponseData", "onReceive: "

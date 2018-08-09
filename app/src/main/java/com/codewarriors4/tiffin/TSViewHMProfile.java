@@ -138,6 +138,16 @@ public class TSViewHMProfile extends AppCompatActivity  {
         homemakerName.setText(hmdetails.get("UserFname").getAsString() + " " + hmdetails.get("UserLname").getAsString());
         homemakerStreet.setText(hmdetails.get("UserStreet").getAsString());
         homemakerCity.setText(hmdetails.get("UserCity").getAsString());
+        homemakerStreet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q="+homemakerStreet.getText()
+                        +", "+ homemakerCity.getText());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
         homemakerProvince.setText(hmdetails.get("UserProvince").getAsString());
         ho0memakerPostal.setText(hmdetails.get("UserZipCode").getAsString());
         homemakerPhone.setText(hmdetails.get("UserPhone").getAsString());
