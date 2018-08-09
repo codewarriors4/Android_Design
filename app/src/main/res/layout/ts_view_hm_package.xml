@@ -52,13 +52,12 @@
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:inputType="textMultiLine"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="5dp"/>
 
         <ImageView
             android:layout_width="180dp"
             android:layout_height="180dp"
-            android:layout_gravity="center"
-            android:id="@id/image_preview"/>
+            android:layout_gravity="center" />
 
     </LinearLayout>
 
@@ -112,4 +111,14 @@
         android:layout_marginStart="54dp"
         android:text="SubTotal:" />
 
+    <Button
+        android:id="@+id/subscribe_btn"
+        android:layout_width="131dp"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="33dp"
+        android:layout_marginEnd="110dp"
+        android:text="Subscribe"
+        tools:text="Subscribe" />
 </RelativeLayout>
