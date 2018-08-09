@@ -141,8 +141,8 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tiffin_seeker);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
-        ButterKnife.bind(this);
 
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_gps);
         setSupportActionBar(toolbar);
         ImageButton getLocationBtn = toolbar.findViewById(R.id.action_bar_button);
@@ -213,6 +213,11 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
 
         //listViewAdapter = new HomeMakerListAdapter(this);
         //getLocation();
+        if(getIntent().hasExtra("HMPId")) {
+            Intent i = new Intent(this, TSViewHMPackage.class);
+            i.putExtra("package_id", getIntent().getStringExtra("HMPId"));
+            startActivity(i);
+        }
     }
 
     public void getLocation() {

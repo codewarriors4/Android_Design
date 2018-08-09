@@ -64,8 +64,10 @@ public class TiffinSeekerSettingActivity extends AppCompatActivity
             super.onPostExecute(s);
             try {
                 JSONArray settingJson = new JSONArray(s);
-                if(settingJson.length() == 2){
+                if(settingJson.length() == 1){
                     pushforLicence.setChecked( settingJson.getJSONObject(0).getInt("status") == 0 ? true : false);
+                    isActivityStarted = false;
+                }else{
                     isActivityStarted = false;
                 }
             } catch (JSONException e) {

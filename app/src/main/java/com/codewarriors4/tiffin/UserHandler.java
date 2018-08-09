@@ -15,12 +15,12 @@ public class UserHandler
 {
     private SessionUtli session;
     private Context context;
-    public void startActivity(SessionUtli session, Context context){
+    private Intent pushIntent;
+    public void startActivity(SessionUtli session, Context context, Intent pushIntent){
         this.session = session;
         this.context = context;
+        this.pushIntent = pushIntent;
         new UserInformationTask().execute(this.session.getValue("access_token"));
-
-
     }
 
     private class UserInformationTask extends AsyncTask<String, Void, String>{
@@ -49,8 +49,11 @@ public class UserHandler
 
             if(session.getValue("UserType").equals("0.0")){
 
+
+
                 Intent demoIntent = new Intent(context, TiffinSeekerDashboardActivity.class);
-                demoIntent.putExtra("isNewLogin", true);
+                if(pushIntent.hasExtra("HMPId"))
+                    demoIntent.putExtra("HMPId", pushIntent.getStringExtra("HMPId"));
                 context.startActivity(demoIntent);
 
                 Log.d("insideusertypets", "insideusertypets: ");
@@ -62,7 +65,9 @@ public class UserHandler
                 Log.d("insideusertypehm", "insideusertypehm: ");
 
                 Intent demoIntent = new Intent(context, HomemakerDashboardActivity.class);
-                demoIntent.putExtra("isNewLogin", true);
+                //demoIntent.putExtra("isNewLogin", true);
+                if(pushIntent.hasExtra("SubId"))
+                    demoIntent.putExtra("SubId", pushIntent.getStringExtra("SubId"));
                 context.startActivity(demoIntent);
                ((Activity) context).finish();
             }

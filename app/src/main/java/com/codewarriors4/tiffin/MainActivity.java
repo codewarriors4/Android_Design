@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         //new LocationDialog().show(getFragmentManager(), "Location");
         sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
         accessPermission();
+
+
     }
 
     private void accessPermission()
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             setOnclickHandler();
 
         }else{
-            new UserHandler().startActivity(SessionUtli.getSession(sharedPreferences), MainActivity.this);
+            new UserHandler().startActivity(SessionUtli.getSession(sharedPreferences), MainActivity.this, getIntent());
         }
     }
 

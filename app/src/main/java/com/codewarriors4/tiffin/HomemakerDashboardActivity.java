@@ -65,6 +65,12 @@ public class HomemakerDashboardActivity extends AppCompatActivity
          // let this run first
         View headerView = navigationView.getHeaderView(0);
         ((TextView)headerView.findViewById(R.id.email_holder_home_maker)).setText(sessionUtli.getValue("email"));
+
+        if(getIntent().hasExtra("SubId")) {
+            Intent i = new Intent(this, SubscriptionFullView.class);
+            i.putExtra("recent_sub_id", getIntent().getStringExtra("SubId"));
+            startActivity(i);
+        }
        // initDashBoardOnClick();
 
     }

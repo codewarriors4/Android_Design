@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(!access_token.contains("Email not verified")) {
                     SessionUtli session = SessionUtli.getSession(sharedPreference);
                     session.setValues(access_token);
-                    new UserHandler().startActivity(session, LoginActivity.this);
+                    new UserHandler().startActivity(session, LoginActivity.this, getIntent());
                 }else{
                     new CustomToast().Show_Toast(LoginActivity.this, findViewById(android.R.id.content), "Please Verify Your Email");
                     loginButton.setEnabled(true);

@@ -44,10 +44,12 @@ public class TiffinFirebaseMessagingService extends FirebaseMessagingService {
                 .setTicker(remoteMessage.getNotification().getBody())
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(remoteMessage.getNotification().getTitle())
+                .setContentIntent(pi)
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setLights(Color.RED, 3000, 3000)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI).build();
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .build();
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
