@@ -2,6 +2,8 @@ package com.codewarriors4.tiffin;
 
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,7 +29,9 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -55,9 +59,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //new LocationDialog().show(getFragmentManager(), "Location");
-        sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
-        accessPermission();
+        setContentView(R.layout.splash_screen_layout);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sharedPreferences = getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE);
+                accessPermission();
+            }
+        }, 1500);
 
 
     }
@@ -117,8 +126,10 @@ public class MainActivity extends AppCompatActivity {
         //super.onCreate(savedInstanceState);
 
         if(!sharedPreferences.contains("access_token")){
-
-            setContentView(R.layout.activity_main);
+            LayoutInflater inflator=getLayoutInflater();
+            View view=inflator.inflate(R.layout.activity_main, null, false);
+            view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.right_enter));
+            setContentView(view);
             loginActionButton = findViewById(R.id.button);
             signupActionButton = findViewById(R.id.button1);
             setOnclickHandler();
@@ -133,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent loginIntent = new Intent(v.getContext(), LoginActivity.class);
-                startActivity(loginIntent);
+                ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(MainActivity.this,R.anim.right_enter,R.anim.left_out);
+                startActivity(loginIntent, activityOptions.toBundle());
 
             }
         });
@@ -141,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent signupIntent= new Intent(v.getContext(), SignupActivity.class);
-                startActivity(signupIntent);
+                ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(MainActivity.this, R.anim.right_enter, R.anim.left_out);
+                startActivity(signupIntent, activityOptions.toBundle());
             }
         });
     }

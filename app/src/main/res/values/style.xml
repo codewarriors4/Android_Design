@@ -45,5 +45,9 @@
         <item name="colorControlActivated">#ffdf00</item>
     </style>
 
+    <style name="AppTheme.WhiteAccent">
+        <item name="colorAccent">@color/white</item> <!-- Whatever color you want-->
+    </style>
+
 
 </resources>

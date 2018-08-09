@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codewarriors4.tiffin.services.HttpService;
@@ -80,7 +81,7 @@ public class HomemakerCreatePackages extends AppCompatActivity implements PopupM
     @BindView(R.id.image_upload_btn)
     ImageButton imageUploadBtn;
     private SessionUtli sessionUtli;
-    private FrameLayout progress;
+    private ProgressBar progress;
     private LinearLayout profileBody;
 
     @BindView(R.id.image_preview)
@@ -111,6 +112,7 @@ public class HomemakerCreatePackages extends AppCompatActivity implements PopupM
                         Log.d("JsonResponseData", "onReceive: "
                                 + respondPackage.getParams().get(RespondPackage.FAILED));
                         Toast.makeText(context, "Please Select Image", Toast.LENGTH_SHORT).show();
+                        progress.setVisibility(View.GONE);
                     }
                     
         }
@@ -125,7 +127,7 @@ public class HomemakerCreatePackages extends AppCompatActivity implements PopupM
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         ButterKnife.bind(this);
         profileBody = findViewById(R.id.profile_body);
-        progress = findViewById(R.id.progress_overlay);
+        progress = findViewById(R.id.progress_bar);
         ViewGroup container = (ViewGroup) findViewById(android.R.id.content);
         view = getLayoutInflater().inflate(R.layout.login_layout, container, false);
         LocalBroadcastManager.getInstance(getApplicationContext())
@@ -209,6 +211,7 @@ public class HomemakerCreatePackages extends AppCompatActivity implements PopupM
         requestPackage.setHeader("Authorization", "Bearer " +sessionUtli.getValue("access_token"));
         requestPackage.setHeader("Accept", "application/json; q=0.5");
         Intent intent = new Intent(this, HttpService.class);
+        progress.setVisibility(View.VISIBLE);
         intent.putExtra(HttpService.REQUEST_PACKAGE, requestPackage);
 
         startService(intent);
