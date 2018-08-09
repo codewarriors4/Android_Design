@@ -309,6 +309,10 @@ public class TiffinSeekerDashboardActivity extends AppCompatActivity implements
         } else if (id == R.id.privacy) {
             startActivity(new Intent(this, Privacy.class));
 
+        }
+        else if (id == R.id.setting) {
+            startActivity(new Intent(this, TiffinSeekerSettingActivity.class));
+
         }else if (id == R.id.logout) {
             sessionUtli.clearAll();
             Intent intent = new Intent(this, MainActivity.class);

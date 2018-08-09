@@ -19,8 +19,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="Push notifications on license approvals"
-            android:textSize="14sp"
+            android:text="New Menu Alerts"
+            android:textSize="18sp"
             />
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/setting_licence"

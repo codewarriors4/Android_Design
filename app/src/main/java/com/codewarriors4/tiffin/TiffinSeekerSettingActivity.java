@@ -21,30 +21,23 @@ public class TiffinSeekerSettingActivity extends AppCompatActivity
 {
     private SessionUtli sessionUtli;
     private SwitchCompat pushforLicence;
-    private SwitchCompat pushforNewSubScribers;
     private boolean isActivityStarted = true;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting_layout);
+        setContentView(R.layout.tiffin_s_setting_layout);
         sessionUtli = SessionUtli.getSession(getSharedPreferences(Constants.SHAREDPREFERNCE, MODE_PRIVATE));
         pushforLicence = findViewById(R.id.setting_licence);
-        pushforNewSubScribers = findViewById(R.id.setting_subscri);
+
         pushforLicence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isActivityStarted)
-                   new HttpSettingValues().execute("1", isChecked ? "0" : "1");
+                   new HttpSettingValues().execute("3", isChecked ? "0" : "1");
             }
         });
 
-        pushforNewSubScribers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isActivityStarted)
-                    new HttpSettingValues().execute("2", isChecked ? "0" : "1");
-            }
-        });
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -73,7 +66,6 @@ public class TiffinSeekerSettingActivity extends AppCompatActivity
                 JSONArray settingJson = new JSONArray(s);
                 if(settingJson.length() == 2){
                     pushforLicence.setChecked( settingJson.getJSONObject(0).getInt("status") == 0 ? true : false);
-                    pushforNewSubScribers.setChecked( settingJson.getJSONObject(1).getInt("status") == 0     ? true : false);
                     isActivityStarted = false;
                 }
             } catch (JSONException e) {
