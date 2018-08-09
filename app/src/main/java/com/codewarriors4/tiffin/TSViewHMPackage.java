@@ -4,16 +4,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,15 @@ import com.codewarriors4.tiffin.utils.RespondPackage;
 import com.codewarriors4.tiffin.utils.SessionUtli;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +66,14 @@ public class TSViewHMPackage extends AppCompatActivity {
 
     @BindView(R.id.subscribe_btn)
     Button subscribe;
+
+    @BindView(R.id.image_preview)
+    ImageView mImageView;
+
+    String mCurrentPhotoPath;
+    Bitmap bitmap;
+
+    File uploadLicence;
 
 
 
@@ -172,6 +193,25 @@ public class TSViewHMPackage extends AppCompatActivity {
             final String hst = (String)hmPackageDetails.get("hst").getAsString();
             final String total = (String)hmPackageDetails.get("total").getAsString();
 
+        try {
+            byte[] decodedString = Base64.decode(hmPackageDetails.get("prod_encoded_img").getAsString(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            mImageView.setImageBitmap(decodedByte);
+            uploadLicence = saveImageToFile(bytes);
+            mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(TSViewHMPackage.this, ImagePreviewActivity.class);
+                    i.putExtra("bitmap_img", uploadLicence.getAbsolutePath());
+                    startActivity(i);
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(this, "Please Upload Licence Image", Toast.LENGTH_LONG);
+        }
+
 
 
         subscribe.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +240,29 @@ public class TSViewHMPackage extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public File saveImageToFile(ByteArrayOutputStream bytes)
+    {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File destination = new File(this.getCacheDir(),
+                imageFileName + ".jpg");
+        Log.d("imageURI", "saveImageToFile: " + destination.getAbsolutePath());
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return destination;
+
     }
 
 
