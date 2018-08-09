@@ -99,6 +99,10 @@ public class ConfirmPaymentActivity extends AppCompatActivity implements Payment
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .registerReceiver(mBroadcastReceiver,
                         new IntentFilter(HttpService.MY_SERVICE_MESSAGE));
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     private void initValues() {

@@ -133,7 +133,7 @@ public class TSReviewHM extends AppCompatActivity {
     }
 
     private void initFields(TSSubscriptionsModel model){
-
+        hm_name.setText(model.getHmName());
         packageNameView.setText(model.getPackTitle());
         packageDescView.setText(model.getPackDesc());
         subscribeStartDate.setText(model.getSubStartDate());
