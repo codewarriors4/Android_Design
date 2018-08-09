@@ -1,10 +1,12 @@
 package com.codewarriors4.tiffin;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -70,6 +72,15 @@ public class SubscriptionFullView extends AppCompatActivity
         fullName.setText(subscribersListModel.getUserName());
         emailView.setText(subscribersListModel.getUsereEmail());
         addressView.setText(subscribersListModel.getUserStreet());
+        addressView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q="+addressView.getText());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
         phoneNoView.setText(subscribersListModel.getPhoneNumber());
         packageName.setText(subscribersListModel.getPackageName());
         descriView.setText(subscribersListModel.getPackageDesc());
